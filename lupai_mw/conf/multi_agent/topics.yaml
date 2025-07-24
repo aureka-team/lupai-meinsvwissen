@@ -1,0 +1,117 @@
+- topic: Migration
+  description: >-
+      Queries related to formal migration processes, for example those related to conditions of visa status:
+      extension, renewal or change of residence permit; work permits related to residence; access to social help according to residence permit.
+      Also political matters related to migration rights or international relations fall under this category.
+
+- topic: Asylum
+  description: >-
+      Queries related to requesting asylum in Germany, appealing asylum denial or deportation orders and all administrative processes related to asylum requests
+      (e.g obtaining a "duldung"). also queries related to accessing social help or labour rights being a refugee fall under this category.
+      And political matters related to asylum regulations.
+
+- topic: Work
+  description: >-
+      Queries related to employment situations, job-seeking processes, workplace rights, and employment regulations.
+      This includes accessing employment services, understanding employment contracts,
+      and navigating issues such as workplace discrimination or termination of employment.
+      Also encompasses political matters related to labor laws and workers' rights.
+
+- topic: Bureaucracy
+  description: >-
+      Queries involving administrative processes, government documentation such as identity cards, driving licenses, and tax filings.
+      This category also includes navigation through governmental services and understanding legal requirements for various civic and personal activities.
+
+- topic: Psychological Help
+  description: >-
+      Queries concerning access to mental health services, counseling, and support for psychological issues.
+      This includes finding therapists, understanding mental health coverage, and dealing with mental health crises.
+      Political and social aspects regarding mental health advocacy and legislation also fall under this category.
+
+- topic: Social Assistance
+  description: >-
+      Queries about accessing government or community-provided social support services such as unemployment benefits, child support, and housing assistance.
+      Includes navigating the systems that provide these services and understanding eligibility and application processes.
+
+- topic: Women
+  description: >-
+      Queries specifically related to women's issues, rights, and services.
+      This includes access to healthcare, protection against gender-based violence, and support for women in various life stages.
+      Also covers political matters related to women's rights and gender equality.
+
+- topic: FLINTA
+  description: >-
+      Queries related to issues specifically affecting individuals who identify as Female, Lesbian, Intersex, Non-binary, Transgender, and Agender.
+      This covers access to appropriate healthcare, support groups, and legal protections, as well as advocacy and rights within the social and political spheres.
+
+- topic: Queer
+  description: >-
+      Queries involving issues and support for the LGBTQ+ community, including access to healthcare, legal recognition of queer relationships,
+      and protection against discrimination.
+      Also involves political matters related to queer rights and advocacy.
+
+- topic: Humanitarian Help
+  description: >-
+      Queries related to accessing emergency assistance, refugee support services, and disaster relief.
+      Includes information on how to obtain humanitarian aid and the agencies involved in providing such assistance,
+      as well as related international laws and policies.
+
+- topic: Colombia
+  description: >-
+      Queries specifically related to issues, policies, and situations in Colombia.
+      This includes political, social, and economic matters affecting people living in or connected to Colombia and the life of Colombian migrants,
+      refugees or asylum seekers in Germany.
+
+- topic: Latin America
+  description: >-
+      Queries pertaining to broader issues across Latin American countries, including political, social, and economic matters,
+      and related to the life of Latin American migrants in Germany.
+
+- topic: Disability
+  description: >-
+      Queries related to the rights, services, and support for individuals with disabilities.
+      This includes accessing disability benefits, inclusive services, and accommodations, as well as advocacy and legal rights concerning disability.
+
+- topic: Entrepeneuship
+  description: >-
+      Queries involving starting and managing businesses, understanding business laws, and accessing entrepreneurial resources.
+      Also covers political and economic factors that impact entrepreneurs.
+
+- topic: Discrimination
+  description: >-
+      The unfair or unequal treatment of individuals or groups based on characteristics such as race, gender, age,
+      disability, sexual orientation, religion, or other protected attributes. It involves actions, policies,
+      or practices that disadvantage certain people, denying them equal opportunities or rights. Discrimination can occur in various settings,
+      including the workplace, education, housing, and public services.
+
+- topic: Sex Work
+  description: >-
+      Queries related to the rights, health services, and legal status of sex workers.
+      This includes accessing health care, legal protections, and support networks, as well as advocacy and political matters concerning the rights of sex workers.
+
+- topic: Anti-Black Racism
+  description: >-
+      Queries specifically focused on issues of racism against Black individuals, including accessing support services,
+      understanding and fighting discrimination, and advocacy related to racial justice.
+
+- topic: Asian Migrants
+  description: >-
+      Queries related to the specific issues faced by migrants from Asian countries, including accessing community support, navigating immigration and integration processes, and dealing with specific forms of discrimination.
+
+- topic: Human Rights
+  description: >-
+      Queries regarding understanding and advocating for human rights, accessing legal support in human rights violations,
+      and engaging with international human rights organizations.
+
+- topic: Sexual Violence
+  description: >-
+      Any form of unwanted or coerced sexual activity or behavior, including but not limited to sexual assault, rape,
+      sexual harassment, and exploitation. It involves the violation of an individual's sexual autonomy and consent,
+      often through force, manipulation, or threats. Sexual violence can occur in various contexts, including interpersonal relationships,
+      workplaces, public spaces, and institutions.
+
+- topic: Racism
+  description: >-
+      Queries related to discrimination, prejudice, or unequal treatment based on ethnicity or race.
+      This includes understanding the impact of racial bias, addressing systemic inequality,
+      and exploring legal and social resources to combat racial discrimination.

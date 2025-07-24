@@ -1,0 +1,14 @@
+.env
+**/__pycache__
+**/*.ipynb_checkpoints
+**/*.egg-info
+**/.cache
+
+build/
+resources/
+.secrets/
+
+.vscode/*
+!.vscode/launch.json
+
+tmp/

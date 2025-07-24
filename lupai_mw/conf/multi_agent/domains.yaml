@@ -1,0 +1,79 @@
+all-domains:
+    - Immigration
+    - Work
+    - Housing
+    - Health
+    - Education
+    - Culture
+    - Family
+
+valid-domains:
+    - domain: Immigration
+      description:
+          This domain encompasses all matters related to entering and residing in Germany for regular migration purposes.
+          It includes visa applications for work, study, and family reunification, as well as residency permits for temporary or permanent stays.
+          Topics covered include legal status changes (e.g., from temporary to permanent residency or obtaining German citizenship through naturalization), family reunification laws, dual citizenship, and all procedures associated with legal migration to Germany.
+          Additionally, this domain addresses the rights of migrants in Germany, such as access to social security systems, healthcare, unemployment benefits, and education.
+          It explores the intersection between general civil rights—like freedom of movement, access to public services, and anti-discrimination protections—and a person's migration status, highlighting how legal residence impacts an individual's ability to fully participate in social, economic, and political life in Germany.
+    - domain: Work
+      description:
+          This domain covers all matters related to employment and professional life in Germany.
+          It includes understanding labor market regulations, employment contracts, wage standards, and workers' rights as established by German labor law, such as protection against unfair dismissal, working hours, paid leave, and workplace safety.
+          Additionally, it addresses various employment types, including full-time, part-time, temporary, freelance, and self-employment, providing guidance on the legal requirements for each.
+          The domain also encompasses job search strategies, professional development, and career advancement, including access to vocational training, professional qualifications, and continuing education.
+          It explores workers' rights to social benefits such as healthcare, pensions, unemployment insurance, and how to navigate taxation and retirement planning within the context of employment.
+          This domain also considers broader workforce issues such as equal pay, gender equality, anti-discrimination in the workplace, and workers' participation in unions or collective bargaining.
+          It also includes all work activities, such as dealing with co-workers and customers.
+    - domain: Asylum
+      description:
+          This domain covers the right to seek asylum and the procedures involved in international protection.
+          It includes the legal frameworks for applying for asylum, such as the German Asylum Act and the Dublin III Regulation, and distinguishes between refugee status, subsidiary protection, and humanitarian protection.
+          It addresses the full asylum process—from the initial application (including at borders or airports) to hearings, appeals, and possible deportation—as well as legal mechanisms to challenge negative decisions.
+          The domain also covers tolerated stay (“Duldung”) and the transition from temporary protection to long-term residence or integration.
+    - domain: Social
+      description:
+          This domain encompasses all aspects of social welfare and support services in Germany, focusing on the various benefits and assistance programs available to individuals and families.
+          It includes information on financial support mechanisms such as Bürgergeld (citizen's income), Wohngeld (housing allowance), Kindergeld (child benefit), and Grundsicherung im Alter (basic security in old age).
+          The domain also covers support for specific life situations, including unemployment, parenthood, and aging, providing guidance on eligibility criteria, application processes, and the rights of beneficiaries.
+          Additionally, this domain addresses specialized support for vulnerable groups, such as refugees and individuals with disabilities, detailing programs like the Asylbewerberleistungsgesetz (Asylum Seekers' Benefits Act) and services for children without birth certificates.
+
+translations:
+    Immigration:
+        English: Immigration
+        German: Einwanderung
+        Spanish: Inmigración
+        French: Immigration
+        Italian: Immigrazione
+        Portuguese: Imigração
+        Russian: Иммиграция
+        Ukrainian: Імміграція
+
+    Work:
+        English: Work
+        German: Arbeit
+        Spanish: Trabajo
+        French: Travail
+        Italian: Lavoro
+        Portuguese: Trabalho
+        Russian: Работа
+        Ukrainian: Робота
+
+    Asylum:
+        English: Asylum
+        German: Asyl
+        Spanish: Asilo
+        French: Asile
+        Italian: Asilo
+        Portuguese: Asilo
+        Russian: Убежище
+        Ukrainian: Притулок
+
+    Social:
+        English: Social
+        German: Sozial
+        Spanish: Social
+        French: Social
+        Italian: Sociale
+        Portuguese: Social
+        Russian: Социальный
+        Ukrainian: Соціальний

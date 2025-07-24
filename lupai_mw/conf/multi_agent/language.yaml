@@ -1,0 +1,14 @@
+valid-languages:
+    - English
+    - German
+    - Spanish
+    - French
+    - Italian
+    - Portuguese
+    - Russian
+    - Ukrainian
+
+invalid-language-warning: >-
+    We couldn't process your query because the detected language ({detected_language}) is not currently supported by Lupai.
+    Please try reformulating your question in one of the supported languages:
+    {supported_languages}

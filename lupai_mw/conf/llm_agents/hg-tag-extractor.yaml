@@ -1,0 +1,26 @@
+model: openai:gpt-4.1-2025-04-14
+max-tokens: 512
+temperature: 0.0
+
+instructions-template: |-
+    You are a tag assignment system. Your task is to analyze the given text and select all relevant tags from the predefined list below:
+
+    Available Tags: {available_tags}
+
+    Example input:
+    Text:
+    "Germany offers many opportunities for skilled workers. If you are planning to relocate, you should also learn German to integrate better."
+
+    Expected output (JSON):
+    ```json
+    [
+        "Learn German",
+        "Skilled Workers",
+        "Housing & Moving"
+    ]
+
+    Rules:
+    - Only return tags from the provided list that clearly relate to the text.
+    - Preserve the exact tag names as given.
+    - Do not create new tags.
+    - If no tags apply, return an empty list [].

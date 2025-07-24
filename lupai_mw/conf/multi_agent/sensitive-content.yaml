@@ -1,0 +1,100 @@
+translations:
+    # topics:
+    #     Asylum:
+    #         English: Asylum
+    #         German: Asyl
+    #         Spanish: Asilo
+    #         French: Asile
+    #         Italian: Asilo
+    #         Portuguese: Asilo
+
+    #     Deportation:
+    #         English: Deportation
+    #         German: Deportation
+    #         Spanish: Deportación
+    #         French: Expulsion
+    #         Italian: Espulsione
+    #         Portuguese: Deportação
+
+    #     Criminal law:
+    #         English: Criminal law
+    #         German: Strafrecht
+    #         Spanish: Derecho penal
+    #         French: Droit pénal
+    #         Italian: Diritto penale
+    #         Portuguese: Direito Penal
+
+    #     Sexual violence:
+    #         English: Sexual violence
+    #         German: Sexualisierte Gewalt
+    #         Spanish: Violencia sexual
+    #         French: Violence sexuelle
+    #         Italian: Violenza sessuale
+    #         Portuguese: Violência sexual
+
+    #     Discrimination:
+    #         English: Discrimination
+    #         German: Diskriminierung
+    #         Spanish: Discriminación
+    #         French: Discrimination
+    #         Italian: Discriminazione
+    #         Portuguese: Discriminação
+
+    default-warning:
+        English: We are sorry to hear that you are going through this situation.
+            Given the sensitivity of this issue, it is advisable to seek qualified counsel.
+            They will be able to provide you with personalized and confidential advice tailored to your specific situation.
+
+        German: Es tut uns sehr leid, dass du dich in dieser Situation befindest.
+            Angesichts der Sensibilität dieses Themas ist es ratsam, sich qualifizierten Rat einzuholen.
+            Berater:innen können Ihnen eine persönliche und vertrauliche Beratung anbieten, die auf deine spezielle Situation zugeschnitten ist.
+
+        Spanish: Sentimos mucho que estés pasando por esta situación.
+            Dada la sensibilidad de este tema, es aconsejable buscar asesoria cualificada.
+            Les asesores podrán proporcionarte un apollo personalizado y confidencial adaptado a su situación específica.
+
+        French: Nous sommes désolés d'apprendre que tu traverses cette situation.
+            Compte tenu de la sensibilité de cette question, il est conseillé de demander l'avis d'une institution qualifiée.
+            Ils seront en mesure de vous fournir des conseils personnalisés et confidentiels, adaptés à votre situation spécifique.
+
+        Italian: Siamo molto dispiaciuti di sapere che state vivendo questa situazione.
+            Data la delicatezza della questione, è consigliabile rivolgersi a uno specialista.
+            Questi saranno in grado di fornirvi una consulenza personalizzata e confidenziale, adatta alla vostra situazione specifica.
+
+        Portuguese: Lamentamos muito que esteja passando por esta  situação.
+            Dada a sensibilidade desta questão, é aconselhável procurar aconselhamento qualificado.
+            Este poderá fornecer-lhe conselhos personalizados e confidenciais, adaptados à sua situação específica.)
+
+        Russian: Нам жаль слышать, что вы оказались в такой ситуации.
+            Учитывая деликатность этого вопроса, рекомендуется обратиться за консультацией к квалифицированным специалистам.
+            Они смогут предоставить вам персонализированную и конфиденциальную помощь, учитывая особенности вашей ситуации.
+
+        Ukrainian: Нам шкода чути, що ви опинилися в такій ситуації.
+            З огляду на чутливість цього питання, радимо звернутися по допомогу до кваліфікованих фахівців.
+            Вони зможуть надати вам персоналізовану та конфіденційну консультацію, адаптовану до вашої конкретної ситуації.
+
+    discrimination-warning:
+        English: Given the sensitivity of this matter please note that it is possible to go to the anti-discrimination office or seek legal advice.
+        German: In Anbetracht der Sensibilität dieser Angelegenheit weisen wir darauf hin, dass es möglich ist, sich an die Antidiskriminierungsstelle zu wenden oder juristischen Rat einzuholen.
+        Spanish: Dada la sensibilidad de este asunto, ten en cuenta que es posible acudir a la oficina antidiscriminación o buscar asesoria legal.
+        French: Compte tenu du caractère sensible de cette question, veuillez noter qu'il est possible de s'adresser au bureau de lutte contre la discrimination ou de demander un avis juridique.
+        Italian: Data la delicatezza della questione si ricorda che è possibile rivolgersi all'ufficio antidiscriminazione o chiedere un parere legale.
+        Portuguese: Dado o carácter sensível desta questão, é possível contactar o departamento de combate à discriminação ou solicitar aconselhamento jurídico.
+        Russian: Учитывая деликатность этого вопроса, обратите внимание, что вы можете обратиться в офис по борьбе с дискриминацией или получить юридическую консультацию.
+        Ukrainian: З огляду на чутливість цього питання, звертаємо вашу увагу на те, що ви можете звернутися до офісу з питань недискримінації або отримати юридичну консультацію.
+
+sensitive-topics:
+    - topic: Asylum
+      warning: default-warning
+
+    - topic: Deportation
+      warning: default-warning
+
+    - topic: Criminal law
+      warning: default-warning
+
+    - topic: Sexual violence
+      warning: default-warning
+
+    - topic: Discrimination
+      warning: discrimination-warning

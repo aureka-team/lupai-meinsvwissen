@@ -1,0 +1,21 @@
+services:
+    lupai-mw-devcontainer:
+        image: lupai-mw-devcontainer
+        container_name: lupai-mw-devcontainer
+        build:
+            context: ..
+            dockerfile: .devcontainer/Dockerfile
+        volumes:
+            - ..:/workspace:cached
+            - ../resources/:/resources
+        env_file:
+            - ../.env
+        # This keeps the devcontainer running.
+        entrypoint: ["tail", "-f", "/dev/null"]
+        networks:
+            - lupai
+
+networks:
+    lupai:
+        name: lupai
+        driver: bridge

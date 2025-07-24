@@ -1,0 +1,111 @@
+from agents.graph import AgentGraph
+from lupai.multi_agent.schema import StateSchema, ConfigSchema
+from .nodes import (
+    init,
+    language_detector,
+    domain_detector,
+    sensitive_topic_detector,
+    intent_detector,
+    retriever,
+    clarification_requester,
+    assistant,
+    query_optimizer,
+    output_parser,
+    answer_improver,
+    clarification_checkpoint,
+    user_context_initializer,
+    domain_shift_detector,
+    new_immigration_law_fixer,
+    response_sensitizer,
+    topic_detector,
+    organization_recommender,
+    clarification_decider,
+    user_context_extractor,
+    generic_assistant,
+)
+
+from .edges import (
+    start_init,
+    domain_conditional,
+    language_detector_conditional,
+    retriever_conditional,
+    query_optimizer_retriever,
+    assistant_conditional,
+    answer_improver_new_immigration_law_fixer,
+    init_conditional,
+    clarification_checkpoint_assistant,
+    # user_context_initializer_language_detector,
+    user_context_init_conditional,
+    user_context_extractor_language_detector,
+    domain_shift_conditional,
+    new_immigration_law_fixer_response_sensitizer,
+    output_parser_edges,
+    topic_detector_organization_recommender,
+    # clarification_decider_edges,
+    clarification_decider_conditional,
+    clarification_requester_output_parser,
+    sensitive_topic_detector_intent_detector,
+    intent_detector_conditional,
+    generic_assistant_output_parser,
+)
+
+
+def get_multi_agent() -> AgentGraph:
+    nodes = [
+        init,
+        domain_detector,
+        language_detector,
+        sensitive_topic_detector,
+        intent_detector,
+        retriever,
+        clarification_requester,
+        assistant,
+        query_optimizer,
+        output_parser,
+        answer_improver,
+        clarification_checkpoint,
+        user_context_initializer,
+        domain_shift_detector,
+        new_immigration_law_fixer,
+        response_sensitizer,
+        topic_detector,
+        organization_recommender,
+        clarification_decider,
+        user_context_extractor,
+        generic_assistant,
+    ]
+
+    edges = [
+        start_init,
+        domain_conditional,
+        language_detector_conditional,
+        retriever_conditional,
+        query_optimizer_retriever,
+        assistant_conditional,
+        answer_improver_new_immigration_law_fixer,
+        init_conditional,
+        clarification_checkpoint_assistant,
+        # user_context_initializer_language_detector,
+        user_context_init_conditional,
+        user_context_extractor_language_detector,
+        domain_shift_conditional,
+        new_immigration_law_fixer_response_sensitizer,
+        output_parser_edges,
+        topic_detector_organization_recommender,
+        # clarification_decider_edges,
+        clarification_decider_conditional,
+        clarification_requester_output_parser,
+        sensitive_topic_detector_intent_detector,
+        intent_detector_conditional,
+        generic_assistant_output_parser,
+    ]
+
+    multi_agent = AgentGraph(
+        state_schema=StateSchema,
+        config_schema=ConfigSchema,
+        nodes=nodes,
+        edges=edges,
+    )
+
+    multi_agent.compile()
+    return multi_agent
