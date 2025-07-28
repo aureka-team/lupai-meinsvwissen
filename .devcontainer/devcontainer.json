@@ -27,10 +27,12 @@
                 "editor.formatOnSave": true,
                 "notebook.formatOnSave.enabled": true,
                 "notebook.output.scrolling": true,
-                "ruff.lineLength": 80
+                "ruff.lineLength": 80,
+                "python.pyrefly.disableLanguageServices": true
             },
             "extensions": [
                 "charliermarsh.ruff",
+                "meta.pyrefly",
                 "esbenp.prettier-vscode",
                 "eamodio.gitlens",
                 "ms-azuretools.vscode-docker",

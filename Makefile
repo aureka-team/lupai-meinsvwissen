@@ -25,10 +25,10 @@ redis-restart: redis-stop redis-start
 
 
 qdrant-start:
-	docker compose up -d rage-qdrant
+	docker compose up -d lupai-mw-qdrant
 
 qdrant-stop:
-	docker compose stop rage-qdrant
+	docker compose stop lupai-mw-qdrant
 
 qdrant-restart: qdrant-stop qdrant-start
 

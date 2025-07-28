@@ -1,3 +1,6 @@
+boto3==1.39.12
+polars==1.31.0
+parsel==1.10.0
 regex==2024.11.6
 markitdown==0.1.2
 

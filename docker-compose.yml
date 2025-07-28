@@ -29,9 +29,9 @@ services:
         networks:
             - lupai-mw
 
-    rage-qdrant:
-        image: qdrant/qdrant:v1.14.1
-        container_name: rage-qdrant
+    lupai-mw-qdrant:
+        image: qdrant/qdrant:v1.15.1
+        container_name: lupai-mw-qdrant
         ports:
             - "6333:6333"
             - "6334:6334"

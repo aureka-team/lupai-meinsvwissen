@@ -13,9 +13,9 @@ services:
         # This keeps the devcontainer running.
         entrypoint: ["tail", "-f", "/dev/null"]
         networks:
-            - lupai
+            - lupai-mw
 
 networks:
-    lupai:
-        name: lupai
+    lupai-mw:
+        name: lupai-mw
         driver: bridge

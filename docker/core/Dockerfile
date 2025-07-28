@@ -41,7 +41,7 @@ RUN rm -rf /tmp/*
 WORKDIR /root
 
 ENV REDIS_HOST=lupai-mw-redis
-ENV QDRANT_HOST=rage-qdrant
+ENV QDRANT_HOST=lupai-mw-qdrant
 
 ENV DENSE_EMBED_DOC_CACHE_PATH=/resources/cache/embeddings/documents
 ENV DENSE_EMBED_QUERY_CACHE_PATH=/resources/cache/embeddings/queries
