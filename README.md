@@ -1,1 +1,1 @@
-# LupAI
+# LupAI Meinsvwissen
