@@ -23,7 +23,7 @@ async def run(state: StateSchema) -> dict[str, Any]:
     )
 
     return {
-        "assistant_response": sd_output.sensitive_topic,
+        "sensitive_topic": sd_output.sensitive_topic,
     }
 
 

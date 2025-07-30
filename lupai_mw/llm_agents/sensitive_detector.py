@@ -24,7 +24,7 @@ class SensitiveDetector(
 ):
     def __init__(
         self,
-        conf_path=f"{list(llm_agents.__path__)[0]}/assistant.yaml",
+        conf_path=f"{list(llm_agents.__path__)[0]}/sensitive_detector.yaml",
         mcp_servers: list[MCPServer] = [],
         max_concurrency: int = 10,
         message_history_length: int = 10,

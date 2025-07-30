@@ -57,12 +57,14 @@ class TextChunk(BaseModel):
         description="The title of the post this chunk belongs to."
     )
 
-    category_title: StrictStr = Field(
-        description="The title of the section the document belongs to."
+    category_title: StrictStr | None = Field(
+        description="The title of the section the document belongs to.",
+        default=None,
     )
 
     topics: list[StrictStr] = Field(
-        description="A list of topics that describe the post this chunk belongs to."
+        description="A list of topics that describe the post this chunk belongs to.",
+        default=[],
     )
 
 

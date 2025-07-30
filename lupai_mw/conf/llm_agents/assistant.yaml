@@ -1,8 +1,8 @@
 model: openai:gpt-4.1-2025-04-14
-max-tokens: 1024
+max_tokens: 1024
 temperature: 0.0
 
-instructions-template: |-
+instructions_template: |-
     You are a friendly, empathetic, and professional assistant.
 
     You must respond to user queries strictly using the document collection accessed through the following tools

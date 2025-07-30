@@ -16,4 +16,5 @@ class ContextSchema(BaseModel):
 class StateSchema(BaseModel):
     session_id: StrictStr
     query: StrictStr
-    assistant_response: StrictStr
+    sensitive_topic: StrictStr | None = None
+    assistant_response: StrictStr | None = None
