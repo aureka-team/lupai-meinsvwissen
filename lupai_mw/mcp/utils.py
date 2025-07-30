@@ -2,8 +2,8 @@ from typing import Any
 from common.logger import get_logger
 from pydantic import BaseModel, NonNegativeInt, PositiveInt
 
-from pydantic_ai.mcp import CallToolFunc
 from pydantic_ai.tools import RunContext
+from pydantic_ai.mcp import CallToolFunc, ToolResult
 
 
 logger = get_logger(__name__)
@@ -24,13 +24,14 @@ async def process_tool_call(
     call_tool: CallToolFunc,
     tool_name: str,
     args: dict[str, Any],
-) -> CallResult:
+) -> ToolResult:
     if ctx.run_step > TOOL_CALL_LIMIT:
         return CallResult(
+            call_result=None,
             used_calls=TOOL_CALL_LIMIT,
             max_calls=TOOL_CALL_LIMIT,
             remaining_calls=0,
-        )
+        ).model_dump()
 
     call_result = await call_tool(
         tool_name,
@@ -52,4 +53,4 @@ async def process_tool_call(
         used_calls=ctx.run_step,
         max_calls=TOOL_CALL_LIMIT,
         remaining_calls=TOOL_CALL_LIMIT - ctx.run_step,
-    )
+    ).model_dump()

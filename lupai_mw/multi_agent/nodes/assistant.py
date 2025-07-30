@@ -16,12 +16,12 @@ async def run(state: StateSchema) -> dict[str, Any]:
     logger.info("running assistant...")
 
     mcp = MCPServerStreamableHTTP(
-        url="http://localhost:8000/mcp",
+        url="http://lupai-mw-mcp:8000/mcp",
         process_tool_call=process_tool_call,
     )
 
     assitant = Assistant(mcp_servers=[mcp])
-    async with assitant.agent.run_mcp_servers():
+    async with assitant.agent:
         assitant_output = await assitant.generate(user_prompt=state.query)
 
     return {

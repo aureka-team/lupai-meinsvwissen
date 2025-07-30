@@ -61,6 +61,20 @@ services:
         networks:
             - lupai-mw
 
+    lupai-mw-mcp:
+        image: lupai-mw-mcp
+        container_name: lupai-mw-mcp
+        build:
+            context: .
+            dockerfile: ./docker/mcp/Dockerfile
+        volumes:
+            - $PWD/resources:/resources
+        env_file:
+            - .env
+        restart: unless-stopped
+        networks:
+            - lupai-mw
+
 networks:
     lupai-mw:
         name: lupai-mw
