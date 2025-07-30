@@ -8,19 +8,20 @@ from pydantic_ai.mcp import MCPServer
 from llm_agents.meta.interfaces import LLMAgent
 
 
-class AssistantOutput(BaseModel):
-    answer: StrictStr | None = Field(
-        description="The assistant's answer to the user query.",
+class SensitiveDetectorDeps(BaseModel):
+    sensitive_topics: list[StrictStr]
+
+
+class SensitiveDetectorOutput(BaseModel):
+    sensitive_topic: StrictStr | None = Field(
+        description="The detected sensitive topic.",
         default=None,
     )
 
-    relevant_chunk_ids: list[StrictStr] = Field(
-        description="List of chunk_id values used to generate your answer.",
-        default=[],
-    )
 
-
-class Assistant(LLMAgent[None, AssistantOutput]):
+class SensitiveDetector(
+    LLMAgent[SensitiveDetectorDeps, SensitiveDetectorOutput]
+):
     def __init__(
         self,
         conf_path=f"{list(llm_agents.__path__)[0]}/assistant.yaml",
@@ -32,8 +33,8 @@ class Assistant(LLMAgent[None, AssistantOutput]):
     ):
         super().__init__(
             conf_path=conf_path,
-            deps_type=None,
-            output_type=AssistantOutput,
+            deps_type=SensitiveDetectorDeps,
+            output_type=SensitiveDetectorOutput,
             mcp_servers=mcp_servers,
             max_concurrency=max_concurrency,
             message_history_length=message_history_length,

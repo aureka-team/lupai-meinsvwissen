@@ -2,7 +2,7 @@ import asyncio
 
 from rage.meta.interfaces import Document
 
-from .base_loader import BaseLoader
+from .base_loader import BaseLoader, DocumentMetadata
 
 
 class PostLoader(BaseLoader):
@@ -10,7 +10,7 @@ class PostLoader(BaseLoader):
         super().__init__()
 
     def _load_sections(self) -> list[dict]:
-        sections = self.get_parquet_data(bucket_key="sections.parquet")
+        sections = self.get_parquet_data(file_name="sections.parquet")
         return [
             s
             for s in sections
@@ -18,19 +18,19 @@ class PostLoader(BaseLoader):
         ]
 
     def _load_posts(self) -> dict:
-        posts = self.get_parquet_data(bucket_key="posts.parquet")
+        posts = self.get_parquet_data(file_name="posts.parquet")
         return {p["id"]: p for p in posts}
 
     def _get_document(self, section: dict, post: dict) -> Document:
         return Document(
             text=section["text"],
-            metadata={
-                "post_id": section["post_id"],
-                "title": post["title"],
-                "date": post["date"],
-                "topics": post["topics"],
-                "related_posts": post["related_posts"],
-            },
+            metadata=DocumentMetadata(
+                post_id=section["post_id"],
+                title=post["title"],
+                topics=post["topics"],
+                date=post["date"],
+                related_posts=post["related_posts"],
+            ).model_dump(),
         )
 
     def _get_documents(self, source_path: str | None = None) -> list[Document]:
