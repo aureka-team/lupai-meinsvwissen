@@ -63,6 +63,7 @@ class DocumentLoader(BaseLoader):
                         text=doc.text,
                         metadata=DocumentMetadata(
                             title=download_item["title"],
+                            url=download_link,
                             category_title=download_item["category_title"],
                         ).model_dump(),
                     )

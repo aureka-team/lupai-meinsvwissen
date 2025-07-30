@@ -85,9 +85,9 @@ async def semantic_search(
         # TODO: Add meinsvwissen-glossary?
         Literal[
             "meinsvwissen-posts",
-            "meinsvwissen-post-documents",
+            "meinsvwissen-documents",
         ],
-        Field(description="The collection of documents to search within."),
+        Field(description="The collection to search within."),
     ],
     query: Annotated[
         str,
@@ -138,7 +138,7 @@ def get_text_chunk(
         # TODO: Add meinsvwissen-glossary?
         Literal[
             "meinsvwissen-posts",
-            "meinsvwissen-post-documents",
+            "meinsvwissen-documents",
         ],
         Field(
             description="The collection from which to retrieve the text chunk."

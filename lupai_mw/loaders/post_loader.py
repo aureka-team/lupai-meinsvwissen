@@ -22,11 +22,13 @@ class PostLoader(BaseLoader):
         return {p["id"]: p for p in posts}
 
     def _get_document(self, section: dict, post: dict) -> Document:
+        post_id = section["post_id"]
         return Document(
             text=section["text"],
             metadata=DocumentMetadata(
-                post_id=section["post_id"],
+                post_id=post_id,
                 title=post["title"],
+                url=f"https://meinsvwissen.de/?p={post_id}",
                 topics=post["topics"],
                 date=post["date"],
                 related_posts=post["related_posts"],

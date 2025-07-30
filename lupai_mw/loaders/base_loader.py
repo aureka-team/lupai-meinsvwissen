@@ -14,6 +14,7 @@ from rage.meta.interfaces import TextLoader, Document
 class DocumentMetadata(BaseModel):
     post_id: NonNegativeInt | None = None
     title: StrictStr
+    url: StrictStr
     category_title: StrictStr | None = None
     topics: list[StrictStr] = []
     date: datetime | None = None
