@@ -32,8 +32,7 @@ instructions_template: |-
         "relevant_chunks": [
             {
                 "chunk_id": "...",
-                "source_name": "...",
-                "source_author": "..."
+                "collection": "...",
             },
             ...
         ]

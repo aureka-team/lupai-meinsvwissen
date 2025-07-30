@@ -8,14 +8,19 @@ from pydantic_ai.mcp import MCPServer
 from llm_agents.meta.interfaces import LLMAgent
 
 
+class RelevantChunk(BaseModel):
+    chunk_id: StrictStr
+    collection: StrictStr
+
+
 class AssistantOutput(BaseModel):
     answer: StrictStr | None = Field(
         description="The assistant's answer to the user query.",
         default=None,
     )
 
-    relevant_chunk_ids: list[StrictStr] = Field(
-        description="List of chunk_id values used to generate your answer.",
+    relevant_chunks: list[RelevantChunk] = Field(
+        description="List of relevant chunks used to generate the answer.",
         default=[],
     )
 

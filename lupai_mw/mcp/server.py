@@ -67,6 +67,8 @@ class TextChunk(BaseModel):
         default=[],
     )
 
+    url: StrictStr = Field(description="The url of the post or document.")
+
 
 class SemanticSearchResult(TextChunk):
     """Extends TextChunk with a semantic similarity score."""
@@ -123,6 +125,7 @@ async def semantic_search(
             title=r.metadata["title"],
             category_title=r.metadata["category_title"],
             topics=r.metadata["topics"],
+            url=r.metadata["url"],
             score=r.score,
         )
         for r in results
@@ -134,6 +137,10 @@ async def semantic_search(
     description="Retrieve a specific text chunk from a collection using its unique chunk_id.",
 )
 def get_text_chunk(
+    chunk_id: Annotated[
+        str,
+        Field(description="The unique chunk_id of the text chunk to retrieve."),
+    ],
     collection: Annotated[
         # TODO: Add meinsvwissen-glossary?
         Literal[
@@ -143,10 +150,6 @@ def get_text_chunk(
         Field(
             description="The collection from which to retrieve the text chunk."
         ),
-    ],
-    chunk_id: Annotated[
-        str,
-        Field(description="The unique chunk_id of the text chunk to retrieve."),
     ],
 ) -> TextChunk | None:
     """Retrieve a specific text chunk from a collection using its unique chunk_id."""
@@ -181,6 +184,7 @@ def get_text_chunk(
         title=result.payload["metadata"]["title"],
         category_title=result.payload["metadata"]["category_title"],
         topics=result.payload["metadata"]["topics"],
+        url=result.payload["metadata"]["url"],
     )
 
 
