@@ -15,10 +15,14 @@ logger = get_logger(__name__)
 
 async def run(state: StateSchema) -> dict[str, Any]:
     logger.info("running sensitive_detector...")
+
     runtime = get_runtime(ContextSchema)
     sensitive_topics = dict(runtime.context)["sensitive_topics"]
 
-    sd = SensitiveDetector(model=get_ionos_model_())
+    sd = SensitiveDetector(
+        model=get_ionos_model_(model_name="meta-llama/Llama-3.3-70B-Instruct")
+    )
+
     sd_output = await sd.generate(
         user_prompt=f"Query: {state.query}",
         agent_deps=SensitiveDetectorDeps(sensitive_topics=sensitive_topics),
@@ -32,5 +36,4 @@ async def run(state: StateSchema) -> dict[str, Any]:
 sensitive_detector = Node(
     name="sensitive_detector",
     run=run,
-    is_entry_point=True,
 )

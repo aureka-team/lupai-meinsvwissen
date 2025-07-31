@@ -25,14 +25,16 @@ async def run(state: StateSchema) -> dict[str, Any]:
     )
 
     assitant = Assistant(
-        model=get_ionos_model_(),
+        model=get_ionos_model_(
+            model_name="meta-llama/Meta-Llama-3.1-405B-Instruct-FP8"
+        ),
         mcp_servers=[mcp],
     )
 
     async with assitant.agent:
         assitant_output = await assitant.generate(
             user_prompt=state.query,
-            agent_deps=AssistantDeps(output_language="English"),  # type: ignore
+            agent_deps=AssistantDeps(output_language=state.language),  # type: ignore
         )
 
     relevant_chunks = (
