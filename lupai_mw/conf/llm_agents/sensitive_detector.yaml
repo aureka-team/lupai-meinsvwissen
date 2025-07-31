@@ -1,5 +1,5 @@
-model: gpt-4.1-mini-2025-04-14
-max_tokens: 16
+model: openai:gpt-4.1-mini-2025-04-14
+max_tokens: 32
 temperature: 0.2
 
 instructions_template: |-
@@ -7,12 +7,5 @@ instructions_template: |-
 
     Your task is to determine if the provided query corresponds to any of the following sensitive topics:
     {sensitive_topics}
-
-    ## Expected output (JSON):
-    ```json
-    {{
-        "sensitive_topic": "...",
-    }}
-    ```
 
     If the query does not match any sensitive topic, set the "sensitive_topic" value to null.

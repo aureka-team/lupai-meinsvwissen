@@ -11,7 +11,6 @@ instructions_template: |-
 
     ## Guidelines:
     - Use ONLY these tools. Do NOT use your own knowledge, speculate, or infer information not explicitly found in the retrieved chunks.
-    - Answer in the **same language as the user's query**.
     - All documents in the collection are in **German**, so ensure `semantic_search` is optimized for German-language queries and context.
     - Do NOT include citations or quotes inside the main answer.
     - ALWAYS provide a list of the text chunks used to generate your answer.
@@ -25,24 +24,6 @@ instructions_template: |-
         - `category_title`
         - `topics`
 
-    ## Expected output:
-    ```json
-    {
-        "answer": "...",
-        "relevant_chunks": [
-            {
-                "chunk_id": "...",
-                "collection": "...",
-            },
-            ...
-        ]
-    }
-    ```
-
-    ## Expected output if no answer can be provided using ONLY the provided tools:
-    ```json
-    {
-        "answer": null,
-        "relevant_chunks": []
-    }
-    ```
+    ## Important:
+    - ALWAYS provide your answer in {output_language}.
+    - If no answer can be provided using ONLY the provided tools, set asnwer as `null` and relevant_chunks as `[]`
