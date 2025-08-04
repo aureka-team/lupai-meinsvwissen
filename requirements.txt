@@ -4,11 +4,11 @@ regex==2024.11.6
 markitdown==0.1.2
 
 uvicorn==0.35.0
-fastmcp==2.10.5
 pydantic==2.11.7
+pydantic-settings==2.10.1
 websockets==15.0.1
 fastapi[standard]==0.116.1
 
 llm_agents @ git+https://github.com/aureka-team/llm-agents.git@v1.1.7
 multi_agents @ git+https://github.com/aureka-team/multi-agents.git@v1.1.12
-rage @ git+ssh://git@github.com/aureka-team/rage2.git@v1.0.35
+rage @ git+ssh://git@github.com/aureka-team/rage2.git@v1.0.36

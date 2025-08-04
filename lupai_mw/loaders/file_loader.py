@@ -22,7 +22,7 @@ VALID_FILE_TYPES = {
 }
 
 
-class DocumentLoader(BaseLoader):
+class FileLoader(BaseLoader):
     def __init__(
         self,
         max_concurrency: int = 10,

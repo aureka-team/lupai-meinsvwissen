@@ -71,8 +71,6 @@ class TextChunk(BaseModel):
 
 
 class SemanticSearchResult(TextChunk):
-    """Extends TextChunk with a semantic similarity score."""
-
     score: NonNegativeFloat = Field(
         description="The similarity score for this chunk."
     )
@@ -86,8 +84,8 @@ async def semantic_search(
     collection: Annotated[
         # TODO: Add meinsvwissen-glossary?
         Literal[
-            "meinsvwissen-posts",
             "meinsvwissen-documents",
+            "meinsvwissen-documents-ionos",
         ],
         Field(description="The collection to search within."),
     ],
