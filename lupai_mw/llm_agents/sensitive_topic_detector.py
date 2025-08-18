@@ -6,19 +6,19 @@ from lupai_mw.conf import llm_agents
 from llm_agents.meta.interfaces import LLMAgent
 
 
-class SensitiveDetectorDeps(BaseModel):
+class SensitiveTopicDetectorDeps(BaseModel):
     sensitive_topics: list[StrictStr]
 
 
-class SensitiveDetectorOutput(BaseModel):
+class SensitiveTopicDetectorOutput(BaseModel):
     sensitive_topic: StrictStr | None = Field(
         description="The detected sensitive topic.",
         default=None,
     )
 
 
-class SensitiveDetector(
-    LLMAgent[SensitiveDetectorDeps, SensitiveDetectorOutput]
+class SensitiveTopicDetector(
+    LLMAgent[SensitiveTopicDetectorDeps, SensitiveTopicDetectorOutput]
 ):
     def __init__(
         self,
@@ -28,8 +28,8 @@ class SensitiveDetector(
     ):
         super().__init__(
             conf_path=conf_path,
-            deps_type=SensitiveDetectorDeps,
-            output_type=PromptedOutput(SensitiveDetectorOutput),
+            deps_type=SensitiveTopicDetectorDeps,
+            output_type=PromptedOutput(SensitiveTopicDetectorOutput),
             model=model,
             retries=retries,
         )

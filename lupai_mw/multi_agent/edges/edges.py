@@ -1,4 +1,6 @@
-from multi_agents.graph import SimpleEdge
+from multi_agents.graph import SimpleEdge, ConditionalEdge
+
+from .routers import retriever_assistant_router
 
 
 init_language_detector = SimpleEdge(
@@ -6,17 +8,26 @@ init_language_detector = SimpleEdge(
     target="language_detector",
 )
 
-init_sensitive_detector = SimpleEdge(
+init_sensitive_topic_detector = SimpleEdge(
     source="init",
-    target="sensitive_detector",
+    target="sensitive_topic_detector",
 )
 
-sensitive_detector_edges = SimpleEdge(
+sensitive_topic_detector_edges = SimpleEdge(
     source=[
         "language_detector",
-        "sensitive_detector",
+        "sensitive_topic_detector",
     ],
-    target="assistant",
+    target="retriever_assistant",
+)
+
+retriever_assistant_conditional = ConditionalEdge(
+    source="retriever_assistant",
+    intermediates=[
+        "assistant",
+        "aggregator",
+    ],
+    router=retriever_assistant_router,
 )
 
 assistant_aggregator = SimpleEdge(

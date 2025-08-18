@@ -6,8 +6,6 @@ from common.logger import get_logger
 from llm_agents.agents import LanguageDetector
 from lupai_mw.multi_agent.schema import StateSchema
 
-from .utils import get_ionos_model_
-
 
 logger = get_logger(__name__)
 
@@ -15,10 +13,7 @@ logger = get_logger(__name__)
 async def run(state: StateSchema) -> dict[str, Any]:
     logger.info("running language_detector...")
 
-    ld = LanguageDetector(
-        model=get_ionos_model_(model_name="meta-llama/Llama-3.3-70B-Instruct")
-    )
-
+    ld = LanguageDetector()
     ld_output = await ld.generate(user_prompt=state.query)
 
     return {

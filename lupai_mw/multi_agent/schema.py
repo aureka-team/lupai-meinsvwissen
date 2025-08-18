@@ -1,3 +1,6 @@
+from operator import add
+from typing import Annotated
+
 from typing import Literal
 from pydantic_extra_types.language_code import LanguageName
 from pydantic import (
@@ -18,10 +21,12 @@ class ContextSchema(BaseModel):
 
 
 class RelevantChunk(BaseModel):
-    collection: StrictStr
-    chunk_id: StrictStr
     text: StrictStr
+    title: StrictStr
+    category_title: StrictStr | None = None
+    topics: list[StrictStr] = []
     url: StrictStr
+    chunk_id: StrictStr
 
 
 class StateSchema(BaseModel):
@@ -30,4 +35,4 @@ class StateSchema(BaseModel):
     language: LanguageName | None = None
     sensitive_topic: StrictStr | None = None
     assistant_response: StrictStr | None = None
-    relevant_chunks: list[RelevantChunk] = []
+    relevant_chunks: Annotated[list[RelevantChunk], add] = []

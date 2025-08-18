@@ -1,7 +1,9 @@
-from qdrant_client import models
-from typing import Annotated, Literal
-
+from typing import Annotated
 from functools import lru_cache
+
+from qdrant_client import models
+from qdrant_client.models import Record
+
 from mcp.server.fastmcp import FastMCP
 from pydantic import (
     BaseModel,
@@ -10,33 +12,29 @@ from pydantic import (
     Field,
 )
 
-from rage.retriever import Retriever
 from common.logger import get_logger
+from rage.retriever import Retriever
+from rage.utils.embeddings import get_openai_embeddings
 
 
 logger = get_logger(__name__)
 
 
-retriever = Retriever()
+SEARCH_TOP_K = 5
+SEARCH_SCORE_THRESHOLD = 0.3
+
+
+retriever = Retriever(dense_embeddings=get_openai_embeddings())
 mcp = FastMCP(
     name="Meinsvwissen MCP server",
     host="0.0.0.0",
 )
 
 
-@lru_cache(maxsize=1)
-def get_retriever() -> Retriever:
-    return Retriever()
-
-
 # TODO: Add post_id and related_posts?
 class TextChunk(BaseModel):
     text: StrictStr = Field(
         description="The actual textual content of the chunk."
-    )
-
-    collection: StrictStr = Field(
-        description="The name of the collection to which this text chunk belongs."
     )
 
     chunk_id: StrictStr = Field(
@@ -71,52 +69,41 @@ class TextChunk(BaseModel):
 
 
 class SemanticSearchResult(TextChunk):
-    score: NonNegativeFloat = Field(
+    score: NonNegativeFloat | None = Field(
         description="The similarity score for this chunk."
     )
 
 
-@mcp.tool(
-    name="semantic_search",
-    description="Perform a semantic search across all text chunks in the specified collection.",
-)
-async def semantic_search(
-    collection: Annotated[
-        # TODO: Add meinsvwissen-glossary?
-        Literal[
-            "meinsvwissen-documents",
-            "meinsvwissen-documents-ionos",
-        ],
-        Field(description="The collection to search within."),
-    ],
-    query: Annotated[
-        str,
-        Field(
-            description="The natural language query to search for relevant text chunks."
-        ),
-    ],
-) -> list[SemanticSearchResult]:
-    """Perform a semantic search across all text chunks in the specified collection."""
+@lru_cache(maxsize=1)
+def get_collections() -> list[str]:
+    collections = retriever.qadrant_client.get_collections()
+    return [c.name for c in collections.collections]
 
-    retriever = get_retriever()
+
+async def _search(
+    query: str,
+    collection_name: str,
+    search_filter: models.Filter | None = None,
+) -> list[SemanticSearchResult]:
     results = await retriever.dense_search(
-        collection_name=collection,
+        collection_name=collection_name,
         query=query,
-        k=5,
+        k=SEARCH_TOP_K,
+        score_threshold=SEARCH_SCORE_THRESHOLD,
+        search_filter=search_filter,
     )
 
     results = sorted(
         results,
-        key=lambda r: (
-            r.metadata["document_index"],
-            r.metadata["chunk_index"],
+        key=lambda x: (
+            x.metadata["document_index"],
+            x.metadata["chunk_index"],
         ),
     )
 
     return [
         SemanticSearchResult(
             text=r.text,
-            collection=collection,
             chunk_id=r.metadata["chunk_id"],
             previous_chunk_id=r.metadata["previous_chunk_id"],
             next_chunk_id=r.metadata["next_chunk_id"],
@@ -130,28 +117,7 @@ async def semantic_search(
     ]
 
 
-@mcp.tool(
-    name="get_text_chunk",
-    description="Retrieve a specific text chunk from a collection using its unique chunk_id.",
-)
-def get_text_chunk(
-    chunk_id: Annotated[
-        str,
-        Field(description="The unique chunk_id of the text chunk to retrieve."),
-    ],
-    collection: Annotated[
-        # TODO: Add meinsvwissen-glossary?
-        Literal[
-            "meinsvwissen-posts",
-            "meinsvwissen-documents",
-        ],
-        Field(
-            description="The collection from which to retrieve the text chunk."
-        ),
-    ],
-) -> TextChunk | None:
-    """Retrieve a specific text chunk from a collection using its unique chunk_id."""
-
+def _get_text_chunk(chunk_id: str) -> Record | None:
     scroll_filter = models.Filter(
         must=[
             models.FieldCondition(
@@ -161,21 +127,65 @@ def get_text_chunk(
         ]
     )
 
-    retriever = get_retriever()
-    results, _ = retriever.scroll(
-        collection_name=collection,
-        limit=1,
-        scroll_filter=scroll_filter,
-    )
+    # FIXME: This is temporal!
+    collections = get_collections()
+    for collection in collections:
+        results, _ = retriever.scroll(
+            collection_name=collection,
+            limit=1,
+            scroll_filter=scroll_filter,
+        )
 
-    if not results:
+        if len(results):
+            break
+
+    if not len(results):
         logger.error(f"no results found for chunk_id: {chunk_id}")
         return None
 
     result = results[0]
+    return result
+
+
+# TODO: Add glossary-search
+@mcp.tool(
+    name="general_search",
+    description="Run a semantic search across all sources.",
+)
+async def semantic_search(
+    query: Annotated[
+        str,
+        Field(
+            description="The natural language query in German to search for relevant text chunks."
+        ),
+    ],
+) -> list[SemanticSearchResult]:
+    """Run a semantic search across all sources."""
+
+    return await _search(
+        query=query,
+        collection_name="meinsvwissen-documents",
+    )
+
+
+@mcp.tool(
+    name="get_text_chunk",
+    description="Retrieve a specific text chunk using its `chunk_id`.",
+)
+def get_text_chunk(
+    chunk_id: Annotated[
+        str, Field(description="The `chunk_id` of the chunk to retrieve.")
+    ],
+) -> TextChunk | None:
+    """Retrieve a specific text chunk using its `chunk_id`."""
+
+    result = _get_text_chunk(chunk_id=chunk_id)
+    if result is None:
+        return
+
+    assert result.payload is not None
     return TextChunk(
         text=result.payload["page_content"],
-        collection=collection,
         chunk_id=result.payload["metadata"]["chunk_id"],
         previous_chunk_id=result.payload["metadata"]["previous_chunk_id"],
         next_chunk_id=result.payload["metadata"]["next_chunk_id"],
