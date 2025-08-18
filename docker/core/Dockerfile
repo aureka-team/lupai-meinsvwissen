@@ -1,4 +1,4 @@
-ARG UV_VERSION=0.7.22
+ARG UV_VERSION=0.8.11
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv_source
 
 FROM ubuntu:noble
@@ -32,10 +32,13 @@ COPY --from=uv_source /uv /uvx /bin/
 WORKDIR /tmp
 
 COPY ./requirements.txt requirements.txt
-RUN --mount=type=ssh \
-    mkdir -p -m 0600 ~/.ssh \
-    && ssh-keyscan github.com >> ~/.ssh/known_hosts \
-    && uv pip install -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache \
+    uv pip install \
+    --find-links https://github.com/aureka-team/common/releases/expanded_assets/index \
+    --find-links https://github.com/aureka-team/llm-agents/releases/expanded_assets/index \
+    --find-links https://github.com/aureka-team/multi-agents/releases/expanded_assets/index \
+    --find-links https://github.com/aureka-team/rage2/releases/expanded_assets/index \
+    -r requirements.txt
 
 RUN rm -rf /tmp/*
 WORKDIR /root

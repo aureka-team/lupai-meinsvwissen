@@ -28,7 +28,8 @@
                 "notebook.formatOnSave.enabled": true,
                 "notebook.output.scrolling": true,
                 "ruff.lineLength": 80,
-                "python.pyrefly.disableLanguageServices": true
+                "python.pyrefly.disableLanguageServices": true,
+                "editor.inlayHints.enabled": "off"
             },
             "extensions": [
                 "charliermarsh.ruff",

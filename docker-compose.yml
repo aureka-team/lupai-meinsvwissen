@@ -5,8 +5,6 @@ services:
         build:
             context: .
             dockerfile: ./docker/core/Dockerfile
-            ssh:
-                - default
         volumes:
             - $PWD/resources:/resources
             - $PWD/notebooks:/notebooks
@@ -16,7 +14,7 @@ services:
             - lupai-mw
 
     lupai-mw-redis:
-        image: redis:8.0.3
+        image: redis:8.2.0
         container_name: lupai-mw-redis
         volumes:
             - $PWD/resources/cache/redis:/data
@@ -30,7 +28,7 @@ services:
             - lupai-mw
 
     lupai-mw-qdrant:
-        image: qdrant/qdrant:v1.15.1
+        image: qdrant/qdrant:v1.15.3
         container_name: lupai-mw-qdrant
         ports:
             - "6333:6333"
