@@ -4,6 +4,7 @@ import tempfile
 
 from tqdm import tqdm
 from more_itertools import flatten
+from pydantic import BaseModel, StrictStr
 
 from common.logger import get_logger
 from common.utils.redis_cache import RedisCache, cache
@@ -22,25 +23,63 @@ VALID_FILE_TYPES = {
 }
 
 
+class DownloadItem(BaseModel):
+    download_link: StrictStr
+    title: StrictStr
+    category_title: StrictStr | None = None
+
+
 class FileLoader(BaseLoader):
     def __init__(
         self,
-        max_concurrency: int = 10,
+        max_concurrency: int = 5,
     ) -> None:
         super().__init__()
 
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
+    def get_download_items(self) -> list[DownloadItem]:
+        download_items = [
+            DownloadItem(
+                download_link=di["download_link"],
+                title=di["title"],
+                category_title=di["category_title"],
+            )
+            for di in self.get_parquet_data(file_name="downloads.parquet")
+            if di["file_type"] in VALID_FILE_TYPES
+        ]
+
+        pub_download_items = [
+            DownloadItem(
+                download_link=di["url"],
+                title=di["title"],
+            )
+            for di in self.get_parquet_data(file_name="publications.parquet")
+        ]
+
+        return download_items + pub_download_items
+        return pub_download_items
+
     @staticmethod
     @cache(redis_cache=RedisCache())
-    async def _get_file_documents(download_item: dict) -> list[Document]:
-        async with httpx.AsyncClient() as client:
-            download_link = download_item["download_link"]
-            response = await client.get(download_link)
+    async def _get_file_documents(
+        download_item: DownloadItem,
+    ) -> list[Document]:
+        async with httpx.AsyncClient(verify=False) as client:
+            download_link = download_item.download_link
+            try:
+                response = await client.get(
+                    download_link,
+                    timeout=300,
+                )
 
-            status_code = response.status_code
+                status_code = response.status_code
+
+            except Exception:
+                logger.error(f"error downloading from: {download_link}")
+                return []
+
             assert status_code == 200, status_code
-
             with tempfile.NamedTemporaryFile(
                 delete=False,
                 mode="wb",
@@ -48,7 +87,7 @@ class FileLoader(BaseLoader):
                 tmp_file.write(response.content)
                 pdf_markdown_loader = PDFMarkdownLoaeder()
 
-                # FIXME: This try / except is a workaround!
+                # TODO: PDFs with images must be implemented.
                 try:
                     documents = await pdf_markdown_loader.load(
                         source_path=tmp_file.name
@@ -62,9 +101,9 @@ class FileLoader(BaseLoader):
                     Document(
                         text=doc.text,
                         metadata=DocumentMetadata(
-                            title=download_item["title"],
+                            title=download_item.title,
                             url=download_link,
-                            category_title=download_item["category_title"],
+                            category_title=download_item.category_title,
                         ).model_dump(),
                     )
                     for doc in documents
@@ -73,7 +112,7 @@ class FileLoader(BaseLoader):
 
     async def get_file_documents(
         self,
-        download_item: dict,
+        download_item: DownloadItem,
         pbar: tqdm,
     ) -> list[Document]:
         async with self.semaphore:
@@ -87,11 +126,7 @@ class FileLoader(BaseLoader):
     async def get_documents(
         self, source_path: str | None = None
     ) -> list[Document]:
-        download_items = [
-            di
-            for di in self.get_parquet_data(file_name="downloads.parquet")
-            if di["file_type"] in VALID_FILE_TYPES
-        ]
+        download_items = self.get_download_items()
 
         with tqdm(
             total=len(download_items),

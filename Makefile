@@ -70,3 +70,7 @@ mcp-stop:
 	docker stop lupai-mw-mcp
 
 mcp-restart: mcp-stop mcp-up
+
+
+create-qdrant-collections: devcontainer-build
+	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.qdrant.create_collections" lupai-mw-devcontainer
