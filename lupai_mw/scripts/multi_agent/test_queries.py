@@ -1,14 +1,27 @@
-from pydantic import BaseModel, StrictStr, field_validator
+import regex
+
+from typing import Annotated
+from pydantic import BaseModel, StrictStr, field_validator, AfterValidator
+
+
+def remove_extra_spaces(text: str) -> str:
+    return regex.sub(r"\p{White_Space}{2,}", " ", text)
+
+
+Answer = Annotated[
+    str,
+    AfterValidator(remove_extra_spaces),
+]
 
 
 class Translations(BaseModel):
     query: StrictStr
-    expected_answer: StrictStr
+    expected_answer: Answer
 
 
 class TestQuery(BaseModel):
     query: StrictStr
-    expected_answer: StrictStr
+    expected_answer: Answer
     expected_sources: list[StrictStr]
     translations: Translations
 

@@ -2,18 +2,21 @@ import uuid
 import asyncio
 import logfire
 
+import polars as pl
+
+from pydantic import BaseModel, StrictStr
+
 from common.logger import get_logger
 from common.utils.path import create_path
-from common.utils.json_data import save_json
 
-from lupai_mw.multi_agent.schema import State
+from lupai_mw.multi_agent.schema import State, RelevantChunk
 from lupai_mw.multi_agent import (
     get_multi_agent,
     get_multi_agent_context,
     MultiAgentConfig,
 )
 
-from .test_queries import test_queries
+from .test_queries import test_queries, remove_extra_spaces, TestQuery
 
 
 logger = get_logger(__name__)
@@ -28,6 +31,30 @@ create_path(
     path=OUT_PATH,
     overwrite=True,
 )
+
+
+class MultiAgentOutput(BaseModel):
+    sensitive_topic: StrictStr | None = None
+    assistant_response: StrictStr | None = None
+    relevant_chunks: list[RelevantChunk] = []
+
+
+class Result(TestQuery):
+    multi_agent_output: MultiAgentOutput
+
+
+def get_row(result: Result) -> dict:
+    return {
+        "query": result.query,
+        "expected_answer": result.expected_answer,
+        "expected_sources": " | ".join(result.expected_sources),
+        "sensitive_topic": result.multi_agent_output.sensitive_topic,
+        "assistant_response": result.multi_agent_output.assistant_response,
+        "relevant_chunks": "\n\n##########\n\n".join(
+            f"{remove_extra_spaces(text=rc.text)} | {rc.url}"
+            for rc in result.multi_agent_output.relevant_chunks
+        ),
+    }
 
 
 async def main() -> None:
@@ -54,10 +81,15 @@ async def main() -> None:
         assert state is not None
         final_states.append(state.model_dump())
 
-    save_json(
-        obj=final_states,
-        file_path=f"{OUT_PATH}/test-queries.json",
-    )
+    reults = [
+        Result(**(tq.model_dump() | {"multi_agent_output": fs}))
+        for tq, fs in zip(test_queries, final_states)
+    ]
+
+    rows = map(get_row, reults)
+
+    df = pl.from_dicts(data=rows)
+    df.write_csv(file=f"{OUT_PATH}/test-queries.csv")
 
 
 if __name__ == "__main__":
