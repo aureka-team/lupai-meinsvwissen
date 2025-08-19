@@ -10,5 +10,5 @@ fastapi[standard]==0.116.1
 
 # Aureka packages
 llm_agents==1.1.12
-multi_agents==1.1.13
+multi_agents==1.1.14
 rage==1.0.49

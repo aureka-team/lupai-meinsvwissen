@@ -1,9 +1,9 @@
 from typing import Hashable
 
-from ..schema import StateSchema
+from ..schema import State
 
 
-def retriever_assistant_router(state: StateSchema) -> list[Hashable]:
+def retriever_assistant_router(state: State) -> list[Hashable]:
     if not len(state.relevant_chunks):
         return ["aggregator"]
 

@@ -10,8 +10,8 @@ from common.logger import get_logger
 from lupai_mw.mcp.utils import process_tool_call
 from lupai_mw.llm_agents import RetrievalAssistant
 from lupai_mw.multi_agent.schema import (
-    StateSchema,
-    ContextSchema,
+    State,
+    Context,
     RelevantChunk,
 )
 
@@ -35,10 +35,10 @@ def get_relevant_chunk(record: Record) -> RelevantChunk:
     )
 
 
-async def run(state: StateSchema) -> dict[str, Any]:
+async def run(state: State) -> dict[str, Any]:
     logger.info("running retriever_assistant...")
 
-    runtime = get_runtime(ContextSchema)
+    runtime = get_runtime(Context)
     runtime_context = runtime.context
 
     mcp = MCPServerStreamableHTTP(

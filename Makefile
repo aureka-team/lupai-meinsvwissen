@@ -74,3 +74,6 @@ mcp-restart: mcp-stop mcp-up
 
 create-qdrant-collections: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.qdrant.create_collections" lupai-mw-devcontainer
+
+run-test-queries: devcontainer-build
+	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.multi_agent.run_test_queries" lupai-mw-devcontainer

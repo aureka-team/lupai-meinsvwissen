@@ -4,14 +4,14 @@ from multi_agents.graph import Node
 from common.logger import get_logger
 from llm_agents.message_history import MongoDBMessageHistory
 
-from lupai_mw.multi_agent.schema import StateSchema
+from lupai_mw.multi_agent.schema import State
 from lupai_mw.llm_agents import Assistant, AssistantDeps, ContextChunk
 
 
 logger = get_logger(__name__)
 
 
-async def run(state: StateSchema) -> dict[str, Any]:
+async def run(state: State) -> dict[str, Any]:
     logger.info("running assistant...")
 
     assistant = Assistant(

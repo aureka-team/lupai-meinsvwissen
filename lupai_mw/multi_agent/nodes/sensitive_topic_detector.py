@@ -4,7 +4,7 @@ from multi_agents.graph import Node
 from common.logger import get_logger
 from langgraph.runtime import get_runtime
 
-from lupai_mw.multi_agent.schema import StateSchema, ContextSchema
+from lupai_mw.multi_agent.schema import State, Context
 from lupai_mw.llm_agents import (
     SensitiveTopicDetector,
     SensitiveTopicDetectorDeps,
@@ -14,10 +14,10 @@ from lupai_mw.llm_agents import (
 logger = get_logger(__name__)
 
 
-async def run(state: StateSchema) -> dict[str, Any]:
+async def run(state: State) -> dict[str, Any]:
     logger.info("running sensitive_topic_detector...")
 
-    runtime = get_runtime(ContextSchema)
+    runtime = get_runtime(Context)
     sensitive_topics = dict(runtime.context)["sensitive_topics"]
 
     sd = SensitiveTopicDetector()

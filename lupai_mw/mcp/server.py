@@ -164,7 +164,7 @@ async def semantic_search(
 
     return await _search(
         query=query,
-        collection_name="meinsvwissen-documents",
+        collection_name="general-sources",
     )
 
 

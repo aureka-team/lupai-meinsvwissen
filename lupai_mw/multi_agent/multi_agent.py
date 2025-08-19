@@ -1,5 +1,5 @@
 from multi_agents.graph import MultiAgentGraph
-from lupai_mw.multi_agent.schema import StateSchema, ContextSchema
+from lupai_mw.multi_agent.schema import State, Context
 from .nodes import (
     init,
     language_detector,
@@ -18,7 +18,7 @@ from .edges import (
 )
 
 
-def get_multi_agent() -> MultiAgentGraph:
+def get_multi_agent(with_memory: bool = True) -> MultiAgentGraph:
     nodes = [
         init,
         language_detector,
@@ -37,11 +37,11 @@ def get_multi_agent() -> MultiAgentGraph:
     ]
 
     multi_agent = MultiAgentGraph(
-        state_schema=StateSchema,
-        context_schema=ContextSchema,
+        state_schema=State,
+        context_schema=Context,
         nodes=nodes,
         edges=edges,
-        with_memory=True,
+        with_memory=with_memory,
     )
 
     multi_agent.compile()
