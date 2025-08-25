@@ -17,8 +17,25 @@ from lupai_mw.multi_agent.schema import (
 
 from lupai_mw.mcp.server import _get_text_chunk
 
+from .utils import get_azure_gpt_model
+
 
 logger = get_logger(__name__)
+
+
+def get_retrieval_assistant(provider: str, mcp_dsn: str) -> RetrievalAssistant:
+    mcp = MCPServerStreamableHTTP(
+        url=mcp_dsn,
+        process_tool_call=process_tool_call,
+    )
+
+    if provider == "azure":
+        return RetrievalAssistant(
+            model=get_azure_gpt_model(),
+            mcp_servers=[mcp],
+        )
+
+    return RetrievalAssistant(mcp_servers=[mcp])
 
 
 def get_relevant_chunk(record: Record) -> RelevantChunk:
@@ -41,12 +58,11 @@ async def run(state: State) -> dict[str, Any]:
     runtime = get_runtime(Context)
     runtime_context = runtime.context
 
-    mcp = MCPServerStreamableHTTP(
-        url=runtime_context.mcp_dsn,
-        process_tool_call=process_tool_call,
+    assistant = get_retrieval_assistant(
+        provider=runtime_context.provider,
+        mcp_dsn=runtime_context.mcp_dsn,
     )
 
-    assistant = RetrievalAssistant(mcp_servers=[mcp])
     async with assistant.agent:
         assistant_output = await assistant.generate(
             user_prompt=f"User query: {state.query}"

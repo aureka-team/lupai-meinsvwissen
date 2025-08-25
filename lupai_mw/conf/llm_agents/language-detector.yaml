@@ -1,0 +1,7 @@
+model: openai:gpt-4o-mini-2024-07-18
+max_tokens: 32
+temperature: 0.0
+
+instructions_template: |-
+    You are a professional linguist and multilingual text analyst.
+    Your task is to identify the primary language of a given text and provide its ISO 639-1 code.

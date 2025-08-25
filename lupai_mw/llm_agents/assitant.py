@@ -2,12 +2,12 @@ from pydantic import BaseModel, StrictStr, Field
 from pydantic_extra_types.language_code import LanguageName
 
 from pydantic_ai import ToolOutput
+from pydantic_ai.models import Model
 from pydantic_ai.mcp import MCPServer
 
+from lupai_mw.conf import llm_agents
 from llm_agents.meta.interfaces import LLMAgent
 from llm_agents.message_history import MongoDBMessageHistory
-
-from lupai_mw.conf import llm_agents
 
 
 class ContextChunk(BaseModel):
@@ -37,11 +37,13 @@ class Assistant(LLMAgent[AssistantDeps, AssistantOutput]):
         mcp_servers: list[MCPServer] = [],
         message_history_length: int = 10,
         mongodb_message_history: MongoDBMessageHistory | None = None,
+        model: Model | None = None,
     ):
         super().__init__(
             conf_path=conf_path,
             deps_type=AssistantDeps,
             output_type=ToolOutput(AssistantOutput),
+            model=model,
             mcp_servers=mcp_servers,
             message_history_length=message_history_length,
             mongodb_message_history=mongodb_message_history,

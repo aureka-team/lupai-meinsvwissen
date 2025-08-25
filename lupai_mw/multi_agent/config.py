@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings
 
 
 class MultiAgentConfig(BaseSettings):
-    provider: Literal["openai", "ionos"] = "openai"
+    provider: Literal["openai", "azure"] = "openai"
     mcp_dsn: StrictStr = "http://lupai-mw-mcp:8000/mcp"
     sensitive_topics: list[StrictStr] = [
         "Psychological Violence",

@@ -1,5 +1,5 @@
+from pydantic_ai import ToolOutput
 from pydantic_ai.models import Model
-from pydantic_ai import PromptedOutput
 from pydantic import BaseModel, StrictStr, Field
 
 from lupai_mw.conf import llm_agents
@@ -24,12 +24,12 @@ class SensitiveTopicDetector(
         self,
         conf_path: str = f"{list(llm_agents.__path__)[0]}/sensitive_detector.yaml",
         model: Model | None = None,
-        retries: int = 1,
+        retries: int = 3,
     ):
         super().__init__(
             conf_path=conf_path,
             deps_type=SensitiveTopicDetectorDeps,
-            output_type=PromptedOutput(SensitiveTopicDetectorOutput),
+            output_type=ToolOutput(SensitiveTopicDetectorOutput),
             model=model,
             retries=retries,
         )

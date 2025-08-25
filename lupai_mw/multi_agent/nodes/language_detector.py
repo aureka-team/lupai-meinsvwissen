@@ -2,18 +2,31 @@ from typing import Any
 
 from multi_agents.graph import Node
 from common.logger import get_logger
+from langgraph.runtime import get_runtime
 
-from llm_agents.agents import LanguageDetector
-from lupai_mw.multi_agent.schema import State
+from lupai_mw.llm_agents import LanguageDetector
+from lupai_mw.multi_agent.schema import State, Context
+
+from .utils import get_azure_gpt_model
 
 
 logger = get_logger(__name__)
 
 
+def get_language_detector(provider: str) -> LanguageDetector:
+    if provider == "azure":
+        return LanguageDetector(model=get_azure_gpt_model())
+
+    return LanguageDetector()
+
+
 async def run(state: State) -> dict[str, Any]:
     logger.info("running language_detector...")
 
-    ld = LanguageDetector()
+    runtime = get_runtime(Context)
+    runtime_context = runtime.context
+
+    ld = get_language_detector(provider=runtime_context.provider)
     ld_output = await ld.generate(user_prompt=state.query)
 
     return {

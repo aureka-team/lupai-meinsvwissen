@@ -25,8 +25,44 @@ VALID_FILE_TYPES = {
 
 class DownloadItem(BaseModel):
     download_link: StrictStr
+    binary_content: bytes | None = None
     title: StrictStr
     category_title: StrictStr | None = None
+
+
+async def get_documents(
+    binary_content: bytes,
+    download_link: str,
+    title: str,
+    category_title: str | None,
+) -> list[Document]:
+    with tempfile.NamedTemporaryFile(
+        delete=False,
+        mode="wb",
+    ) as tmp_file:
+        tmp_file.write(binary_content)
+        pdf_markdown_loader = PDFMarkdownLoaeder()
+
+        # TODO: PDFs with images must be implemented.
+        # try:
+        documents = await pdf_markdown_loader.load(source_path=tmp_file.name)
+
+        # except Exception:
+        #     logger.error(f"error loading file from: {download_link}")
+        #     return []
+
+        return [
+            Document(
+                text=doc.text,
+                metadata=DocumentMetadata(
+                    title=title,
+                    url=download_link,
+                    category_title=category_title,
+                ).model_dump(),
+            )
+            for doc in documents
+            if doc.text
+        ]
 
 
 class FileLoader(BaseLoader):
@@ -53,18 +89,31 @@ class FileLoader(BaseLoader):
             DownloadItem(
                 download_link=di["url"],
                 title=di["title"],
+                binary_content=di["pdf_binary"],
             )
             for di in self.get_parquet_data(file_name="publications.parquet")
         ]
 
-        return download_items + pub_download_items
-        return pub_download_items
+        return download_items  # + pub_download_items
 
     @staticmethod
     @cache(redis_cache=RedisCache())
     async def _get_file_documents(
         download_item: DownloadItem,
     ) -> list[Document]:
+        title = download_item.title
+        category_title = download_item.category_title
+        download_link = download_item.download_link
+        binary_content = download_item.binary_content
+
+        if binary_content is not None:
+            return await get_documents(
+                binary_content=binary_content,
+                download_link=download_link,
+                title=title,
+                category_title=category_title,
+            )
+
         async with httpx.AsyncClient(verify=False) as client:
             download_link = download_item.download_link
             try:
@@ -74,41 +123,21 @@ class FileLoader(BaseLoader):
                 )
 
                 status_code = response.status_code
+                assert status_code == 200, status_code
 
-            except Exception:
+                binary_content = response.content
+                return await get_documents(
+                    binary_content=binary_content,
+                    download_link=download_link,
+                    title=title,
+                    category_title=category_title,
+                )
+
+            except Exception as error:
+                logger.error(binary_content)
                 logger.error(f"error downloading from: {download_link}")
-                return []
-
-            assert status_code == 200, status_code
-            with tempfile.NamedTemporaryFile(
-                delete=False,
-                mode="wb",
-            ) as tmp_file:
-                tmp_file.write(response.content)
-                pdf_markdown_loader = PDFMarkdownLoaeder()
-
-                # TODO: PDFs with images must be implemented.
-                try:
-                    documents = await pdf_markdown_loader.load(
-                        source_path=tmp_file.name
-                    )
-
-                except Exception:
-                    logger.error(f"error loading file from: {download_link}")
-                    return []
-
-                return [
-                    Document(
-                        text=doc.text,
-                        metadata=DocumentMetadata(
-                            title=download_item.title,
-                            url=download_link,
-                            category_title=download_item.category_title,
-                        ).model_dump(),
-                    )
-                    for doc in documents
-                    if doc.text
-                ]
+                raise error
+                # return []
 
     async def get_file_documents(
         self,

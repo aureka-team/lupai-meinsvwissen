@@ -6,6 +6,7 @@ from pydantic_extra_types.language_code import LanguageName
 from pydantic import (
     BaseModel,
     StrictStr,
+    StrictBool,
 )
 
 from common.logger import get_logger
@@ -15,7 +16,7 @@ logger = get_logger(__name__)
 
 
 class Context(BaseModel):
-    provider: Literal["openai", "ionos"]
+    provider: Literal["openai", "azure"]
     mcp_dsn: StrictStr
     sensitive_topics: list[StrictStr]
 
@@ -36,3 +37,4 @@ class State(BaseModel):
     sensitive_topic: StrictStr | None = None
     assistant_response: StrictStr | None = None
     relevant_chunks: Annotated[list[RelevantChunk], add] = []
+    is_final: StrictBool = True

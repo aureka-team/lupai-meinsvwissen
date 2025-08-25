@@ -7,7 +7,7 @@
             "type": "debugpy",
             "request": "launch",
             "module": "fastapi",
-            "args": ["run", "lupai/api/app.py", "--port", "8000"],
+            "args": ["run", "lupai_mw/api/app.py", "--port", "8000"],
             "jinja": true,
             "justMyCode": true
             // "env": {

@@ -9,3 +9,5 @@ from .sensitive_topic_detector import (  # noqa
     SensitiveTopicDetectorDeps,
     SensitiveTopicDetectorOutput,
 )
+
+from .language_detector import LanguageDetector, LanguageDetectorOutput  # noqa

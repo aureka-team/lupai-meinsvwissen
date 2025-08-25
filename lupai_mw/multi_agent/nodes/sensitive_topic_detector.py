@@ -10,22 +10,30 @@ from lupai_mw.llm_agents import (
     SensitiveTopicDetectorDeps,
 )
 
+from .utils import get_azure_gpt_model
+
 
 logger = get_logger(__name__)
+
+
+def get_sensitive_topic_detector(provider: str) -> SensitiveTopicDetector:
+    if provider == "azure":
+        return SensitiveTopicDetector(model=get_azure_gpt_model())
+
+    return SensitiveTopicDetector()
 
 
 async def run(state: State) -> dict[str, Any]:
     logger.info("running sensitive_topic_detector...")
 
     runtime = get_runtime(Context)
-    sensitive_topics = dict(runtime.context)["sensitive_topics"]
+    runtime_context = runtime.context
 
-    sd = SensitiveTopicDetector()
-
+    sd = get_sensitive_topic_detector(provider=runtime_context.provider)
     sd_output = await sd.generate(
         user_prompt=f"Query: {state.query}",
         agent_deps=SensitiveTopicDetectorDeps(
-            sensitive_topics=sensitive_topics
+            sensitive_topics=runtime_context.sensitive_topics
         ),
     )
 
