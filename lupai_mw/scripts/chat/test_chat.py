@@ -45,20 +45,29 @@ async def main():
 
             async for response in websocket:
                 response = json.loads(response)
-                if response["is_final"]:
-                    assistant_response = response["assistant_response"]
-                    assistant_response = (
-                        assistant_response
-                        if assistant_response is not None
-                        else "No answer."
-                    )
+                is_final = response.get("is_final")
 
+                if not is_final:
                     console.print(
-                        assistant_response,
+                        f"status: {response['status']}",
                         style="bold white",
                     )
 
-                    break
+                    continue
+
+                assistant_response = response["assistant_response"]
+                assistant_response = (
+                    assistant_response
+                    if assistant_response is not None
+                    else "No answer."
+                )
+
+                console.print(
+                    assistant_response,
+                    style="bold white",
+                )
+
+                break
 
 
 if __name__ == "__main__":

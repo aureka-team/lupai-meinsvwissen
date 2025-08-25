@@ -1,6 +1,4 @@
-# import os
 import uuid
-# import logfire
 
 from json import JSONDecodeError
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
@@ -18,13 +16,6 @@ logger = get_logger(__name__)
 chat_router = APIRouter()
 
 
-# logfire_token = os.getenv("LOGFIRE_TOKEN")
-# if logfire_token is not None:
-#     logfire.configure(service_name="lupai-meinsvwissen")
-#     logfire.instrument_pydantic_ai()
-#     logfire.instrument_mcp()
-
-
 class ChatInput(BaseModel):
     query: StrictStr
     session_id: StrictStr | None = None
@@ -33,8 +24,9 @@ class ChatInput(BaseModel):
 class ChatOutput(BaseModel):
     session_id: StrictStr | None = None
     assistant_response: StrictStr | None = None
-    is_final: StrictBool = True
+    is_final: StrictBool = False
     error: StrictStr | None = None
+    status: StrictStr | None = None
 
 
 async def get_chat_input(
@@ -90,7 +82,7 @@ async def chat(websocket: WebSocket) -> None:
             if chat_input is None:
                 continue
 
-            context = get_context()
+            context = get_context(websocket=websocket)
             try:
                 state = await multi_agent.run(
                     input_state={

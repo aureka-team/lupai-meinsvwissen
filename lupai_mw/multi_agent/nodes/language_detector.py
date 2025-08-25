@@ -7,7 +7,7 @@ from langgraph.runtime import get_runtime
 from lupai_mw.llm_agents import LanguageDetector
 from lupai_mw.multi_agent.schema import State, Context
 
-from .utils import get_azure_gpt_model
+from .utils import get_azure_gpt_model, send_status
 
 
 logger = get_logger(__name__)
@@ -21,10 +21,11 @@ def get_language_detector(provider: str) -> LanguageDetector:
 
 
 async def run(state: State) -> dict[str, Any]:
-    logger.info("running language_detector...")
-
     runtime = get_runtime(Context)
     runtime_context = runtime.context
+
+    await send_status(context=runtime_context, status="language_detector")
+    logger.info("running language_detector...")
 
     ld = get_language_detector(provider=runtime_context.provider)
     ld_output = await ld.generate(user_prompt=state.query)

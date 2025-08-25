@@ -12,7 +12,9 @@ logger = get_logger(__name__)
 async def run(state: State) -> dict[str, Any]:
     logger.info("running aggregator...")
 
-    return {}
+    return {
+        "is_final": True,
+    }
 
 
 aggregator = Node(
