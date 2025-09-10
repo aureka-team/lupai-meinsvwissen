@@ -19,4 +19,3 @@ networks:
     lupai-mw:
         name: lupai-mw
         driver: bridge
-        external: True
