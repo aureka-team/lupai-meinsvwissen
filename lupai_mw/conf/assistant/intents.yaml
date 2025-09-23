@@ -1,0 +1,38 @@
+intents:
+    Validate information:
+        # TODO: use lupai description?
+        description: The user aims at validating a concrete piece of data, such as a yes or now answer or a number.
+        instructions: validate-information-instructions
+
+    Obtain legal sources:
+        description: The user asks a question that requires data from laws.
+        instructions: obtain-legal-sources-instructions
+
+    Perform acction:
+        # TODO: use lupai description?
+        description: The user asks for support to plan or execute an action, such as organizing an event or starting a project.
+        instructions: perform-action-instructions
+
+    Obtain material:
+        description: The user wants to be pointed to specific sources that serve a concrete purpose (e.g use in class, checklists).
+        instructions: obtain-material-instructions
+
+intent-instructions:
+    # TODO: use lupai instructions?
+    validate-information-instructions: >-
+        - Provide a direct answer (e.g., 'Yes,' 'No,' or a specific value) followed by a detailed explanation.
+        - Ensure that the explanation is clear and informative.
+
+    # TODO: Possible contradiction with the main prompt?
+    # TODO: The disclaimer can not be added.
+    obtain-legal-sources-instructions: >-
+        - Paraphrase sources to answer the question.
+
+    # TODO: use lupai instructions?
+    perform-action-instructions: >-
+        - Provide practical steps (enumerated by numbers) or specific requirements to complete the desired task.
+        - Ensure the instructions are clear, concise, and actionable.
+
+    # TODO: Possible contradiction with the main prompt?
+    obtain-material-instructions: >-
+        - Keep the answer limiting only to introducing the sources that have been found for the query.

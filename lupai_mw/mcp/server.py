@@ -4,7 +4,7 @@ from functools import lru_cache
 from qdrant_client import models
 from qdrant_client.models import Record
 
-from mcp.server.fastmcp import FastMCP
+from fastmcp.server import FastMCP
 from pydantic import (
     BaseModel,
     StrictStr,
@@ -15,6 +15,8 @@ from pydantic import (
 from common.logger import get_logger
 from rage.retriever import Retriever
 from rage.utils.embeddings import get_openai_embeddings
+
+from .utils import ToolCallLimitMiddleware
 
 
 logger = get_logger(__name__)
@@ -197,4 +199,5 @@ def get_text_chunk(
 
 
 if __name__ == "__main__":
+    mcp.add_middleware(ToolCallLimitMiddleware())
     mcp.run(transport="streamable-http")
