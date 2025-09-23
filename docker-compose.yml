@@ -18,28 +18,6 @@ services:
         container_name: lupai-mw-redis
         volumes:
             - $PWD/resources/cache/redis:/data
-        # deploy:
-        #     resources:
-        #         limits:
-        #             cpus: "1"
-        #             memory: 128M
-        restart: unless-stopped
-        networks:
-            - lupai-mw
-
-    lupai-mw-mongo:
-        image: mongo:8.0.12
-        container_name: lupai-mw-mongo
-        ports:
-            - "27017:27017"
-        command: ["mongod", "--wiredTigerCacheSizeGB", "0.25"]
-        volumes:
-            - $PWD/resources/db/mongo/db:/data/db:z
-        deploy:
-            resources:
-                limits:
-                    cpus: "1"
-                    memory: 320M
         restart: unless-stopped
         networks:
             - lupai-mw

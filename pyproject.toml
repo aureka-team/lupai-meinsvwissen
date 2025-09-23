@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 requires-python = ">=3.12"
 name = "lupai_mw"
 dynamic = ["version", "dependencies"]
-description = "LupAI"
+description = "LupAI Meinsvwissen"
 readme = "README.md"
 authors = [{ name = "Bas", email = "bastian.silva@aureka.ai" }]
 classifiers = [

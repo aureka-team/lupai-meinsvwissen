@@ -1,9 +1,9 @@
-ARG UV_VERSION=0.8.11
+ARG UV_VERSION=0.8.20
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv_source
 
-FROM ubuntu:noble
+FROM ubuntu:plucky
 
-ARG PYTHON_VERSION=3.12
+ARG PYTHON_VERSION=3.13
 RUN --mount=type=cache,target=/var/cache/apt \
     --mount=target=/var/cache/apt,type=cache,sharing=locked \
     apt-get update && apt-get install -y --no-install-recommends \
