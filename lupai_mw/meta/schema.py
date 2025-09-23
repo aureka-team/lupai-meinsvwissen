@@ -13,6 +13,6 @@ class UserContext(BaseModel):
     )
 
     student_or_teacher: Literal["student", "teacher"] | None = Field(
-        description="Indicates whether the user is a student or a teacher.",
+        description="Indicates whether the person is a student or a teacher.",
         default=None,
     )

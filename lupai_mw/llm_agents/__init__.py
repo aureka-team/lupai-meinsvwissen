@@ -16,3 +16,14 @@ from .intent_detector import (  # noqa
     IntentDetectorDeps,
     IntentDetectorOutput,
 )
+
+from .user_context_requester import (  # noqa
+    UserContextRequester,
+    UserContextRequesterDeps,
+    UserContextRequesterOutput,
+)
+
+from .user_context_extractor import (  # noqa
+    UserContextExtractor,
+    UserContextExtractorOutput,
+)
