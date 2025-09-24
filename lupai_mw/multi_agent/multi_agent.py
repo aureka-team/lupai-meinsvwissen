@@ -1,47 +1,52 @@
 from multi_agents.graph import MultiAgentGraph
-from lupai_mw.multi_agent.schema import State, Context
+from lupai_mw.multi_agent.schema import StateSchema, Context
+
 from .nodes import (
-    init,
+    user_context_requester,
+    user_context_extractor,
     language_detector,
-    sensitive_topic_detector,
     retriever_assistant,
     assistant,
-    aggregator,
+    domain_detector,
+    validation_checkpoint,
+    intent_detector,
 )
 
 from .edges import (
-    init_language_detector,
-    init_sensitive_topic_detector,
-    sensitive_topic_detector_edges,
+    validation_checkpoint_conditional,
+    validation_checkpoint_edges,
     retriever_assistant_conditional,
-    assistant_aggregator,
+    user_context_requester_end,
+    assistant_end,
 )
 
 
-def get_multi_agent(with_memory: bool = True) -> MultiAgentGraph:
+def get_multi_agent() -> MultiAgentGraph:
     nodes = [
-        init,
+        user_context_requester,
+        user_context_extractor,
         language_detector,
-        sensitive_topic_detector,
         retriever_assistant,
         assistant,
-        aggregator,
+        domain_detector,
+        validation_checkpoint,
+        intent_detector,
     ]
 
     edges = [
-        init_language_detector,
-        init_sensitive_topic_detector,
-        sensitive_topic_detector_edges,
+        validation_checkpoint_conditional,
+        validation_checkpoint_edges,
         retriever_assistant_conditional,
-        assistant_aggregator,
+        user_context_requester_end,
+        assistant_end,
     ]
 
     multi_agent = MultiAgentGraph(
-        state_schema=State,
+        state_schema=StateSchema,
         context_schema=Context,
         nodes=nodes,
         edges=edges,
-        with_memory=with_memory,
+        with_memory=True,
     )
 
     multi_agent.compile()

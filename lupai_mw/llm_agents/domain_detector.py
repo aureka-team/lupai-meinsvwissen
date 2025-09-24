@@ -5,11 +5,7 @@ from llm_agents.meta.interfaces import LLMAgent
 from llm_agents.message_history import MongoDBMessageHistory
 
 from lupai_mw.conf import llm_agents
-
-
-class Domain(BaseModel):
-    name: StrictStr
-    description: StrictStr
+from lupai_mw.meta.schema import Domain
 
 
 class DomainDetectorDeps(BaseModel):

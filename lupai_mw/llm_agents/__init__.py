@@ -16,6 +16,7 @@ from .intent_detector import (  # noqa
     IntentDetector,
     IntentDetectorDeps,
     IntentDetectorOutput,
+    Intent,
 )
 
 from .user_context_requester import (  # noqa

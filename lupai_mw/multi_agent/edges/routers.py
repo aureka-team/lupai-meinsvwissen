@@ -1,10 +1,33 @@
 from typing import Hashable
+from langgraph.graph import END
+from langgraph.runtime import get_runtime
 
-from ..schema import State
+from common.logger import get_logger
+
+from ..schema import StateSchema, Context
 
 
-def retriever_assistant_router(state: State) -> list[Hashable]:
+logger = get_logger(__name__)
+
+
+def validation_checkpoint_router(state: StateSchema) -> list[Hashable]:
+    runtime = get_runtime(Context)
+    runtime_context = runtime.context
+
+    if state.language not in runtime_context.valid_languages:
+        return [END]
+
+    if state.domain is None:
+        return [END]
+
+    if state.user_context_request is None:
+        return ["user_context_requester"]
+
+    return ["retriever_assistant"]
+
+
+def retriever_assistant_router(state: StateSchema) -> list[Hashable]:
     if not len(state.relevant_chunks):
-        return ["aggregator"]
+        return [END]
 
     return ["assistant"]

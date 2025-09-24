@@ -5,7 +5,7 @@ from common.logger import get_logger
 from langgraph.runtime import get_runtime
 from llm_agents.message_history import MongoDBMessageHistory
 
-from lupai_mw.multi_agent.schema import State, Context
+from lupai_mw.multi_agent.schema import StateSchema, Context
 from lupai_mw.llm_agents import Assistant, AssistantDeps, ContextChunk
 
 from .utils import get_azure_gpt_model
@@ -30,7 +30,7 @@ def get_assistant(provider: str, session_id: str) -> Assistant:
     )
 
 
-async def run(state: State) -> dict[str, Any]:
+async def run(state: StateSchema) -> dict[str, Any]:
     logger.info("running assistant...")
 
     runtime = get_runtime(Context)
