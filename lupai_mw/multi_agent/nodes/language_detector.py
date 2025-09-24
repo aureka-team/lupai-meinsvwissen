@@ -21,11 +21,18 @@ def get_language_detector(provider: str) -> LanguageDetector:
 
 
 async def run(state: State) -> dict[str, Any]:
+    # NOTE: Language is detected only at the start of the conversation.
+    if state.language is not None:
+        return {}
+
+    logger.info("running language_detector...")
     runtime = get_runtime(Context)
     runtime_context = runtime.context
 
-    await send_status(context=runtime_context, status="language_detector")
-    logger.info("running language_detector...")
+    await send_status(
+        context=runtime_context,
+        status="language_detector",
+    )
 
     ld = get_language_detector(provider=runtime_context.provider)
     ld_output = await ld.generate(user_prompt=state.query)

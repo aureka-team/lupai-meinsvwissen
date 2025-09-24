@@ -2,6 +2,7 @@ from pydantic import BaseModel, StrictStr, Field
 from pydantic_extra_types.language_code import LanguageName
 
 from pydantic_ai import ToolOutput
+from pydantic_ai.models import Model
 from pydantic_ai.mcp import MCPServer
 
 from llm_agents.meta.interfaces import LLMAgent
@@ -38,12 +39,14 @@ class Assistant(LLMAgent[AssistantDeps, AssistantOutput]):
         max_concurrency: int = 10,
         message_history_length: int = 10,
         mongodb_message_history: MongoDBMessageHistory | None = None,
+        model: Model | None = None,
         retries: int = 3,
     ):
         super().__init__(
             conf_path=conf_path,
             deps_type=AssistantDeps,
             output_type=ToolOutput(AssistantOutput),  # type: ignore
+            model=model,
             mcp_servers=mcp_servers,
             max_concurrency=max_concurrency,
             message_history_length=message_history_length,

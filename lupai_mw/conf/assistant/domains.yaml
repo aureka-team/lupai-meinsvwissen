@@ -1,5 +1,5 @@
 domains:
-    - name: secondary-school-representation
+    - name: Secondary School Representation
       description:
           "Concerns *starting*, *managing*, or *conducting* any aspect of student representation in a **secondary school setting (“Schülervertretung”** / “SV” / school representation).
           This includes, but is not limited to:
@@ -12,7 +12,40 @@ domains:
           - resources & finance: budgeting, funding, materials needed for SV work.
           - conflict resolution, motivation, training for student reps or SV members."
 
-    - name: primary-school-representation
+    - name: Primary School Representation
       description:
           Concerns initiating, organizing, or participating in representation / participation structures for pupils in primary schools ("Grundschule").
           That means, structures, roles, rights, activities etc., of student representatives at the level of a Grundschule, or comparable elementary levels, whether formal or informal.
+
+domain-translations:
+    English:
+        - Secondary School Representation
+        - Primary School Representation
+
+    German:
+        - Vertretung der weiterführenden Schule
+        - Vertretung der Grundschule
+
+    Spanish:
+        - Representación de la escuela secundaria
+        - Representación de la escuela primaria
+
+    French:
+        - Représentation de l’école secondaire
+        - TravReprésentation de l’école primaireail
+
+    Italian:
+        - Rappresentanza della scuola secondaria
+        - Rappresentanza della scuola primaria
+
+    Portuguese:
+        - Representação da escola secundária
+        - Representação da escola primária
+
+    Russian:
+        - Представительство средней школы
+        - Представительство начальной школы
+
+    Ukrainian:
+        - Представництво середньої школи
+        - Представництво початкової школи

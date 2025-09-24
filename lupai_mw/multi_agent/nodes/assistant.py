@@ -36,6 +36,24 @@ async def run(state: State) -> dict[str, Any]:
     runtime = get_runtime(Context)
     runtime_context = runtime.context
 
+    user_context = state.user_context
+    assert user_context is not None
+
+    language = state.language
+    assert language is not None
+
+    context_chunks = [
+        ContextChunk(**cc.model_dump()) for cc in state.relevant_chunks
+    ]
+
+    logger.info(f"context_chunks: {len(context_chunks)}")
+    intent = state.intent
+    assert intent is not None
+
+    intent_instructions = runtime_context.intent_instructions[
+        runtime_context.intents[intent]["instructions"]
+    ]
+
     assistant = get_assistant(
         provider=runtime_context.provider,
         session_id=state.session_id,
@@ -48,16 +66,15 @@ async def run(state: State) -> dict[str, Any]:
         assistant_output = await assistant.generate(
             user_prompt=state.query,
             agent_deps=AssistantDeps(
+                intent_instructions=intent_instructions,
                 output_language=language,
-                context_chunks=[
-                    ContextChunk(**cc.model_dump())
-                    for cc in state.relevant_chunks
-                ],
+                user_context=user_context,
+                context_chunks=context_chunks,
             ),
         )
 
     return {
-        "assistant_response": assistant_output.answer,
+        "assistant_response": assistant_output.response,
     }
 
 

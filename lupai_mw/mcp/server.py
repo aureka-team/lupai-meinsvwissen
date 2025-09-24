@@ -119,7 +119,7 @@ async def _search(
     ]
 
 
-def _get_text_chunk(chunk_id: str) -> Record | None:
+def get_text_chunk_(chunk_id: str) -> Record | None:
     scroll_filter = models.Filter(
         must=[
             models.FieldCondition(
@@ -132,7 +132,7 @@ def _get_text_chunk(chunk_id: str) -> Record | None:
     # FIXME: This is temporal!
     collections = get_collections()
     for collection in collections:
-        results, _ = retriever.scroll(
+        results = retriever.scroll(
             collection_name=collection,
             limit=1,
             scroll_filter=scroll_filter,
@@ -181,7 +181,7 @@ def get_text_chunk(
 ) -> TextChunk | None:
     """Retrieve a specific text chunk using its `chunk_id`."""
 
-    result = _get_text_chunk(chunk_id=chunk_id)
+    result = get_text_chunk_(chunk_id=chunk_id)
     if result is None:
         return
 

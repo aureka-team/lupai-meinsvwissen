@@ -1,6 +1,7 @@
 from pydantic import BaseModel, StrictStr, Field
 
 from pydantic_ai import ToolOutput
+from pydantic_ai.models import Model
 from pydantic_ai.mcp import MCPServer
 
 from llm_agents.meta.interfaces import LLMAgent
@@ -33,12 +34,14 @@ class RetrievalAssistant(
         message_history_length: int = 4,
         mongodb_message_history: MongoDBMessageHistory | None = None,
         read_only_message_history: bool = True,
+        model: Model | None = None,
         retries: int = 3,
     ):
         super().__init__(
             conf_path=conf_path,
             deps_type=RetrievalAssistantDeps,
             output_type=ToolOutput(RetrievalAssistantOutput),  # type: ignore
+            model=model,
             mcp_servers=mcp_servers,
             max_concurrency=max_concurrency,
             message_history_length=message_history_length,

@@ -1,5 +1,6 @@
 from .retrieval_assistant import (  # noqa
     RetrievalAssistant,
+    RetrievalAssistantDeps,
     RetrievalAssistantOutput,
 )
 

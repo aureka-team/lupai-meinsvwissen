@@ -1,12 +1,12 @@
-from operator import add
-from typing import Annotated
-
 from typing import Literal
 from fastapi import WebSocket
+
+from pydantic import BaseModel, StrictStr, ConfigDict
 from pydantic_extra_types.language_code import LanguageName
-from pydantic import BaseModel, StrictStr, StrictBool, ConfigDict
 
 from common.logger import get_logger
+
+from lupai_mw.meta.schema import UserContext, Domain
 
 
 logger = get_logger(__name__)
@@ -15,9 +15,19 @@ logger = get_logger(__name__)
 class Context(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    provider: Literal["openai", "azure"]
     mcp_dsn: StrictStr
-    sensitive_topics: list[StrictStr]
+    provider: Literal["openai", "azure"]
+    valid_languages: list[LanguageName]
+    retriever_metadata_fields: list[StrictStr]
+    domains: list[Domain]
+    domain_translations: dict
+    invalid_language_warning: StrictStr
+    no_answer_messages: dict[str, str]
+    invalid_domain_messages: dict[str, str]
+    intents: dict[str, dict[str, str]]
+    intent_instructions: dict[str, str]
+    websocket: WebSocket | None = None
+
     websocket: WebSocket | None = None
 
 
@@ -30,11 +40,16 @@ class RelevantChunk(BaseModel):
     chunk_id: StrictStr
 
 
-class State(BaseModel):
+class StateSchema(BaseModel):
     session_id: StrictStr
     query: StrictStr
+    domain: StrictStr | None = None
+    intent: StrictStr | None = None
+    user_context: UserContext | None = None
+
+    # FIXME: Why is this not properly saved and restored if it is a boolean?
+    user_context_request: StrictStr | None = None
+
     language: LanguageName | None = None
-    sensitive_topic: StrictStr | None = None
     assistant_response: StrictStr | None = None
-    relevant_chunks: Annotated[list[RelevantChunk], add] = []
-    is_final: StrictBool = False
+    relevant_chunks: list[RelevantChunk] = []

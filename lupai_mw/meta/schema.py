@@ -16,3 +16,8 @@ class UserContext(BaseModel):
         description="Indicates whether the person is a student or a teacher.",
         default=None,
     )
+
+
+class Domain(BaseModel):
+    name: StrictStr
+    description: StrictStr
