@@ -34,7 +34,6 @@ class Context(BaseModel):
 class RelevantChunk(BaseModel):
     text: StrictStr
     title: StrictStr
-    category_title: StrictStr | None = None
     topics: list[StrictStr] = []
     url: StrictStr
     chunk_id: StrictStr

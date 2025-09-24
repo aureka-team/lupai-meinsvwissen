@@ -14,7 +14,8 @@ from lupai_mw.meta.schema import UserContext
 
 class ContextChunk(BaseModel):
     text: StrictStr
-    source: StrictStr
+    title: StrictStr
+    topics: list[StrictStr] = []
 
 
 class AssistantDeps(BaseModel):

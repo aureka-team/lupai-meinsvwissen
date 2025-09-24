@@ -24,6 +24,15 @@ redis-flush:
 redis-restart: redis-stop redis-start
 
 
+mongo-start:
+	docker compose up -d lupai-mw-mongo
+
+mongo-stop:
+	docker compose stop lupai-mw-mongo
+
+mongo-restart: mongo-stop mongo-start
+
+
 qdrant-start:
 	docker compose up -d lupai-mw-qdrant
 

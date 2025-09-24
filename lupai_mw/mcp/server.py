@@ -39,6 +39,17 @@ class TextChunk(BaseModel):
         description="The actual textual content of the chunk."
     )
 
+    title: StrictStr = Field(
+        description="The title of the post this chunk belongs to."
+    )
+
+    topics: list[StrictStr] = Field(
+        description="A list of topics that describe the post this chunk belongs to.",
+        default=[],
+    )
+
+    url: StrictStr = Field(description="The url of the post or document.")
+
     chunk_id: StrictStr = Field(
         description="The unique identifier of this chunk."
     )
@@ -52,22 +63,6 @@ class TextChunk(BaseModel):
         description="The unique chunk_id of the next chunk in the same document.",
         default=None,
     )
-
-    title: StrictStr = Field(
-        description="The title of the post this chunk belongs to."
-    )
-
-    category_title: StrictStr | None = Field(
-        description="The title of the section the document belongs to.",
-        default=None,
-    )
-
-    topics: list[StrictStr] = Field(
-        description="A list of topics that describe the post this chunk belongs to.",
-        default=[],
-    )
-
-    url: StrictStr = Field(description="The url of the post or document.")
 
 
 class SemanticSearchResult(TextChunk):
@@ -110,7 +105,6 @@ async def _search(
             previous_chunk_id=r.metadata["previous_chunk_id"],
             next_chunk_id=r.metadata["next_chunk_id"],
             title=r.metadata["title"],
-            category_title=r.metadata["category_title"],
             topics=r.metadata["topics"],
             url=r.metadata["url"],
             score=r.score,
@@ -166,7 +160,7 @@ async def semantic_search(
 
     return await _search(
         query=query,
-        collection_name="general-sources",
+        collection_name="general_sources",
     )
 
 
@@ -192,7 +186,6 @@ def get_text_chunk(
         previous_chunk_id=result.payload["metadata"]["previous_chunk_id"],
         next_chunk_id=result.payload["metadata"]["next_chunk_id"],
         title=result.payload["metadata"]["title"],
-        category_title=result.payload["metadata"]["category_title"],
         topics=result.payload["metadata"]["topics"],
         url=result.payload["metadata"]["url"],
     )

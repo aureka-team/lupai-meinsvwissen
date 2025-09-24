@@ -39,9 +39,8 @@ class MultiAgentConfig(BaseSettings):
     ]
 
     retriever_metadata_fields: list[StrictStr] = [
-        "source_name",
-        "source_author",
-        "source_tags",
+        "title",
+        "topics",
     ]
 
     domains: list[Domain] = domains_

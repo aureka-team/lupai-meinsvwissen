@@ -7,9 +7,9 @@ from common.logger import get_logger
 from rage.retriever import Retriever
 from rage.utils.embeddings import get_openai_embeddings
 from rage.meta.interfaces import TextLoader, TextSplitter
-from rage.splitters import TokenSplitter, MarkdownSplitter
+from rage.splitters import MarkdownSplitter
 
-from lupai_mw.loaders import PostLoader, FileLoader
+from lupai_mw.loaders import PostLoader
 
 
 logger = get_logger(__name__)
@@ -21,22 +21,32 @@ class CollectionItem(BaseModel):
     collection_name: StrictStr
 
 
-collection_items = [
-    CollectionItem(
-        loader=PostLoader,
-        splitter=TokenSplitter,
-        collection_name="general-sources",
-    ),
-    CollectionItem(
-        loader=FileLoader,
-        splitter=MarkdownSplitter,
-        collection_name="general-sources",
-    ),
-]
-
-
 async def main() -> None:
+    collection_name = "general_sources"
     retriever = Retriever(dense_embeddings=get_openai_embeddings())
+    retriever.create_payload_index(
+        collection_name=collection_name,
+        field_name="metadata.chunk_id",
+    )
+
+    retriever.create_payload_index(
+        collection_name=collection_name,
+        field_name="metadata.post_id",
+    )
+
+    collection_items = [
+        CollectionItem(
+            loader=PostLoader,
+            splitter=MarkdownSplitter,
+            collection_name=collection_name,
+        ),
+        # CollectionItem(
+        #     loader=FileLoader,
+        #     splitter=MarkdownSplitter,
+        #     collection_name=collection_name,
+        # ),
+    ]
+
     for collection_item in collection_items:
         loader = collection_item.loader()
 

@@ -10,7 +10,7 @@ from common.logger import get_logger
 from common.utils.redis_cache import RedisCache, cache
 
 from rage.meta.interfaces import Document
-from rage.loaders import PDFMarkdownLoaeder
+from rage.loaders import PDFMarkdownLoader
 
 from .base_loader import BaseLoader, DocumentMetadata
 
@@ -41,7 +41,7 @@ async def get_documents(
         mode="wb",
     ) as tmp_file:
         tmp_file.write(binary_content)
-        pdf_markdown_loader = PDFMarkdownLoaeder()
+        pdf_markdown_loader = PDFMarkdownLoader()
 
         # TODO: PDFs with images must be implemented.
         # try:
@@ -85,14 +85,14 @@ class FileLoader(BaseLoader):
             if di["file_type"] in VALID_FILE_TYPES
         ]
 
-        pub_download_items = [
-            DownloadItem(
-                download_link=di["url"],
-                title=di["title"],
-                binary_content=di["pdf_binary"],
-            )
-            for di in self.get_parquet_data(file_name="publications.parquet")
-        ]
+        # pub_download_items = [
+        #     DownloadItem(
+        #         download_link=di["url"],
+        #         title=di["title"],
+        #         binary_content=di["pdf_binary"],
+        #     )
+        #     for di in self.get_parquet_data(file_name="publications.parquet")
+        # ]
 
         return download_items  # + pub_download_items
 
@@ -157,7 +157,7 @@ class FileLoader(BaseLoader):
     ) -> list[Document]:
         download_items = self.get_download_items()
 
-        with tqdm(
+        with tqdm(  # type: ignore
             total=len(download_items),
             ascii=" ##",
             colour="#808080",
