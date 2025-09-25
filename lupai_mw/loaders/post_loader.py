@@ -45,13 +45,9 @@ class PostLoader(BaseLoader):
             parts.append(f"[{external_link}]({external_link})")
 
         if transcript_url is not None:
-            try:
-                transcript_text = await get_pdf_text(pdf_url=transcript_url)
+            transcript_text = await get_pdf_text(pdf_url=transcript_url)
+            if transcript_text is not None:
                 parts.append(transcript_text)
-
-            except Exception:
-                # TODO: Why some pdfs can not be parsed?
-                logger.error(f"transcript_url: {transcript_url}")
 
         text = "\n".join(parts).strip()
         if not len(text):
@@ -71,6 +67,7 @@ class PostLoader(BaseLoader):
 
         section_texts = [st for st in section_texts if st is not None]
         if not len(section_texts):
+            pbar.update(1)
             return
 
         # FIXME

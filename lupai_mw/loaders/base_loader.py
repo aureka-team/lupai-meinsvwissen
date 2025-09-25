@@ -16,6 +16,7 @@ logger = get_logger(__name__)
 
 class DocumentMetadata(BaseModel):
     post_id: NonNegativeInt | None = None
+    download_id: NonNegativeInt | None = None
     title: StrictStr
     url: StrictStr
     topics: list[StrictStr] = []

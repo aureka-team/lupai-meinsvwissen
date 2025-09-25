@@ -9,7 +9,7 @@ from rage.loaders import PDFMarkdownLoader
 logger = get_logger(__name__)
 
 
-async def get_pdf_text(pdf_url: str) -> str:
+async def get_pdf_text(pdf_url: str) -> str | None:
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(pdf_url)
@@ -27,6 +27,11 @@ async def get_pdf_text(pdf_url: str) -> str:
         ) as tmp_file:
             tmp_file.write(response.content)
             loader = PDFMarkdownLoader()
-            documents = await loader.load(source_path=tmp_file.name)
+
+            try:
+                documents = await loader.load(source_path=tmp_file.name)
+            except Exception:
+                logger.error(f"pdf_url: {pdf_url}")
+                return
 
             return documents[0].text
