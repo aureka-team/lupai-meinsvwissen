@@ -8,6 +8,7 @@ from more_itertools import flatten
 from common.logger import get_logger
 from common.utils.redis_cache import RedisCache, cache
 
+from rage.converters import doc2docx
 from rage.meta.interfaces import Document
 from rage.loaders import PDFMarkdownLoader, DocxLoader
 
@@ -17,11 +18,11 @@ from .base_loader import BaseLoader, DocumentMetadata
 logger = get_logger(__name__)
 
 
-# TODO: Validate this with Jonas.
+# TODO: Validate with Jonas.
+# TODO; Support odt and odp formats?
 file_loaders = {
     "pdf": PDFMarkdownLoader,
     "docx": DocxLoader,
-    # "doc": DocxLoader,
 }
 
 
@@ -35,26 +36,43 @@ class FileLoader(BaseLoader):
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
     @staticmethod
-    # @cache(redis_cache=RedisCache())
+    @cache(redis_cache=RedisCache())
     async def _get_file_documents(download_item: dict) -> list[Document]:
-        # file_type = download_item["file_type"]
-
         with tempfile.NamedTemporaryFile(
             delete=False,
             mode="wb",
         ) as tmp_file:
             tmp_file.write(download_item["file_binary"])
-            kind = filetype.guess(tmp_file.name)
-            assert kind is not None
+            file_path = tmp_file.name
+            kind = filetype.guess(file_path)
+
+            download_link = download_item["download_link"]
+            if kind is None:
+                logger.warning(
+                    f"extension could not be detected: {download_link}"
+                )
+
+                return []
 
             extension = kind.extension
+            # NOTE: .doc files are converted to .docx
+            if extension == "doc":
+                logger.info("converting doc file.")
+                file_path = doc2docx(doc_path=file_path)
+                extension = "docx"
+
             _loader = file_loaders.get(extension)
             if _loader is None:
                 logger.warning(f"ignoring extension: {extension}")
                 return []
 
             loader = _loader()
-            documents = await loader.load(source_path=tmp_file.name)
+            # TODO: Validate with Jonas (PDFs as images)
+            try:
+                documents = await loader.load(source_path=file_path)
+            except Exception:
+                logger.error(f"file could not be loaded: {download_link}")
+                return []
 
         return [
             Document(
@@ -88,8 +106,6 @@ class FileLoader(BaseLoader):
         df_downloads = self.get_parquet_data(file_name="downloads.parquet")
 
         download_items = df_downloads.to_dicts()  # type: ignore
-        download_items = download_items[:20]
-
         with tqdm(  # type: ignore
             total=len(download_items),
             ascii=" ##",

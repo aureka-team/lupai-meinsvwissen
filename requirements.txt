@@ -2,6 +2,7 @@ polars==1.33.1
 parsel==1.10.0
 regex==2025.9.1
 boto3==1.40.37
+filetype==1.2.0
 
 uvicorn==0.35.0
 pydantic==2.11.7
@@ -13,4 +14,4 @@ fastmcp==2.12.3
 # Aureka packages
 llm_agents==1.1.18
 multi_agents==1.1.14
-rage==1.0.56
+rage==1.0.57
