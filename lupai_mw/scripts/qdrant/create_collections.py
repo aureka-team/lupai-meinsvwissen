@@ -9,7 +9,7 @@ from rage.utils.embeddings import get_openai_embeddings
 from rage.meta.interfaces import TextLoader, TextSplitter
 from rage.splitters import MarkdownSplitter
 
-from lupai_mw.loaders import PostLoader
+from lupai_mw.loaders import PostLoader, FileLoader
 
 
 logger = get_logger(__name__)
@@ -40,11 +40,11 @@ async def main() -> None:
             splitter=MarkdownSplitter,
             collection_name=collection_name,
         ),
-        # CollectionItem(
-        #     loader=FileLoader,
-        #     splitter=MarkdownSplitter,
-        #     collection_name=collection_name,
-        # ),
+        CollectionItem(
+            loader=FileLoader,
+            splitter=MarkdownSplitter,
+            collection_name=collection_name,
+        ),
     ]
 
     for collection_item in collection_items:
