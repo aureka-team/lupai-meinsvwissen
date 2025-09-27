@@ -78,6 +78,7 @@ class FileLoader(BaseLoader):
             Document(
                 text=doc.text,
                 metadata=DocumentMetadata(
+                    source_type="file",
                     download_id=download_item["data_id"],
                     title=download_item["title"],
                     url=download_item["download_link"],

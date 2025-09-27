@@ -88,6 +88,7 @@ class PostLoader(BaseLoader):
         section_text_item = {
             "text": text,
             "metadata": {
+                "source_type": "post",
                 "post_id": post_sections[0]["id"],
                 "title": title,
                 "url": f"https://meinsvwissen.de/?p={post_sections[0]['id']}",

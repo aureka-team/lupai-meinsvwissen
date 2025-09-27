@@ -15,6 +15,8 @@ logger = get_logger(__name__)
 
 
 class DocumentMetadata(BaseModel):
+    source_type: StrictStr
+    category: StrictStr | None = None
     post_id: NonNegativeInt | None = None
     download_id: NonNegativeInt | None = None
     title: StrictStr

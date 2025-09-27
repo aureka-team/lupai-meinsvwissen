@@ -15,7 +15,7 @@ from .base_loader import BaseLoader, DocumentMetadata
 logger = get_logger(__name__)
 
 
-class LegalLoader(BaseLoader):
+class SvtippsLoader(BaseLoader):
     def __init__(
         self,
         max_concurrency: int = 5,
@@ -25,8 +25,8 @@ class LegalLoader(BaseLoader):
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
     @make_async
-    def get_document_(self, legal_resource: dict) -> Document:
-        binary_io = io.BytesIO(legal_resource["html"].encode())
+    def get_document_(self, svtipps_item: dict) -> Document:
+        binary_io = io.BytesIO(svtipps_item["html_content"].encode())
 
         md = MarkItDown()
         result = md.convert(binary_io)
@@ -34,22 +34,21 @@ class LegalLoader(BaseLoader):
         return Document(
             text=result.text_content,
             metadata=DocumentMetadata(
-                source_type="legal",
-                title=legal_resource["title"],
-                url=legal_resource["url"],
-                legal_type=legal_resource["type"],
-                legal_jurisdiction=legal_resource["jurisdiction"],
+                source_type="svtipps",
+                title=svtipps_item["title"],
+                url=svtipps_item["url"],
+                category=svtipps_item["category"],
             ).model_dump(),
         )
 
     async def get_document(
         self,
-        legal_resource: dict,
+        svtipps_item: dict,
         pbar: tqdm,
     ) -> Document:
         async with self.semaphore:
             document = await self.get_document_(
-                legal_resource=legal_resource,
+                svtipps_item=svtipps_item,
             )
 
             pbar.update(1)
@@ -59,15 +58,13 @@ class LegalLoader(BaseLoader):
         self,
         source_path: str | None = None,
     ) -> list[Document]:
-        df_legal_resources = self.get_parquet_data(
-            file_name="legal_resources.parquet"
-        )
+        df_svtipps = self.get_parquet_data(file_name="svtipps.parquet")
 
-        legal_resources = df_legal_resources.to_dicts()
-        logger.info(f"legal_resources: {len(legal_resources)}")
+        svtipps_items = df_svtipps.to_dicts()
+        logger.info(f"svtipps_items: {len(svtipps_items)}")
 
         with tqdm(  # type: ignore
-            total=len(legal_resources),
+            total=len(svtipps_items),
             ascii=" ##",
             colour="#808080",
         ) as pbar:
@@ -75,11 +72,11 @@ class LegalLoader(BaseLoader):
                 tasks = [
                     tg.create_task(
                         self.get_document(
-                            legal_resource=legal_resource,
+                            svtipps_item=svtipps_item,
                             pbar=pbar,
                         )
                     )
-                    for legal_resource in legal_resources
+                    for svtipps_item in svtipps_items
                 ]
 
             return [t.result() for t in tasks]
