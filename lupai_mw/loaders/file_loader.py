@@ -6,7 +6,7 @@ from tqdm import tqdm
 from more_itertools import flatten
 
 from common.logger import get_logger
-from common.utils.redis_cache import RedisCache, cache
+from common.cache import RedisCache, cache
 
 from rage.converters import doc2docx
 from rage.meta.interfaces import Document

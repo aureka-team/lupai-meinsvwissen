@@ -21,6 +21,8 @@ class DocumentMetadata(BaseModel):
     url: StrictStr
     topics: list[StrictStr] = []
     date: datetime | None = None
+    legal_type: StrictStr | None = None
+    legal_jurisdiction: StrictStr | None = None
     # related_posts: list[NonNegativeInt] = []
 
 
