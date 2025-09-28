@@ -26,10 +26,11 @@ class SvtippsLoader(BaseLoader):
 
     @make_async
     def get_document_(self, svtipps_item: dict) -> Document:
-        binary_io = io.BytesIO(svtipps_item["html_content"].encode())
+        html_content = svtipps_item["html_content"]
+        html_content = f"<html>{html_content}</html>"
 
         md = MarkItDown()
-        result = md.convert(binary_io)
+        result = md.convert(io.BytesIO(html_content.encode()))
 
         return Document(
             text=result.text_content,
