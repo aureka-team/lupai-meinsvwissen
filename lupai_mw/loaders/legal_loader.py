@@ -38,7 +38,7 @@ class LegalLoader(BaseLoader):
                 title=legal_resource["title"],
                 url=legal_resource["url"],
                 legal_type=legal_resource["type"],
-                legal_jurisdiction=legal_resource["jurisdiction"],
+                jurisdiction=legal_resource["jurisdiction"],
             ).model_dump(),
         )
 

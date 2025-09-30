@@ -5,8 +5,8 @@ import filetype
 from tqdm import tqdm
 from more_itertools import flatten
 
+from common.cache import RedisCache
 from common.logger import get_logger
-from common.cache import RedisCache, cache
 
 from rage.converters import doc2docx
 from rage.meta.interfaces import Document
@@ -19,7 +19,7 @@ logger = get_logger(__name__)
 
 
 # TODO: Validate with Jonas.
-# TODO; Support odt and odp formats?
+# TODO: Support odt and odp formats?
 file_loaders = {
     "pdf": PDFMarkdownLoader,
     "docx": DocxLoader,
@@ -29,15 +29,15 @@ file_loaders = {
 class FileLoader(BaseLoader):
     def __init__(
         self,
+        cache: RedisCache | None = None,
         max_concurrency: int = 5,
     ) -> None:
         super().__init__()
 
+        self.cache = cache
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
-    @staticmethod
-    @cache(redis_cache=RedisCache())
-    async def _get_file_documents(download_item: dict) -> list[Document]:
+    async def _get_file_documents(self, download_item: dict) -> list[Document]:
         with tempfile.NamedTemporaryFile(
             delete=False,
             mode="wb",
@@ -66,7 +66,7 @@ class FileLoader(BaseLoader):
                 logger.warning(f"ignoring extension: {extension}")
                 return []
 
-            loader = _loader()
+            loader = _loader(cache=self.cache)
             # TODO: Validate with Jonas (PDFs as images)
             try:
                 documents = await loader.load(source_path=file_path)
@@ -105,8 +105,8 @@ class FileLoader(BaseLoader):
     ) -> list[Document]:
         logger.info("downloading meinsvwissen files.")
         df_downloads = self.get_parquet_data(file_name="downloads.parquet")
+        download_items = df_downloads.to_dicts()
 
-        download_items = df_downloads.to_dicts()  # type: ignore
         with tqdm(  # type: ignore
             total=len(download_items),
             ascii=" ##",

@@ -24,7 +24,7 @@ class DocumentMetadata(BaseModel):
     topics: list[StrictStr] = []
     date: datetime | None = None
     legal_type: StrictStr | None = None
-    legal_jurisdiction: StrictStr | None = None
+    jurisdiction: StrictStr | None = None
     # related_posts: list[NonNegativeInt] = []
 
 
@@ -34,7 +34,6 @@ class BaseLoader(TextLoader):
         base_url: str = "https://cdl-segg.fra1.cdn.digitaloceanspaces.com/cdl-segg",
     ) -> None:
         super().__init__()
-
         self.base_url = base_url
 
     def get_parquet_data(self, file_name: str) -> pl.DataFrame:

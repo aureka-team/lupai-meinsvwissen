@@ -14,5 +14,5 @@ fastmcp==2.12.4
 # Aureka packages
 llm_agents==1.1.18
 multi_agents==1.1.14
-rage==1.0.58
+rage==1.0.59
 common==1.1.12
