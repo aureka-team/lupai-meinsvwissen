@@ -1,4 +1,4 @@
-ARG UV_VERSION=0.8.20
+ARG UV_VERSION=0.8.22
 FROM ghcr.io/astral-sh/uv:${UV_VERSION} AS uv_source
 
 FROM ubuntu:plucky
@@ -18,6 +18,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
     python${PYTHON_VERSION}-dev \
     python3-setuptools \
     ca-certificates \
+    libreoffice-writer \
     && apt-get autoremove -y \
     && apt-get clean \
     && rm -rf /var/tmp/* /var/lib/apt/lists/*
