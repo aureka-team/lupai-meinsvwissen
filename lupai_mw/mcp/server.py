@@ -8,7 +8,6 @@ from fastmcp.server import FastMCP
 from pydantic import (
     BaseModel,
     StrictStr,
-    NonNegativeFloat,
     Field,
 )
 
@@ -65,12 +64,6 @@ class TextChunk(BaseModel):
     )
 
 
-class SemanticSearchResult(TextChunk):
-    score: NonNegativeFloat | None = Field(
-        description="The similarity score for this chunk."
-    )
-
-
 @lru_cache(maxsize=1)
 def get_collections() -> list[str]:
     collections = retriever.qadrant_client.get_collections()
@@ -81,7 +74,7 @@ async def _search(
     query: str,
     collection_name: str,
     search_filter: models.Filter | None = None,
-) -> list[SemanticSearchResult]:
+) -> list[TextChunk]:
     results = await retriever.dense_search(
         collection_name=collection_name,
         query=query,
@@ -99,7 +92,7 @@ async def _search(
     )
 
     return [
-        SemanticSearchResult(
+        TextChunk(
             text=r.text,
             chunk_id=r.metadata["chunk_id"],
             previous_chunk_id=r.metadata["previous_chunk_id"],
@@ -107,7 +100,6 @@ async def _search(
             title=r.metadata["title"],
             topics=r.metadata["topics"],
             url=r.metadata["url"],
-            score=r.score,
         )
         for r in results
     ]
@@ -143,7 +135,6 @@ def get_text_chunk_(chunk_id: str) -> Record | None:
     return result
 
 
-# TODO: Add glossary-search
 @mcp.tool(
     name="general_search",
     description="Run a semantic search across all sources.",
@@ -155,12 +146,52 @@ async def semantic_search(
             description="The natural language query in German to search for relevant text chunks."
         ),
     ],
-) -> list[SemanticSearchResult]:
+) -> list[TextChunk]:
     """Run a semantic search across all sources."""
 
     return await _search(
         query=query,
-        collection_name="general_sources",
+        collection_name="general",
+    )
+
+
+@mcp.tool(
+    name="legal_search",
+    description="Run a semantic search across legal sources.",
+)
+async def legal_search(
+    query: Annotated[
+        str,
+        Field(
+            description="The natural language query in German to search for relevant text chunks."
+        ),
+    ],
+) -> list[TextChunk]:
+    """Run a semantic search across the glossary."""
+
+    return await _search(
+        query=query,
+        collection_name="legal",
+    )
+
+
+@mcp.tool(
+    name="glossary_search",
+    description="Run a semantic search across the glossary.",
+)
+async def glossary_search(
+    query: Annotated[
+        str,
+        Field(
+            description="The natural language query in German to search for relevant text chunks."
+        ),
+    ],
+) -> list[TextChunk]:
+    """Run a semantic search across the glossary."""
+
+    return await _search(
+        query=query,
+        collection_name="glossary",
     )
 
 

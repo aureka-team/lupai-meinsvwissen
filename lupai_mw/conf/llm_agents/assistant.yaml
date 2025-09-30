@@ -13,6 +13,7 @@ instructions_template: |-
     - Do **not** include citations, quotes, or references to the context in your answer.
     - Respond in your own words, using a friendly and empathetic tone.
     - Do **not** include any sentences offering further assistance, follow-up actions, or additional help.
+    - If no answer can be constructed **solely** from the provided context, set answer as `null`.
 
     ## Response Strategy
     {intent_instructions}
