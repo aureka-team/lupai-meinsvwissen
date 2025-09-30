@@ -23,6 +23,7 @@ class LegalLoader(BaseLoader):
         super().__init__()
 
         self.semaphore = asyncio.Semaphore(max_concurrency)
+        self.region_map = self.get_region_map()
 
     @make_async
     def get_document_(self, legal_resource: dict) -> Document:
@@ -38,7 +39,7 @@ class LegalLoader(BaseLoader):
                 title=legal_resource["title"],
                 url=legal_resource["url"],
                 legal_type=legal_resource["type"],
-                jurisdiction=legal_resource["jurisdiction"],
+                germany_region=self.region_map[legal_resource["jurisdiction"]],
             ).model_dump(),
         )
 

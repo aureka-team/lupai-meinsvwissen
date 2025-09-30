@@ -39,15 +39,20 @@ class TextChunk(BaseModel):
     )
 
     title: StrictStr = Field(
-        description="The title of the post this chunk belongs to."
+        description="The title of the document this chunk belongs to."
     )
 
     topics: list[StrictStr] = Field(
-        description="A list of topics that describe the post this chunk belongs to.",
+        description="A list of topics that describe the document this chunk belongs to.",
         default=[],
     )
 
-    url: StrictStr = Field(description="The url of the post or document.")
+    germany_region: StrictStr | None = Field(
+        description="The Germany region associated with the document this chunk belongs to.",
+        default=None,
+    )
+
+    url: StrictStr = Field(description="The url of the document.")
 
     chunk_id: StrictStr = Field(
         description="The unique identifier of this chunk."
@@ -137,7 +142,7 @@ def get_text_chunk_(chunk_id: str) -> Record | None:
 
 @mcp.tool(
     name="general_search",
-    description="Run a semantic search across all sources.",
+    description="Run a semantic search across general sources.",
 )
 async def semantic_search(
     query: Annotated[
@@ -147,7 +152,7 @@ async def semantic_search(
         ),
     ],
 ) -> list[TextChunk]:
-    """Run a semantic search across all sources."""
+    """Run a semantic search across general sources."""
 
     return await _search(
         query=query,
@@ -166,18 +171,32 @@ async def legal_search(
             description="The natural language query in German to search for relevant text chunks."
         ),
     ],
+    germany_region: Annotated[
+        str,
+        Field(
+            description="The specific federal state or jurisdiction within Germany to narrow the legal search scope."
+        ),
+    ],
 ) -> list[TextChunk]:
-    """Run a semantic search across the glossary."""
+    """Run a semantic search across legal sources."""
 
     return await _search(
         query=query,
         collection_name="legal",
+        search_filter=models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="metadata.germany_region",
+                    match=models.MatchValue(value=germany_region),
+                )
+            ]
+        ),
     )
 
 
 @mcp.tool(
     name="glossary_search",
-    description="Run a semantic search across the glossary.",
+    description="Find glossary terms and region-specific definitions using a semantic search in German.",
 )
 async def glossary_search(
     query: Annotated[
@@ -187,7 +206,7 @@ async def glossary_search(
         ),
     ],
 ) -> list[TextChunk]:
-    """Run a semantic search across the glossary."""
+    """Find glossary terms and region-specific definitions using a semantic search in German."""
 
     return await _search(
         query=query,

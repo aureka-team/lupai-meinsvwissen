@@ -14,6 +14,9 @@ instructions_template: |-
     - Use `glossary_search` to find relevant concept definitions when the query involves the meaning of a concept, term, or definition.
     - Use `get_text_chunk` if you need to retrieve neighboring chunks (via `previous_chunk_id` and `next_chunk_id`) for additional context.
 
+    ## Search Constraints
+    - **ALWAYS** limit `legal_search` to the following regions in Germany: {germany_regions}
+
     ## Relevance Criteria
     - A chunk is considered relevant if it addresses the user's query directly **or** provides contextually useful background information.
     - Assess relevance based on both the **text content** and any associated **metadata**, including: {retriever_metadata_fields}.

@@ -28,19 +28,15 @@ class MultiAgentConfig(BaseSettings):
     provider: Literal["openai", "azure"] = "openai"
 
     valid_languages: list[LanguageName] = [
-        LanguageName("English"),
         LanguageName("German"),
-        LanguageName("Spanish"),
-        LanguageName("French"),
-        LanguageName("Italian"),
-        LanguageName("Portuguese"),
-        LanguageName("Russian"),
-        LanguageName("Ukrainian"),
+        LanguageName("English"),
     ]
 
     retriever_metadata_fields: list[StrictStr] = [
         "title",
         "topics",
+        "legal_type",
+        "jurisdiction",
     ]
 
     domains: list[Domain] = domains_

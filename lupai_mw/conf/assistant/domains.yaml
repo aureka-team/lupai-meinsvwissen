@@ -18,34 +18,10 @@ domains:
           That means, structures, roles, rights, activities etc., of student representatives at the level of a Grundschule, or comparable elementary levels, whether formal or informal.
 
 domain-translations:
-    English:
-        - Secondary School Representation
-        - Primary School Representation
-
     German:
         - Vertretung der weiterführenden Schule
         - Vertretung der Grundschule
 
-    Spanish:
-        - Representación de la escuela secundaria
-        - Representación de la escuela primaria
-
-    French:
-        - Représentation de l’école secondaire
-        - TravReprésentation de l’école primaireail
-
-    Italian:
-        - Rappresentanza della scuola secondaria
-        - Rappresentanza della scuola primaria
-
-    Portuguese:
-        - Representação da escola secundária
-        - Representação da escola primária
-
-    Russian:
-        - Представительство средней школы
-        - Представительство начальной школы
-
-    Ukrainian:
-        - Представництво середньої школи
-        - Представництво початкової школи
+    English:
+        - Secondary School Representation
+        - Primary School Representation

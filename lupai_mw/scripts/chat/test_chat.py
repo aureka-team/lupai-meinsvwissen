@@ -5,6 +5,7 @@ from rich.panel import Panel
 from rich.prompt import Prompt
 from rich.console import Console
 
+from lupai_mw.meta.schema import UserContext
 from lupai_mw.multi_agent.schema import StateSchema
 from lupai_mw.multi_agent import (
     get_multi_agent,
@@ -31,6 +32,26 @@ test_queries = [
 ]
 
 
+germany_regions = [
+    "Baden-Württemberg",
+    "Bayern",
+    "Brandenburg",
+    "Berlin",
+    "Bremen",
+    "Hamburg",
+    "Hessen",
+    "Mecklenburg-Vorpommern",
+    "Niedersachsen",
+    "Nordrhein-Westfalen",
+    "Rheinland-Pfalz",
+    "Sachsen",
+    "Sachsen-Anhalt",
+    "Schleswig-Holstein",
+    "Thüringen",
+    "Landesschülervertretung des Saarlandes",
+]
+
+
 async def main():
     multi_agent = get_multi_agent()
     multi_agent.compile()
@@ -44,6 +65,20 @@ async def main():
             "[bold cyan]Welcome to LupAI Meinsvwissen![/bold cyan]",
             style="bold white",
         )
+    )
+
+    session_id = uuid.uuid4().hex
+    console.print(
+        Panel.fit(
+            "[bold cyan]Choose a Germany Region[/bold cyan]",
+            style="bold white",
+        )
+    )
+
+    germany_region = Prompt.ask(
+        "Germany Region",
+        choices=germany_regions,
+        default="Berlin",
     )
 
     session_id = uuid.uuid4().hex
@@ -98,6 +133,7 @@ async def main():
             input_state=StateSchema(
                 session_id=session_id,
                 query=query,
+                user_context=UserContext(germany_region=germany_region),
             ),
             context=multi_agent_context,
             thread_id=session_id,

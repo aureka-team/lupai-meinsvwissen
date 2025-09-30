@@ -16,12 +16,14 @@ class GlossaryLoader(BaseLoader):
     ) -> None:
         super().__init__()
 
+        self.region_map = self.get_region_map()
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
-    @staticmethod
-    def row2md(row: dict) -> str:
+    def row2md(self, row: dict) -> str:
         return "\n".join(
-            f"## {k.upper()}\n{v}" for k, v in row.items() if v is not None
+            f"## {self.region_map.get(k.upper(), k.upper())}\n{v}"
+            for k, v in row.items()
+            if v is not None
         )
 
     async def get_documents(
