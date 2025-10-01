@@ -36,7 +36,7 @@ class MultiAgentConfig(BaseSettings):
         "title",
         "topics",
         "legal_type",
-        "jurisdiction",
+        "germany_region",
     ]
 
     domains: list[Domain] = domains_

@@ -1,14 +1,18 @@
+from typing import Literal
 from pydantic_ai import ToolOutput
+from pydantic import BaseModel, Field
 
 from llm_agents.meta.interfaces import LLMAgent
 from llm_agents.message_history import MongoDBMessageHistory
 
 from lupai_mw.conf import llm_agents
-from lupai_mw.meta.schema import UserContext
 
 
-class UserContextExtractorOutput(UserContext):
-    pass
+class UserContextExtractorOutput(BaseModel):
+    student_or_teacher: Literal["student", "teacher"] | None = Field(
+        description="Indicates whether the person is a student or a teacher.",
+        default=None,
+    )
 
 
 class UserContextExtractor(LLMAgent[None, UserContextExtractorOutput]):

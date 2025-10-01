@@ -3,7 +3,7 @@ import asyncio
 from common.logger import get_logger
 from rage.meta.interfaces import Document
 
-from .base_loader import BaseLoader
+from .base_loader import BaseLoader, DocumentMetadata
 
 
 logger = get_logger(__name__)
@@ -38,4 +38,10 @@ class GlossaryLoader(BaseLoader):
         logger.info(f"glossary_terms_items: {len(glossary_terms_items)}")
 
         md_items = map(self.row2md, glossary_terms_items)
-        return [Document(text=md_item) for md_item in md_items]
+        return [
+            Document(
+                text=md_item,
+                metadata=DocumentMetadata(source_type="glossary").model_dump(),
+            )
+            for md_item in md_items
+        ]

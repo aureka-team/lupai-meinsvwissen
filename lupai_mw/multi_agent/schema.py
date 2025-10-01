@@ -28,8 +28,6 @@ class Context(BaseModel):
     intent_instructions: dict[str, str]
     websocket: WebSocket | None = None
 
-    websocket: WebSocket | None = None
-
 
 class RelevantChunk(BaseModel):
     text: StrictStr

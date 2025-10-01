@@ -9,6 +9,7 @@ from pydantic import (
 class UserContext(BaseModel):
     germany_region: StrictStr = Field(
         description="The specific region or federal state in Germany where the person currently lives.",
+        min_length=1,
     )
 
     student_or_teacher: Literal["student", "teacher"] | None = Field(

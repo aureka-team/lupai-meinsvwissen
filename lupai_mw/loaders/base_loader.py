@@ -20,8 +20,8 @@ class DocumentMetadata(BaseModel):
     category: StrictStr | None = None
     post_id: NonNegativeInt | None = None
     download_id: NonNegativeInt | None = None
-    title: StrictStr
-    url: StrictStr
+    title: StrictStr | None = None
+    url: StrictStr | None = None
     topics: list[StrictStr] = []
     date: datetime | None = None
     legal_type: StrictStr | None = None

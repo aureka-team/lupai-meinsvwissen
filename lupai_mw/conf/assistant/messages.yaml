@@ -24,7 +24,7 @@ invalid-domain-messages:
         Du kannst versuchen, die Frage umzuformulieren.
 
     English: >-
-        We apologize, but the detected topic of your question is not in  the data.
+        We apologize, but the detected topic of your question is not in the data.
         This application can only provide information on the following topics:
 
         {valid_domains}

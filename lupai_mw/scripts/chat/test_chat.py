@@ -1,5 +1,8 @@
+import os
 import uuid
+import time
 import asyncio
+import logfire
 
 from rich.panel import Panel
 from rich.prompt import Prompt
@@ -12,6 +15,15 @@ from lupai_mw.multi_agent import (
     get_multi_agent_context,
     MultiAgentConfig,
 )
+
+
+logfire_token = os.getenv("LOGFIRE_TOKEN")
+if logfire_token is not None:
+    logfire.configure(service_name="lupai-meinsvwissen")
+    logfire.instrument_pydantic_ai()
+    logfire.instrument_mcp()
+    logfire.instrument_openai()
+    time.sleep(1)
 
 
 console = Console()
@@ -30,7 +42,6 @@ test_queries = [
     "Who is Nikola Tesla?",
     "How can I buy a car?",
 ]
-
 
 germany_regions = [
     "Baden-Württemberg",
@@ -52,6 +63,34 @@ germany_regions = [
 ]
 
 
+def option_selection(
+    options: list[str],
+    header_message: str,
+    footer_message: str,
+) -> str | None:
+    console.print(Panel.fit(f"[bold cyan]{header_message}[/bold cyan]"))
+    for idx, q in enumerate(options, start=1):
+        console.print(f"{idx}) {q}")
+
+    while True:
+        selection = Prompt.ask(f"[bold cyan]{footer_message}[/bold cyan]")
+        if selection in exit_keywords:
+            return
+
+        try:
+            idx = int(selection) - 1
+        except Exception:
+            console.print(f"[red]Invalid selection: {selection}[/red]")
+            continue
+
+        if idx >= 0 and idx < len(options):
+            selection = options[idx]
+            console.print(selection)
+            return selection
+
+        console.print(f"[red]Invalid selection: {selection}[/red]")
+
+
 async def main():
     multi_agent = get_multi_agent()
     multi_agent.compile()
@@ -68,18 +107,14 @@ async def main():
     )
 
     session_id = uuid.uuid4().hex
-    console.print(
-        Panel.fit(
-            "[bold cyan]Choose a Germany Region[/bold cyan]",
-            style="bold white",
-        )
+    germany_region = option_selection(
+        options=germany_regions,
+        header_message="Select a germany region:",
+        footer_message="Enter the number of the region",
     )
 
-    germany_region = Prompt.ask(
-        "Germany Region",
-        choices=germany_regions,
-        default="Berlin",
-    )
+    if germany_region is None:
+        return
 
     session_id = uuid.uuid4().hex
     console.print(
@@ -97,26 +132,14 @@ async def main():
 
     query = None
     if option == "1":
-        console.print(Panel.fit("[bold cyan]Select a query:[/bold cyan]"))
-        for idx, q in enumerate(test_queries):
-            console.print(f"{idx}) {q}")
+        query = option_selection(
+            options=test_queries,
+            header_message="Select a query:",
+            footer_message="Enter the number of the query",
+        )
 
-        while True:
-            selection = Prompt.ask(
-                "[bold cyan]Enter the number of the query[/bold cyan]"
-            )
-
-            try:
-                idx = int(selection)
-            except Exception:
-                console.print(f"[red]Invalid selection: {selection}[/red]")
-                continue
-
-            if idx >= 0 and idx < len(test_queries):
-                query = test_queries[idx]
-                break
-
-            console.print(f"[red]Invalid selection: {selection}[/red]")
+        if query is None:
+            return
 
     while True:
         query = (
@@ -125,7 +148,6 @@ async def main():
             else query
         )
 
-        console.print(query)
         if query in exit_keywords:
             break
 
