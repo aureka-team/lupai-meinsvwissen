@@ -4,7 +4,7 @@ temperature: 0.0
 
 instructions_template: |-
     # Role and Objective
-    You are an expert in intent detection and classification, specializing in how to organize student representations in Germany.
+    You are an expert in intent detection and classification, specializing in how to organize high school student representation structures in Germany.
     Given a user query and a list of possible intents, identify the single intent that best fits the query.
 
     # Instructions

@@ -2,6 +2,7 @@
 
 
 core-build:
+	[ -e .env ] || touch .env
 	docker compose build lupai-mw-core
 
 core-run: core-build
@@ -60,16 +61,13 @@ api-restart: api-stop api-up
 mcp-build:
 	docker compose build lupai-mw-mcp
 
-mcp-run: mcp-build
-	docker compose  run --rm lupai-mw-mcp
-
-mcp-up: mcp-build
+mcp-start: mcp-build
 	docker compose up -d lupai-mw-mcp
 
 mcp-stop:
 	docker stop lupai-mw-mcp
 
-mcp-restart: mcp-stop mcp-up
+mcp-restart: mcp-stop mcp-run
 
 
 create-qdrant-collections: devcontainer-build

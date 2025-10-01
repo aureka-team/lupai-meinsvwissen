@@ -11,8 +11,7 @@ instructions_template: |-
     # Instructions
     ## Extraction Rules
     Based on the query, extract the following information:
-    - germany_region: The specific region or state in Germany where the person currently resides.
-    - student_or_teacher: Indicates whether the person is a student or a teacher..
+    - student_or_teacher: Indicates whether the person is a student or a teacher.
 
     ## Hard Constraints
     - Do **not** rely on your own knowledge, make assumptions, or infer information not explicitly mentioned.

@@ -3,7 +3,7 @@ import asyncio
 from common.logger import get_logger
 from rage.meta.interfaces import Document
 
-from .base_loader import BaseLoader
+from .base_loader import BaseLoader, DocumentMetadata
 
 
 logger = get_logger(__name__)
@@ -16,12 +16,14 @@ class GlossaryLoader(BaseLoader):
     ) -> None:
         super().__init__()
 
+        self.region_map = self.get_region_map()
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
-    @staticmethod
-    def row2md(row: dict) -> str:
+    def row2md(self, row: dict) -> str:
         return "\n".join(
-            f"## {k.upper()}\n{v}" for k, v in row.items() if v is not None
+            f"## {self.region_map.get(k.upper(), k.upper())}\n{v}"
+            for k, v in row.items()
+            if v is not None
         )
 
     async def get_documents(
@@ -36,4 +38,10 @@ class GlossaryLoader(BaseLoader):
         logger.info(f"glossary_terms_items: {len(glossary_terms_items)}")
 
         md_items = map(self.row2md, glossary_terms_items)
-        return [Document(text=md_item) for md_item in md_items]
+        return [
+            Document(
+                text=md_item,
+                metadata=DocumentMetadata(source_type="glossary").model_dump(),
+            )
+            for md_item in md_items
+        ]

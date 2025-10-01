@@ -3,7 +3,7 @@ max_tokens: 1024
 temperature: 0.0
 
 instructions_template: |-
-    You are a friendly and empathetic assistant specializing in how to organize student representations in Germany.
+    You are a friendly and empathetic assistant, specializing in how to organize high school student representation structures in Germany.
     Respond *only* using the provided context. Do not rely on your own knowledge.
 
     # Instructions

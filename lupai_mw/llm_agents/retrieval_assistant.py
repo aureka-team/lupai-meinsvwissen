@@ -13,6 +13,7 @@ from lupai_mw.meta.schema import UserContext
 
 class RetrievalAssistantDeps(BaseModel):
     user_context: UserContext
+    germany_regions: list[StrictStr]
     retriever_metadata_fields: list[StrictStr]
 
 

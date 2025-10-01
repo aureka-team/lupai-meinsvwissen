@@ -3,6 +3,7 @@ import requests
 import polars as pl
 
 from datetime import datetime
+from functools import lru_cache
 from pydantic import BaseModel, NonNegativeInt, StrictStr
 
 from abc import abstractmethod
@@ -19,12 +20,12 @@ class DocumentMetadata(BaseModel):
     category: StrictStr | None = None
     post_id: NonNegativeInt | None = None
     download_id: NonNegativeInt | None = None
-    title: StrictStr
-    url: StrictStr
+    title: StrictStr | None = None
+    url: StrictStr | None = None
     topics: list[StrictStr] = []
     date: datetime | None = None
     legal_type: StrictStr | None = None
-    jurisdiction: StrictStr | None = None
+    germany_region: StrictStr | None = None
     # related_posts: list[NonNegativeInt] = []
 
 
@@ -46,6 +47,15 @@ class BaseLoader(TextLoader):
 
         return pl.read_parquet(response.content)
 
+    @lru_cache()
+    def get_region_map(self) -> dict:
+        df_scc = self.get_parquet_data(
+            file_name="student_council_committees.parquet"
+        )
+
+        return {row["jurisdiction"]: row["name"] for row in df_scc.to_dicts()}
+
+    @lru_cache()
     def get_df_sections(self):
         df_sections = self.get_parquet_data(file_name="sections.parquet")
         return df_sections

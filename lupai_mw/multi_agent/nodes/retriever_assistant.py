@@ -91,13 +91,16 @@ async def run(state: StateSchema) -> dict[str, Any]:
             user_prompt=f"User query: {state.query}",
             agent_deps=RetrievalAssistantDeps(
                 retriever_metadata_fields=runtime_context.retriever_metadata_fields,
+                germany_regions=[
+                    user_context.germany_region,
+                    "Bundesweit",
+                ],
                 user_context=user_context,
             ),
         )
 
     relevant_chunk_ids = assistant_output.relevant_chunk_ids
     logger.info(f"relevant_chunk_ids: {relevant_chunk_ids}")
-
     chunk_records = (
         get_text_chunk_(chunk_id=chunk_id) for chunk_id in relevant_chunk_ids
     )
