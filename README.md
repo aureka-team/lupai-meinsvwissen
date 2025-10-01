@@ -45,3 +45,63 @@ You can define environment variables in a `.env` file placed at the root of the 
 ```env
 MY_CUSTOM_VAR=some-value
 ```
+
+## Multi-Agent System (work in progress)
+
+### Diagrams
+
+#### 1. Install the [excalidraw extension](https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor) locally in VS Code.
+
+#### 2. Once installed, you can view the [diagrams](./diagrams/multi-agent.excalidraw) directly in VS Code.
+
+## Testing the multi-agent system
+
+### 1. Create Qdrant Data
+
+To test the **multi-agent system**, you need to set up and initialize the Qdrant collections, which will be accessible via tools in the **MCP server**.
+
+#### 1.1 Start Required Services
+
+##### Start Redis
+
+```bash
+make redis-start
+```
+
+##### Start Qdrant
+
+```bash
+make qdrant-start
+```
+
+Once Qdrant is running, you can access its [web dashboard](http://localhost:6333/dashboard).
+
+#### 1.2 Initialize Qdrant Collections
+
+After both Redis and Qdrant are running, create the required Qdrant collections by running:
+
+```bash
+make create-qdrant-collections
+```
+
+### 2. Start the MCP server
+
+```bash
+make mcp-start
+```
+
+### 3. OpenAI API Key
+
+Create a .env file in the root directory of the project and define the OPENAI_API_KEY variable:
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+Replace **your_openai_api_key_here** with your actual OpenAI API key.
+
+### 4. Run the test script
+
+```bash
+make make test-chat
+```
