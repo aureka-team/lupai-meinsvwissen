@@ -19,8 +19,7 @@ from lupai_mw.multi_agent import (
 )
 
 
-logfire_token = os.getenv("LOGFIRE_TOKEN")
-if logfire_token is not None:
+if os.getenv("LOGFIRE_TOKEN") is not None:
     logfire.configure(service_name="lupai-meinsvwissen")
     logfire.instrument_pydantic_ai()
     logfire.instrument_mcp()
