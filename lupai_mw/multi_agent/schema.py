@@ -25,6 +25,7 @@ class Context(BaseModel):
     invalid_language_warning: StrictStr
     no_answer_messages: dict[str, str]
     invalid_domain_messages: dict[str, str]
+    psr_domain_messages: dict[str, str]
     intents: dict[str, dict[str, str]]
     intent_instructions: dict[str, str]
     websocket: WebSocket | None = None

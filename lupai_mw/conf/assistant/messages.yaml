@@ -1,5 +1,5 @@
 invalid-language-warning: >-
-    Wir konnten deine Anfrage nicht bearbeiten, da die erkannte Sprache ({detected_language}) derzeit nicht unterstützt wird.
+    Wir konnten deine Anfrage nicht bearbeiten, da die erkannte Sprache derzeit nicht unterstützt wird.
     Bitte versucht, deine Frage in einer der unterstützten Sprachen zu formulieren:
     {supported_languages}
 
@@ -30,3 +30,14 @@ invalid-domain-messages:
         {valid_domains}
 
         You can try to reformulate the question.
+
+psr-domain-messages:
+    German: >-
+        Derzeit enthält die Datenbank von MeinSVWissen keine Daten zu Schülervertretungen an Grundschulen.
+        Eine Auswahl an Informationen zu diesem Thema finden Sie hier:
+        https://padlet.com/SchuleeinGesichtgeben/sv-arbeit-an-grundschulen-2wym6efbhh13mkf
+
+    English: >-
+        Currently the database of MeinSVWissen has no data on representations of primary schools.
+        A selection of information on this topic can be found here:
+        https://padlet.com/SchuleeinGesichtgeben/sv-arbeit-an-grundschulen-2wym6efbhh13mkf
