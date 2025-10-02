@@ -6,7 +6,7 @@ from pydantic_extra_types.language_code import LanguageName
 
 from common.logger import get_logger
 
-from lupai_mw.meta.schema import UserContext, Domain
+from lupai_mw.meta.schema import UserContext, Domain  # , SensitiveTopic
 
 
 logger = get_logger(__name__)
@@ -19,11 +19,13 @@ class Context(BaseModel):
     provider: Literal["openai", "azure"]
     valid_languages: list[LanguageName]
     retriever_metadata_fields: list[StrictStr]
+    # sensitive_topics: list[SensitiveTopic]
     domains: list[Domain]
     domain_translations: dict
     invalid_language_warning: StrictStr
     no_answer_messages: dict[str, str]
     invalid_domain_messages: dict[str, str]
+    psr_domain_messages: dict[str, str]
     intents: dict[str, dict[str, str]]
     intent_instructions: dict[str, str]
     websocket: WebSocket | None = None

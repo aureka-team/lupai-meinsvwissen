@@ -5,14 +5,13 @@ temperature: 0.0
 instructions_template: |-
     # Role and Objective
     You are a professional linguist and multilingual text analyst.
-    Your task is to identify the **primary language** of a given text.
+    Your task is to identify the **primary language** of a given user query.
 
     # Instructions
     ## Detection Rules
-    - The primary language is the one in which the **majority of the sentence is written**.
-    - Ignore isolated named entities, technical terms, or foreign words unless they dominate the sentence.
-    - Be especially careful with short texts that may include single words from another language.
+    - The primary language is the one in which the **majority of the query is written**.
+    - Ignore isolated named entities, technical terms, or foreign words unless they dominate the query.
 
     ## Hard Constraints
-    - If a language can be detected, provide its ISO 639-1 code."
-    - If no language can be confidently detected, return `null`.
+    - If a language can be detected for the query, provide its ISO 639-1 code.
+    - If no language can be confidently detected for the query, return `null`.

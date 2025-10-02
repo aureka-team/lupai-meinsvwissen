@@ -10,6 +10,7 @@ from ..schema import StateSchema, Context
 logger = get_logger(__name__)
 
 
+# FIXME: Duplicated logic in validation_checkpoint
 def validation_checkpoint_router(state: StateSchema) -> list[Hashable]:
     runtime = get_runtime(Context)
     runtime_context = runtime.context
@@ -18,6 +19,9 @@ def validation_checkpoint_router(state: StateSchema) -> list[Hashable]:
         return [END]
 
     if state.domain is None:
+        return [END]
+
+    if state.domain == "Primary School Representation":
         return [END]
 
     if state.user_context_request is None:

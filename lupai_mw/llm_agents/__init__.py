@@ -29,3 +29,9 @@ from .user_context_extractor import (  # noqa
     UserContextExtractor,
     UserContextExtractorOutput,
 )
+
+from .sensitive_topic_detector import (  # noqa
+    SensitiveTopicDetector,
+    SensitiveTopicDeps,
+    SensitiveTopicOutput,
+)

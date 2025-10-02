@@ -21,3 +21,8 @@ class UserContext(BaseModel):
 class Domain(BaseModel):
     name: StrictStr
     description: StrictStr
+
+
+class SensitiveTopic(BaseModel):
+    name: StrictStr
+    description: StrictStr
