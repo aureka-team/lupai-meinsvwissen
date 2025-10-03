@@ -10,10 +10,14 @@ instructions_template: |-
 
     # Instructions
     ## Detection Rules
-    - If the query does not match any sensitive topic, return `null`.
+    - If the query matches a sensitive topic, assign the detected topic to `sensitive_topic`.
+    - If the query does not match any sensitive topic, set `sensitive_topic` to `null`.
+    - Detect whether the query suggests that the user is a victim of discrimination.
+        If yes, set `user_is_victim` to true.
+        Otherwise, set `user_is_victim` to false.
 
     ## Previous Messages
     - ALWAYS consider previous messages for continuity and consistency.
 
     # Context
-    Sensitive Topics: {topics}
+    Sensitive Topics: {sensitive_topics}

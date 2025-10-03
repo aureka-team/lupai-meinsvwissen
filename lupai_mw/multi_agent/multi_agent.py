@@ -10,6 +10,7 @@ from .nodes import (
     domain_detector,
     validation_checkpoint,
     intent_detector,
+    sensitive_topic_detector,
 )
 
 from .edges import (
@@ -31,6 +32,7 @@ def get_multi_agent() -> MultiAgentGraph:
         domain_detector,
         validation_checkpoint,
         intent_detector,
+        sensitive_topic_detector,
     ]
 
     edges = [

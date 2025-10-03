@@ -6,3 +6,4 @@ from .assistant import assistant  # noqa
 from .domain_detector import domain_detector  # noqa
 from .validation_checkpoint import validation_checkpoint  # noqa
 from .intent_detector import intent_detector  # noqa
+from .sensitive_topic_detector import sensitive_topic_detector  # noqa

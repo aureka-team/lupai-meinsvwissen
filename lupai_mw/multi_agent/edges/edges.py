@@ -13,6 +13,7 @@ validation_checkpoint_edges = SimpleEdge(
         "intent_detector",
         "language_detector",
         "user_context_extractor",
+        "sensitive_topic_detector",
     ],
     target="validation_checkpoint",
 )

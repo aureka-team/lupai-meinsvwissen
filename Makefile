@@ -67,7 +67,7 @@ mcp-start: mcp-build
 mcp-stop:
 	docker stop lupai-mw-mcp
 
-mcp-restart: mcp-stop mcp-run
+mcp-restart: mcp-stop mcp-start
 
 
 create-qdrant-collections: devcontainer-build
@@ -76,5 +76,5 @@ create-qdrant-collections: devcontainer-build
 run-test-queries: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.multi_agent.run_test_queries" lupai-mw-devcontainer
 
-test-chat:
+test-chat: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.chat.test_chat" lupai-mw-devcontainer

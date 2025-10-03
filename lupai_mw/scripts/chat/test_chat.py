@@ -36,7 +36,6 @@ exit_keywords = {
     "exit",
 }
 
-
 germany_regions = [
     "Baden-Württemberg",
     "Bayern",
