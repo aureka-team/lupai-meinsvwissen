@@ -57,6 +57,9 @@ def get_relevant_chunk(record: Record) -> RelevantChunk:
         text=payload["page_content"],
         title=payload["metadata"]["title"],
         topics=payload["metadata"]["topics"],
+        germany_region=payload["metadata"]["germany_region"],
+        category=payload["metadata"]["category"],
+        legal_type=payload["metadata"]["legal_type"],
         url=payload["metadata"]["url"],
         chunk_id=payload["metadata"]["chunk_id"],
     )

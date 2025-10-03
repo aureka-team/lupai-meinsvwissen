@@ -41,3 +41,18 @@ psr-domain-messages:
         Currently the database of MeinSVWissen has no data on representations of primary schools.
         A selection of information on this topic can be found here:
         https://padlet.com/SchuleeinGesichtgeben/sv-arbeit-an-grundschulen-2wym6efbhh13mkf
+
+sensitive-topic-messages:
+    victim:
+        German: >-
+            Da es sich um ein sensibles Thema handelt, empfehlen wir, sich an Schule ein Gesicht geben e.V. oder eine andere Beratungsstelle zu wenden, um persönliche Unterstützung zu erhalten.
+
+        English: >-
+            Because this is a sensitive topic, we recommend contacting Schule ein Gesicht geben e.V. or another counseling center for personal support.
+
+    victimizer:
+        German: >-
+            Da es sich um ein sensibles Thema handelt, können wir hierzu keine Unterstützung anbieten.
+
+        English: >-
+            Because this is a sensitive topic, we cannot provide support on this matter.

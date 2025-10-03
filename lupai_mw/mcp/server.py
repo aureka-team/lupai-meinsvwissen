@@ -38,8 +38,9 @@ class TextChunk(BaseModel):
         description="The actual textual content of the chunk."
     )
 
-    title: StrictStr = Field(
-        description="The title of the document this chunk belongs to."
+    title: StrictStr | None = Field(
+        description="The title of the document this chunk belongs to.",
+        default=None,
     )
 
     topics: list[StrictStr] = Field(
@@ -52,7 +53,20 @@ class TextChunk(BaseModel):
         default=None,
     )
 
-    url: StrictStr = Field(description="The url of the document.")
+    url: StrictStr | None = Field(
+        description="The url of the document.",
+        default=None,
+    )
+
+    category: StrictStr | None = Field(
+        description="The category of the document this chunk belongs to.",
+        default=None,
+    )
+
+    legal_type: StrictStr | None = Field(
+        description="The type of legal document this chunk belongs to.",
+        default=None,
+    )
 
     chunk_id: StrictStr = Field(
         description="The unique identifier of this chunk."
@@ -144,7 +158,7 @@ def get_text_chunk_(chunk_id: str) -> Record | None:
     name="general_search",
     description="Run a semantic search across general sources.",
 )
-async def semantic_search(
+async def general_search(
     query: Annotated[
         str,
         Field(

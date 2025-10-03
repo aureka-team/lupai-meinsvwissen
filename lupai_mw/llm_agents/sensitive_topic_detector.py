@@ -1,5 +1,5 @@
 from pydantic_ai import ToolOutput
-from pydantic import BaseModel, StrictStr, Field
+from pydantic import BaseModel, StrictStr, Field, StrictBool
 
 from llm_agents.meta.interfaces import LLMAgent
 from llm_agents.message_history import MongoDBMessageHistory
@@ -16,6 +16,11 @@ class SensitiveTopicOutput(BaseModel):
     sensitive_topic: StrictStr | None = Field(
         description="The detected sensitive topic.",
         default=None,
+    )
+
+    user_is_victim: StrictBool = Field(
+        description="Whether the user is identified as a victim in the context of the detected topic.",
+        default=False,
     )
 
 
