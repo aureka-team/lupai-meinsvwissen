@@ -78,3 +78,7 @@ test-chat: devcontainer-build
 
 test-websocket: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.websocket.test_websocket" lupai-mw-devcontainer
+
+
+ec2-connect:
+	ssh -A -i .secrets/aureka-lupai.pem ubuntu@18.192.182.184 -L 27017:localhost:27017 -L 6333:localhost:6333
