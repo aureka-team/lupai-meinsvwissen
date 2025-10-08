@@ -14,7 +14,7 @@ instructions_template: |-
     - If none of the provided domains fit, return `null`.
 
     ## Previous Messages
-    - ALWAYS consider previous messages for continuity and consistency.
+    - **ALWAYS** consider previous messages for continuity and consistency.
 
     # Context
     Previous Domain: {previous_domain}

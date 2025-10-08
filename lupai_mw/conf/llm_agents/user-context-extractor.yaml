@@ -15,5 +15,6 @@ instructions_template: |-
 
     ## Hard Constraints
     - Do **not** rely on your own knowledge, make assumptions, or infer information not explicitly mentioned.
+
     ## Previous Messages
-    - ALWAYS consider previous messages for continuity and consistency.
+    - **ALWAYS** consider previous messages for continuity and consistency.

@@ -8,7 +8,7 @@ from llm_agents.message_history import MongoDBMessageHistory
 from lupai_mw.multi_agent.schema import StateSchema, Context
 from lupai_mw.llm_agents import Assistant, AssistantDeps, ContextChunk
 
-from .utils import get_azure_gpt_model
+from .utils import get_azure_gpt_model, send_status
 
 
 logger = get_logger(__name__)
@@ -35,6 +35,11 @@ async def run(state: StateSchema) -> dict[str, Any]:
 
     runtime = get_runtime(Context)
     runtime_context = runtime.context
+
+    await send_status(
+        context=runtime_context,
+        status="assistant",
+    )
 
     user_context = state.user_context
     assert user_context is not None
