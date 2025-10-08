@@ -103,7 +103,6 @@ async def run(state: StateSchema) -> dict[str, Any]:
         )
 
     relevant_chunk_ids = assistant_output.relevant_chunk_ids
-    logger.info(f"relevant_chunk_ids: {relevant_chunk_ids}")
     chunk_records = (
         get_text_chunk_(chunk_id=chunk_id) for chunk_id in relevant_chunk_ids
     )
@@ -113,6 +112,8 @@ async def run(state: StateSchema) -> dict[str, Any]:
         for chunk_record in chunk_records
         if chunk_record is not None
     ]
+
+    logger.info(f"relevant_chunks: {len(relevant_chunks)}")
 
     if not len(relevant_chunks):
         prev_relevant_chunks = state.relevant_chunks
