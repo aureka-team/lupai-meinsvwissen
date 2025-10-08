@@ -12,7 +12,7 @@ instructions_template: |-
     - When identifying the intent, consider any possible relation, even if indirect or weak, between the query and the provided intents.
 
     ## Previous Messages
-    - ALWAYS consider previous messages for continuity and consistency.
+    - **ALWAYS** consider previous messages for continuity and consistency.
 
     # Context
     Intents: {intents}

@@ -17,7 +17,7 @@ instructions_template: |-
         Otherwise, set `user_is_victim` to false.
 
     ## Previous Messages
-    - ALWAYS consider previous messages for continuity and consistency.
+    - **ALWAYS** consider previous messages for continuity and consistency.
 
     # Context
     Sensitive Topics: {sensitive_topics}
