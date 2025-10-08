@@ -14,7 +14,7 @@ from lupai_mw.meta.schema import UserContext
 
 class ContextChunk(BaseModel):
     text: StrictStr
-    title: StrictStr
+    title: StrictStr | None = None
     topics: list[StrictStr] = []
 
 
