@@ -208,12 +208,15 @@ async def multi_agent_chat(websocket: WebSocket) -> None:
         )
 
         try:
+            input_state = {
+                "session_id": session_id,
+                "query": socket_input.user_query,
+                "user_context": socket_input.user_context,
+            }
+
+            logger.info(f"input_state: {input_state}")
             state = await multi_agent.run(
-                input_state={
-                    "session_id": session_id,
-                    "query": socket_input.user_query,
-                    "user_context": socket_input.user_context,
-                },
+                input_state=input_state,
                 context=context,
                 thread_id=session_id,
             )
