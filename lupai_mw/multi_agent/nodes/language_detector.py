@@ -37,8 +37,11 @@ async def run(state: StateSchema) -> dict[str, Any]:
     ld = get_language_detector(provider=runtime_context.provider)
     ld_output = await ld.generate(user_prompt=f"User Query: {state.query}")
 
+    language = ld_output.language.name
+    logger.info(f"language: {language}")
+
     return {
-        "language": ld_output.language.name,
+        "language": language,
     }
 
 
