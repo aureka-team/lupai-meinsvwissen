@@ -187,6 +187,9 @@ async def multi_agent_chat(websocket: WebSocket) -> None:
     user_name = user.email
     logger.info(f"user {user_name} connected.")
 
+    session_id = uuid.uuid4().hex
+    logger.info(f"session_id: {session_id}")
+
     context = get_multi_agent_context(
         config=MultiAgentConfig(),
         websocket=websocket,
@@ -200,9 +203,6 @@ async def multi_agent_chat(websocket: WebSocket) -> None:
 
         if socket_input is None:
             continue
-
-        session_id = uuid.uuid4().hex
-        logger.info(f"session_id: {session_id}")
 
         await insert_user_session(
             user=user_name,
