@@ -1,5 +1,6 @@
 import os
 import jwt
+import uuid
 
 from json import JSONDecodeError
 from jwt import ExpiredSignatureError, InvalidTokenError
@@ -25,7 +26,8 @@ from lupai_mw.multi_agent import get_multi_agent, get_multi_agent_context
 
 from lupai_mw.api.users import User
 
-from .utils import get_session_id, insert_user_session
+# from .utils import get_session_id, insert_user_session
+from .utils import insert_user_session
 
 
 logger = get_logger(__name__)
@@ -199,7 +201,7 @@ async def multi_agent_chat(websocket: WebSocket) -> None:
         if socket_input is None:
             continue
 
-        session_id = get_session_id(input_session_id=socket_input.session_id)
+        session_id = uuid.uuid4().hex
         logger.info(f"session_id: {session_id}")
 
         await insert_user_session(
