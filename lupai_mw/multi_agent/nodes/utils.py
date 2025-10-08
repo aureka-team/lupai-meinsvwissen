@@ -14,15 +14,15 @@ FOUNDRY_API_KEY = os.getenv("FOUNDRY_API_KEY")
 
 
 DISPLAY_MAP = {
-    "domain_detector": "Analyzing query",
-    "intent_detector": "Analyzing query",
-    "language_detector": "Analyzing query",
-    "user_context_extractor": "Analyzing query",
-    "sensitive_topic_detector": "Analyzing query",
-    "validation_checkpoint": "Analyzing query",
-    "retriever_assistant": "Searching for sources",
-    "user_context_requester": "Generating answer",
-    "assistant": "Generating answer",
+    "domain_detector": "Anfrage wird analysiert",
+    "intent_detector": "Anfrage wird analysiert",
+    "language_detector": "Anfrage wird analysiert",
+    "user_context_extractor": "Anfrage wird analysiert",
+    "sensitive_topic_detector": "Anfrage wird analysiert",
+    "validation_checkpoint": "Anfrage wird analysiert",
+    "retriever_assistant": "Quellen werden gesucht",
+    "user_context_requester": "Antwort wird generiert",
+    "assistant": "Antwort wird generiert",
 }
 
 
