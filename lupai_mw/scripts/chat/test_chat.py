@@ -52,7 +52,7 @@ germany_regions = [
     "Sachsen-Anhalt",
     "Schleswig-Holstein",
     "Thüringen",
-    "Landesschülervertretung des Saarlandes",  # TODO: Ask to Jonas.
+    "Saarlandes",
 ]
 
 test_queries = [

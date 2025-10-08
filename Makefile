@@ -46,19 +46,16 @@ qdrant-restart: qdrant-stop qdrant-start
 api-build: core-build
 	docker compose build lupai-mw-api
 
-api-run: api-build
-	docker compose run --rm lupai-mw-api
-
-api-up: api-build
+api-start: api-build
 	docker compose up lupai-mw-api -d
 
 api-stop:
 	docker compose stop lupai-mw-api
 
-api-restart: api-stop api-up
+api-restart: api-stop api-start
 
 
-mcp-build:
+mcp-build: core-build
 	docker compose build lupai-mw-mcp
 
 mcp-start: mcp-build
@@ -78,3 +75,6 @@ run-test-queries: devcontainer-build
 
 test-chat: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.chat.test_chat" lupai-mw-devcontainer
+
+test-websocket: devcontainer-build
+	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.websocket.test_websocket" lupai-mw-devcontainer
