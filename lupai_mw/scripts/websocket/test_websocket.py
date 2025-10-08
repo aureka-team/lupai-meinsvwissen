@@ -57,7 +57,7 @@ config = Config()  # type: ignore
 async def get_token() -> str:
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            f"http://{config.test_socket_dsn}/auth/jwt/login",
+            f"https://{config.test_socket_dsn}/auth/jwt/login",
             data={
                 "username": config.test_user,
                 "password": config.test_password,
@@ -101,7 +101,7 @@ async def main():
     session_id = uuid.uuid4().hex
     token = await get_token()
 
-    SOCKET_URL = f"ws://{config.test_socket_dsn}/lupai/chat?token={token}"
+    SOCKET_URL = f"wss://{config.test_socket_dsn}/lupai/chat?token={token}"
     console.print(SOCKET_URL)
     async with websockets.connect(SOCKET_URL) as websocket:
         assert websocket is not None
