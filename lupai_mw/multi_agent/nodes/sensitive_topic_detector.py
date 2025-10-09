@@ -46,7 +46,6 @@ async def run(state: StateSchema) -> dict[str, Any]:
 
     return {
         "sensitive_topic": sensitive_topic,
-        "user_is_victim": st_det_output.user_is_victim,
     }
 
 

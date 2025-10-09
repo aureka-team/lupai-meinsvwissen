@@ -80,14 +80,9 @@ async def run(state: StateSchema) -> dict[str, Any]:
 
     assistant_response = assistant_output.response
     if state.sensitive_topic is not None:
-        sensitive_topic_message = (
-            runtime_context.sensitive_topic_messages["victim"][language]
-            if state.user_is_victim
-            else runtime_context.sensitive_topic_messages["victimizer"][
-                language
-            ]
-        )
-
+        sensitive_topic_message = runtime_context.sensitive_topic_messages[
+            language
+        ]
         assistant_response = (
             f"{assistant_response}\n\n{sensitive_topic_message}"
         )

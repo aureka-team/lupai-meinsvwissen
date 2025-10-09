@@ -19,12 +19,17 @@ class GlossaryLoader(BaseLoader):
         self.region_map = self.get_region_map()
         self.semaphore = asyncio.Semaphore(max_concurrency)
 
-    def row2md(self, row: dict) -> str:
-        return "\n".join(
+    def get_text_item(self, row: dict) -> dict:
+        md_text = "\n".join(
             f"## {self.region_map.get(k.upper(), k.upper())}\n{v}"
             for k, v in row.items()
             if v is not None
         )
+
+        return {
+            "text": md_text,
+            "title": f"Gloassar: {row['term']}",
+        }
 
     async def get_documents(
         self,
@@ -37,11 +42,14 @@ class GlossaryLoader(BaseLoader):
         glossary_terms_items = df_glossary_terms.to_dicts()
         logger.info(f"glossary_terms_items: {len(glossary_terms_items)}")
 
-        md_items = map(self.row2md, glossary_terms_items)
+        text_items = map(self.get_text_item, glossary_terms_items)
         return [
             Document(
-                text=md_item,
-                metadata=DocumentMetadata(source_type="glossary").model_dump(),
+                text=text_item["text"],
+                metadata=DocumentMetadata(
+                    source_type="glossary",
+                    title=text_item["title"],
+                ).model_dump(),
             )
-            for md_item in md_items
+            for text_item in text_items
         ]

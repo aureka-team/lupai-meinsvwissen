@@ -45,7 +45,7 @@ class PublicationLoader(BaseLoader):
                     source_type="file",
                     title=publication_item["title"],
                     url=publication_item["url"],
-                    jurisdiction=publication_item["jurisdiction"],
+                    germany_region=publication_item["jurisdiction"],
                 ).model_dump(),
             )
             for doc in documents
