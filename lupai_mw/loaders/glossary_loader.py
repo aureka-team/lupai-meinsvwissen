@@ -28,7 +28,7 @@ class GlossaryLoader(BaseLoader):
 
         return {
             "text": md_text,
-            "title": f"Gloassar: {row['term']}",
+            "title": f"Glossar: {row['term']}",
         }
 
     async def get_documents(
@@ -49,6 +49,7 @@ class GlossaryLoader(BaseLoader):
                 metadata=DocumentMetadata(
                     source_type="glossary",
                     title=text_item["title"],
+                    url="https://meinsvwissen.de/glossar-schuelervertretung/",
                 ).model_dump(),
             )
             for text_item in text_items

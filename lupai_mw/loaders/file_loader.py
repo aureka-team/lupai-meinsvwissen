@@ -25,6 +25,17 @@ file_loaders = {
     "docx": DocxLoader,
 }
 
+REGION_MAP = {
+    "Berlin": "Berlin",
+    "Brandenburg": "Brandenburg",
+    "Hessen": "Hessen",
+    "Mecklenburg-Vorpommern": "Mecklenburg-Vorpommern",
+    "Nordrhein-Westfalen (also abbreviated as NRW)": "Nordrhein-Westfalen",
+    "Rheinland-Pfalz": "Rheinland-Pfalz",
+    "Sachsen-Anhalt": "Sachsen-Anhalt",
+    "Thüringen": "Thüringen",
+}
+
 
 class FileLoader(BaseLoader):
     def __init__(
@@ -82,6 +93,9 @@ class FileLoader(BaseLoader):
                     download_id=download_item["data_id"],
                     title=download_item["title"],
                     url=download_item["download_link"],
+                    germany_region=REGION_MAP.get(
+                        download_item["category_title"]
+                    ),
                 ).model_dump(),
             )
             for doc in documents
