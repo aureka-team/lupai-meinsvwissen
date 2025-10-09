@@ -165,12 +165,29 @@ async def general_search(
             description="The natural language query in German to search for relevant text chunks."
         ),
     ],
+    germany_region: Annotated[
+        str,
+        Field(
+            description="The specific federal state or jurisdiction within Germany to narrow the legal search scope."
+        ),
+    ],
 ) -> list[TextChunk]:
     """Run a semantic search across general sources."""
 
     return await _search(
         query=query,
         collection_name="general",
+        search_filter=models.Filter(
+            should=[
+                models.FieldCondition(
+                    key="metadata.germany_region",
+                    match=models.MatchValue(value=germany_region),
+                ),
+                models.IsNullCondition(
+                    is_null=models.PayloadField(key="metadata.germany_region")
+                ),
+            ]
+        ),
     )
 
 

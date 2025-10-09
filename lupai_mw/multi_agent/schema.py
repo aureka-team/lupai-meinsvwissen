@@ -1,8 +1,8 @@
 from typing import Literal
 from fastapi import WebSocket
 
+from pydantic import BaseModel, StrictStr, ConfigDict
 from pydantic_extra_types.language_code import LanguageName
-from pydantic import BaseModel, StrictStr, ConfigDict, StrictBool
 
 from common.logger import get_logger
 
@@ -28,7 +28,7 @@ class Context(BaseModel):
     intents: dict[str, dict[str, str]]
     intent_instructions: dict[str, str]
     sensitive_topics: list[SensitiveTopic]
-    sensitive_topic_messages: dict[str, dict[str, str]]
+    sensitive_topic_messages: dict[str, str]
     websocket: WebSocket | None = None
 
 
@@ -49,7 +49,6 @@ class StateSchema(BaseModel):
     domain: StrictStr | None = None
     intent: StrictStr | None = None
     sensitive_topic: StrictStr | None = None
-    user_is_victim: StrictBool = False
     user_context: UserContext | None = None
 
     # FIXME: Why is this not properly saved and restored if it is a boolean?

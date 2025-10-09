@@ -58,6 +58,4 @@ class MultiAgentConfig(BaseSettings):
     intents: dict[str, dict[str, str]] = intents_
     intent_instructions: dict[str, str] = intent_instructions
     sensitive_topics: list[SensitiveTopic] = sensitive_topics
-    sensitive_topic_messages: dict[str, dict[str, str]] = (
-        sensitive_topic_messages
-    )
+    sensitive_topic_messages: dict[str, str] = sensitive_topic_messages

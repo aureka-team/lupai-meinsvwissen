@@ -19,8 +19,8 @@ domains:
 
 domain-translations:
     German:
-        - Vertretung der weiterführenden Schule
-        - Vertretung der Grundschule
+        - Schulvertretung an Sekundarschulen
+        - Schulvertretung an Grundschulen
 
     English:
         - Secondary School Representation
