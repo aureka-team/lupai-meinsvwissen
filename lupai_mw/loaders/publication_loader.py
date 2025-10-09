@@ -23,9 +23,10 @@ class PublicationLoader(BaseLoader):
         super().__init__()
 
         self.semaphore = asyncio.Semaphore(max_concurrency)
+        self.region_map = self.get_region_map()
 
-    @staticmethod
     async def _get_publication_documents(
+        self,
         publication_item: dict,
     ) -> list[Document]:
         with tempfile.NamedTemporaryFile(
@@ -45,7 +46,9 @@ class PublicationLoader(BaseLoader):
                     source_type="file",
                     title=publication_item["title"],
                     url=publication_item["url"],
-                    germany_region=publication_item["jurisdiction"],
+                    germany_region=self.region_map.get(
+                        publication_item["jurisdiction"]
+                    ),
                 ).model_dump(),
             )
             for doc in documents
