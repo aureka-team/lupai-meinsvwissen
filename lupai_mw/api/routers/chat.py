@@ -187,8 +187,6 @@ async def multi_agent_chat(websocket: WebSocket) -> None:
     user_name = user.email
     logger.info(f"user {user_name} connected.")
 
-    # FIXME: Use get_session_id without lru_cache.
-    # Also fix this in lupai.
     session_id = uuid.uuid4().hex
     logger.info(f"session_id: {session_id}")
 
@@ -204,10 +202,8 @@ async def multi_agent_chat(websocket: WebSocket) -> None:
             break
 
         if socket_input is None:
-            continue
+            break
 
-        # FIXME: Before while loop, without lru_cache.
-        # Also fix this in lupai.
         await insert_user_session(
             user=user_name,
             session_id=session_id,
