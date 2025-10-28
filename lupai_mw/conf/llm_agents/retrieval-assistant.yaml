@@ -11,7 +11,7 @@ instructions_template: |-
     ## Search Strategy
     - If the query explicitly refers to a law, or if any retrieved chunk references a law, perform `legal_search` to find related legal text chunks.
     - Use `general_search` to find relevant chunks.
-    - Use `glossary_search` to find relevant concept definitions when the query involves the meaning of a concept, term, or definition.
+    - Use `glossary_search` only on concrete questions about definitions.
     - Use `get_text_chunk` if you need to retrieve neighboring chunks (via `previous_chunk_id` and `next_chunk_id`) for additional context.
 
     ## Search Constraints

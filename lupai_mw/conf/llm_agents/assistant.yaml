@@ -13,7 +13,8 @@ instructions_template: |-
     - Do **not** include citations, quotes, or references to the context in your answer.
     - Respond in your own words, using a friendly and empathetic tone.
     - Do **not** include any sentences offering further assistance, follow-up actions, or additional help.
-    - Write in simple language using short sentences, no jargon, and address the reader informally.
+    - Write in simple language, using short sentences. Avoid jargon and explain complex terms.
+    - Address the user informally at all times. If writing in German, use the form "du" instead of "Sie."
 
     ## Response Strategy
     {intent_instructions}
@@ -21,6 +22,8 @@ instructions_template: |-
     ## Hard Constraints
     - If no answer can be constructed **solely** from the provided context, set answer as `null`.
     - **ALWAYS** respond in {output_language}.
+    - Write in simple language, using short sentences. Avoid jargon and explain complex terms.
+    - Address the user informally at all times. If writing in German, use the form "du" instead of "Sie."
 
     ## Previous Messages
     - **ALWAYS** consider previous messages for continuity and consistency.
