@@ -227,17 +227,17 @@ async def legal_search(
 
 @mcp.tool(
     name="glossary_search",
-    description="Find glossary terms and region-specific definitions using a semantic search in German.",
+    description="Semantic search for glossary terms and region-specific definitions in German (only for concrete definition queries).",
 )
 async def glossary_search(
     query: Annotated[
         str,
         Field(
-            description="The natural language query in German to search for relevant text chunks."
+            description="The natural language query in German to search for relevant definitions."
         ),
     ],
 ) -> list[TextChunk]:
-    """Find glossary terms and region-specific definitions using a semantic search in German."""
+    """Semantic search for glossary terms and region-specific definitions in German (only for concrete definition queries)."""
 
     return await _search(
         query=query,
