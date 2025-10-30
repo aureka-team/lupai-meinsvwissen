@@ -32,9 +32,6 @@ from .utils import insert_user_session, insert_state
 logger = get_logger(__name__)
 
 
-SESSION_COLLECTION = "sessions"
-STATES_COLLECTION = "states"
-
 JWT_SECRET = os.getenv("JWT_SECRET", "")
 assert len(JWT_SECRET)
 
