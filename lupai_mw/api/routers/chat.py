@@ -26,14 +26,12 @@ from lupai_mw.multi_agent import get_multi_agent, get_multi_agent_context
 
 from lupai_mw.api.users import User
 
-# from .utils import get_session_id, insert_user_session
-from .utils import insert_user_session
+from .utils import insert_user_session, insert_state
 
 
 logger = get_logger(__name__)
 
 
-SESSION_COLLECTION = "sessions"
 JWT_SECRET = os.getenv("JWT_SECRET", "")
 assert len(JWT_SECRET)
 
@@ -227,6 +225,8 @@ async def multi_agent_chat(websocket: WebSocket) -> None:
             await websocket.send_json(
                 SocketOutput(**state.model_dump()).model_dump()
             )
+
+            await insert_state(state=state.model_dump())
 
         except Exception as err:
             logger.error(err)

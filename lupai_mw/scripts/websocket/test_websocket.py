@@ -47,6 +47,8 @@ germany_regions = [
 class Config(BaseSettings):
     test_user: StrictStr = Field(min_length=1)
     test_password: StrictStr = Field(min_length=1)
+    test_http_protocol: StrictStr = Field(min_length=1)
+    test_websocket_protocol: StrictStr = Field(min_length=1)
     test_socket_dsn: StrictStr = Field(min_length=1)
     exit_keywords: set[StrictStr] = exit_keywords
 
@@ -57,7 +59,7 @@ config = Config()  # type: ignore
 async def get_token() -> str:
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            f"https://{config.test_socket_dsn}/auth/jwt/login",
+            f"{config.test_http_protocol}://{config.test_socket_dsn}/auth/jwt/login",
             data={
                 "username": config.test_user,
                 "password": config.test_password,
@@ -101,7 +103,7 @@ async def main():
     session_id = uuid.uuid4().hex
     token = await get_token()
 
-    SOCKET_URL = f"wss://{config.test_socket_dsn}/lupai/chat?token={token}"
+    SOCKET_URL = f"{config.test_websocket_protocol}://{config.test_socket_dsn}/lupai/chat?token={token}"
     console.print(SOCKET_URL)
     async with websockets.connect(SOCKET_URL) as websocket:
         assert websocket is not None
