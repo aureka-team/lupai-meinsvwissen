@@ -1,8 +1,5 @@
-# import uuid
-
 import asyncstdlib as a
 
-# from functools import lru_cache
 from datetime import datetime, timezone
 
 from lupai_mw.db import MongoConnector
@@ -13,6 +10,7 @@ logger = get_logger(__name__)
 
 
 SESSION_COLLECTION = "sessions"
+STATE_COLLECTION = "states"
 
 
 @a.lru_cache()
@@ -36,16 +34,6 @@ async def get_mongo_connector() -> MongoConnector:
     return mongo_connector
 
 
-# @lru_cache()
-# def get_session_id(input_session_id: str | None) -> str:
-#     session_id = (
-#         uuid.uuid4().hex if input_session_id is None else input_session_id
-#     )
-
-#     logger.info(f"session_id: {session_id}")
-#     return session_id
-
-
 @a.lru_cache()
 async def insert_user_session(user: str, session_id: str) -> None:
     mongo_connector = await get_mongo_connector()
@@ -67,4 +55,12 @@ async def insert_user_session(user: str, session_id: str) -> None:
             "date": datetime.now(timezone.utc),
         },
         collection=SESSION_COLLECTION,
+    )
+
+
+async def insert_state(state: dict) -> None:
+    mongo_connector = await get_mongo_connector()
+    await mongo_connector.insert_doc(
+        doc=state,
+        collection=STATE_COLLECTION,
     )
