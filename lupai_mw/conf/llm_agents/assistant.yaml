@@ -1,4 +1,4 @@
-model: openai:gpt-4.1-2025-04-14
+model: openai:gpt-4.1-mini-2025-04-14
 max_tokens: 1024
 temperature: 0.0
 
@@ -16,6 +16,7 @@ instructions_template: |-
     - Respond in your own words, using a friendly and empathetic tone.
     - Do **not** include any sentences offering further assistance, follow-up actions, or additional help.
     - Write in simple language, using short sentences. Avoid jargon and explain complex terms.
+    - Always use informal language.
 
     ## Response Strategy
     {intent_instructions}
