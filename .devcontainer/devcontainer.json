@@ -31,7 +31,7 @@
                 "python.pyrefly.disableLanguageServices": true
             },
             "extensions": [
-                "meta.pyrefly@0.35.0",
+                "meta.pyrefly",
                 "charliermarsh.ruff",
                 "esbenp.prettier-vscode",
                 "eamodio.gitlens",

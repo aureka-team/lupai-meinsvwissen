@@ -57,3 +57,12 @@ class StateSchema(BaseModel):
     language: LanguageName | None = None
     assistant_response: StrictStr | None = None
     relevant_chunks: list[RelevantChunk] = []
+    answer_status: (
+        Literal[
+            "success",
+            "invalid_language",
+            "out_of_domain",
+            "no_relevant_sources",
+        ]
+        | None
+    ) = None

@@ -25,7 +25,7 @@ class LanguageDetector(LLMAgent[None, LanguageDetectorOutput]):
     ):
         super().__init__(
             conf_path=conf_path,
-            output_type=ToolOutput(LanguageDetectorOutput),
+            output_type=ToolOutput(LanguageDetectorOutput),  # type: ignore
             model=model,
             max_concurrency=max_concurrency,
             cache=cache,

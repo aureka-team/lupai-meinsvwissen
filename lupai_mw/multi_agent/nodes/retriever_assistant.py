@@ -128,6 +128,7 @@ async def run(state: StateSchema) -> dict[str, Any]:
                 "assistant_response": runtime_context.no_answer_messages[
                     language
                 ],
+                "answer_status": "no_relevant_sources",
             }
 
         # NOTE: Preserve the previous chunks in case no new chunks are found.

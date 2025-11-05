@@ -99,6 +99,11 @@ class SocketOutput(BaseModel):
         default=None,
     )
 
+    answer_status: StrictStr | None = Field(
+        description="Answer status.",
+        default=None,
+    )
+
     error: StrictStr | None = Field(
         description="Error details if the request failed or could not be processed.",
         default=None,
