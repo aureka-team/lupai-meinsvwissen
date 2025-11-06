@@ -1,5 +1,7 @@
 from typing import Literal
+
 from pydantic_ai import ToolOutput
+from pydantic_ai.models import Model
 from pydantic import BaseModel, Field
 
 from llm_agents.meta.interfaces import LLMAgent
@@ -22,9 +24,11 @@ class UserContextExtractor(LLMAgent[None, UserContextExtractorOutput]):
         message_history_length: int = 4,
         mongodb_message_history: MongoDBMessageHistory | None = None,
         retries: int = 3,
+        model: Model | None = None,
     ):
         super().__init__(
             conf_path=conf_path,
+            model=model,
             output_type=ToolOutput(UserContextExtractorOutput),  # type: ignore
             message_history_length=message_history_length,
             mongodb_message_history=mongodb_message_history,

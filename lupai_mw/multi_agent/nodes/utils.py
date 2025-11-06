@@ -26,9 +26,7 @@ DISPLAY_MAP = {
 }
 
 
-def get_azure_gpt_model(
-    model_name: str = "Llama-4-Maverick-17B-128E-Instruct-FP8",
-) -> Model:
+def get_azure_gpt_model(model_name: str = "gpt-4.1-mini") -> Model:
     return OpenAIChatModel(
         model_name=model_name,
         provider=AzureProvider(

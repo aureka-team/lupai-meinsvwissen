@@ -10,10 +10,28 @@ from lupai_mw.meta.schema import Domain
 from lupai_mw.multi_agent.schema import StateSchema, Context
 from lupai_mw.llm_agents import DomainDetector, DomainDetectorDeps
 
-from .utils import send_status
+from .utils import send_status, get_azure_gpt_model
 
 
 logger = get_logger(__name__)
+
+
+def get_domain_detector(provider: str, session_id: str) -> DomainDetector:
+    if provider == "azure":
+        return DomainDetector(
+            model=get_azure_gpt_model(),
+            message_history_length=4,
+            mongodb_message_history=MongoDBMessageHistory(
+                session_id=session_id
+            ),
+            read_only_message_history=True,
+        )
+
+    return DomainDetector(
+        message_history_length=4,
+        mongodb_message_history=MongoDBMessageHistory(session_id=session_id),
+        read_only_message_history=True,
+    )
 
 
 async def run(state: StateSchema) -> dict[str, Any]:
@@ -28,13 +46,9 @@ async def run(state: StateSchema) -> dict[str, Any]:
     )
 
     domains = [Domain(**d.model_dump()) for d in runtime_context.domains]
-
-    dd = DomainDetector(
-        message_history_length=4,
-        mongodb_message_history=MongoDBMessageHistory(
-            session_id=state.session_id
-        ),
-        read_only_message_history=True,
+    dd = get_domain_detector(
+        provider=runtime_context.provider,
+        session_id=state.session_id,
     )
 
     dd_output = await dd.generate(

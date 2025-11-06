@@ -1,4 +1,5 @@
 from pydantic_ai import ToolOutput
+from pydantic_ai.models import Model
 from pydantic_extra_types.language_code import LanguageName
 from pydantic import (
     BaseModel,
@@ -33,9 +34,11 @@ class UserContextRequester(
         mongodb_message_history: MongoDBMessageHistory | None = None,
         message_history_length: int = 10,
         retries: int = 3,
+        model: Model | None = None,
     ):
         super().__init__(
             conf_path=conf_path,
+            model=model,
             deps_type=UserContextRequesterDeps,
             output_type=ToolOutput(UserContextRequesterOutput),  # type: ignore
             mongodb_message_history=mongodb_message_history,

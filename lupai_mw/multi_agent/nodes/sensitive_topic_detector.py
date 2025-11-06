@@ -9,10 +9,30 @@ from llm_agents.message_history import MongoDBMessageHistory
 from lupai_mw.multi_agent.schema import StateSchema, Context
 from lupai_mw.llm_agents import SensitiveTopicDetector, SensitiveTopicDeps
 
-from .utils import send_status
+from .utils import send_status, get_azure_gpt_model
 
 
 logger = get_logger(__name__)
+
+
+def get_intent_detector(
+    provider: str, session_id: str
+) -> SensitiveTopicDetector:
+    if provider == "azure":
+        return SensitiveTopicDetector(
+            model=get_azure_gpt_model(),
+            message_history_length=4,
+            mongodb_message_history=MongoDBMessageHistory(
+                session_id=session_id
+            ),
+            read_only_message_history=True,
+        )
+
+    return SensitiveTopicDetector(
+        message_history_length=4,
+        mongodb_message_history=MongoDBMessageHistory(session_id=session_id),
+        read_only_message_history=True,
+    )
 
 
 async def run(state: StateSchema) -> dict[str, Any]:

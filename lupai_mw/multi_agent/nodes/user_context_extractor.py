@@ -8,10 +8,17 @@ from langgraph.runtime import get_runtime
 from lupai_mw.llm_agents import UserContextExtractor
 from lupai_mw.multi_agent.schema import StateSchema, Context
 
-from .utils import send_status
+from .utils import send_status, get_azure_gpt_model
 
 
 logger = get_logger(__name__)
+
+
+def get_intent_detector(provider: str) -> UserContextExtractor:
+    if provider == "azure":
+        return UserContextExtractor(model=get_azure_gpt_model())
+
+    return UserContextExtractor()
 
 
 def get_user_context(

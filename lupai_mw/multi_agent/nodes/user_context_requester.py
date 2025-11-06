@@ -9,10 +9,24 @@ from llm_agents.message_history import MongoDBMessageHistory
 from lupai_mw.llm_agents import UserContextRequester, UserContextRequesterDeps
 from lupai_mw.multi_agent.schema import StateSchema, Context
 
-from .utils import send_status
+from .utils import send_status, get_azure_gpt_model
 
 
 logger = get_logger(__name__)
+
+
+def get_intent_detector(provider: str, session_id: str) -> UserContextRequester:
+    if provider == "azure":
+        return UserContextRequester(
+            model=get_azure_gpt_model(),
+            mongodb_message_history=MongoDBMessageHistory(
+                session_id=session_id
+            ),
+        )
+
+    return UserContextRequester(
+        mongodb_message_history=MongoDBMessageHistory(session_id=session_id),
+    )
 
 
 async def run(state: StateSchema) -> dict[str, Any]:
