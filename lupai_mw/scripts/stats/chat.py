@@ -3,7 +3,6 @@ import asyncio
 from collections import Counter
 
 from rich.table import Table
-from rich.pretty import pprint
 from rich.console import Console
 
 from common.cache import RedisCache
@@ -47,7 +46,7 @@ async def main() -> None:
     num_interactions = Counter(session_ids)
     avg_interactions = sum(num_interactions.values()) / len(num_interactions)
 
-    out_of_damain_interactions = len(
+    out_of_domain_interactions = len(
         [di for di in data_items if di["answer_status"] == "out_of_domain"]
     )
 
@@ -70,30 +69,40 @@ async def main() -> None:
     )
 
     table1.add_column("")
-    table1.add_column("number_of_sessions")
-    table1.add_column("interactions_per_session")
-    table1.add_column("out_of_domain_interactions")
-    table1.add_column("no_sources_interactions")
-    table1.add_column("sensitive_topic_interactions")
+    table1.add_column("Count")
+    table1.add_column("%")
 
     table1.add_row(
-        "Count",
+        "number_of_sessions",
         f"[cyan]{num_sessions}[/cyan]",
-        f"[cyan]{avg_interactions}[/cyan]",
-        f"[cyan]{out_of_damain_interactions}[/cyan]",
-        f"[cyan]{no_sources_interactions}[/cyan]",
-        f"[cyan]{sensitive_topic_interactions}[/cyan]",
+        f"[cyan]{'-'}[/cyan]",
     )
 
     table1.add_row(
-        "%",
-        f"[cyan]{num_sessions / len(data_items)}[/cyan]",
-        f"[cyan]{avg_interactions / len(data_items)}[/cyan]",
-        f"[cyan]{out_of_damain_interactions / len(data_items)}[/cyan]",
-        f"[cyan]{no_sources_interactions / len(data_items)}[/cyan]",
-        f"[cyan]{sensitive_topic_interactions / len(data_items)}[/cyan]",
+        "interactions_per_session",
+        f"[cyan]{avg_interactions}[/cyan]",
+        f"[cyan]{round((avg_interactions / len(data_items)), 3)}[/cyan]",
     )
 
+    table1.add_row(
+        "out_of_domain_interactions",
+        f"[cyan]{out_of_domain_interactions}[/cyan]",
+        f"[cyan]{round((out_of_domain_interactions / len(data_items)), 3)}[/cyan]",
+    )
+
+    table1.add_row(
+        "no_sources_interactions",
+        f"[cyan]{no_sources_interactions}[/cyan]",
+        f"[cyan]{round((no_sources_interactions / len(data_items)), 3)}[/cyan]",
+    )
+
+    table1.add_row(
+        "sensitive_topic_interactions",
+        f"[cyan]{sensitive_topic_interactions}[/cyan]",
+        f"[cyan]{round((sensitive_topic_interactions / len(data_items)), 3)}[/cyan]",
+    )
+
+    console.print("\n")
     console.print(table1)
     console.print("\n")
 
@@ -120,30 +129,26 @@ async def main() -> None:
     cnt_map = {cat: count for cat, count in cnt.items()}
 
     table2 = Table(
-        title="Query types",
+        title="Query Types",
         show_header=True,
         header_style="bold magenta",
     )
 
     console.print("\n")
     table2.add_column("")
-    for qc in query_categories:
-        table2.add_column(qc["name"])
+    table2.add_column("Count")
+    table2.add_column("%")
 
-    row1 = ["Count"]
     for qc in query_categories:
-        count = cnt_map.get(qc["name"])
+        category = qc["name"]
+        count = cnt_map.get(category)
         count = count if count is not None else 0
-        row1.append(f"[cyan]{count}[/cyan]")
+        table2.add_row(
+            f"{category}",
+            f"[cyan]{count}[/cyan]",
+            f"[cyan]{round((count / len(data_items)), 3)}[/cyan]",
+        )
 
-    table2.add_row(*row1)
-    row2 = ["%"]
-    for qc in query_categories:
-        count = cnt_map.get(qc["name"])
-        count = count if count is not None else 0
-        row2.append(f"[cyan]{count / len(data_items)}[/cyan]")
-
-    table2.add_row(*row2)
     console.print(table2)
 
 

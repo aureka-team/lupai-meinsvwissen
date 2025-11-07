@@ -82,7 +82,7 @@ test-websocket: devcontainer-build
 evaluate-assistant: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.evaluations.assistant" lupai-mw-devcontainer
 
-show-chat-stats: devcontainer-build
+chat-stats: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.stats.chat" lupai-mw-devcontainer
 
 
