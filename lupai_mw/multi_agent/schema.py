@@ -40,6 +40,7 @@ class RelevantChunk(BaseModel):
     category: StrictStr | None = None
     legal_type: StrictStr | None = None
     url: StrictStr | None = None
+    post_urls: list[StrictStr] = []
     chunk_id: StrictStr
 
 
@@ -57,3 +58,12 @@ class StateSchema(BaseModel):
     language: LanguageName | None = None
     assistant_response: StrictStr | None = None
     relevant_chunks: list[RelevantChunk] = []
+    answer_status: (
+        Literal[
+            "success",
+            "invalid_language",
+            "out_of_domain",
+            "no_relevant_sources",
+        ]
+        | None
+    ) = None

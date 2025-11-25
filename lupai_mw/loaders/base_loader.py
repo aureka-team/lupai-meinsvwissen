@@ -22,6 +22,7 @@ class DocumentMetadata(BaseModel):
     download_id: NonNegativeInt | None = None
     title: StrictStr | None = None
     url: StrictStr | None = None
+    post_urls: list[StrictStr] = []
     topics: list[StrictStr] = []
     date: datetime | None = None
     legal_type: StrictStr | None = None
@@ -56,9 +57,14 @@ class BaseLoader(TextLoader):
         return {row["jurisdiction"]: row["name"] for row in df_scc.to_dicts()}
 
     @lru_cache()
-    def get_df_sections(self):
+    def get_df_sections(self) -> pl.DataFrame:
         df_sections = self.get_parquet_data(file_name="sections.parquet")
         return df_sections
+
+    @lru_cache()
+    def get_posts_map(self) -> dict:
+        df_posts = self.get_parquet_data(file_name="posts.parquet")
+        return {p["id"]: p for p in df_posts.to_dicts()}
 
     @abstractmethod
     async def get_documents(

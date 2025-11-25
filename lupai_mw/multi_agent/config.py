@@ -34,7 +34,7 @@ sensitive_topics = sensitive_topics["sensitive-topics"]
 
 class MultiAgentConfig(BaseSettings):
     mcp_dsn: StrictStr = "http://lupai-mw-mcp:8000/mcp"
-    provider: Literal["openai", "azure"] = "openai"
+    provider: Literal["openai", "azure"] = "azure"
 
     valid_languages: list[LanguageName] = [
         LanguageName("German"),

@@ -89,6 +89,7 @@ async def run(state: StateSchema) -> dict[str, Any]:
 
     return {
         "assistant_response": assistant_response,
+        "answer_status": "success",
     }
 
 

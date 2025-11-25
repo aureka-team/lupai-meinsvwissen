@@ -26,7 +26,9 @@ from .utils import send_status, get_azure_gpt_model
 logger = get_logger(__name__)
 
 
-def get_retrieval_assistant(provider: str, mcp_dsn: str) -> RetrievalAssistant:
+def get_retrieval_assistant(
+    provider: str, mcp_dsn: str, session_id: str
+) -> RetrievalAssistant:
     mcp = MCPServerStreamableHTTP(
         url=mcp_dsn,
         process_tool_call=process_tool_call,
@@ -34,11 +36,21 @@ def get_retrieval_assistant(provider: str, mcp_dsn: str) -> RetrievalAssistant:
 
     if provider == "azure":
         return RetrievalAssistant(
-            model=get_azure_gpt_model(),
+            model=get_azure_gpt_model(model_name="gpt-4o-mini"),
+            message_history_length=4,
+            mongodb_message_history=MongoDBMessageHistory(
+                session_id=session_id
+            ),
+            read_only_message_history=True,
             mcp_servers=[mcp],
         )
 
-    return RetrievalAssistant(mcp_servers=[mcp])
+    return RetrievalAssistant(
+        message_history_length=4,
+        mongodb_message_history=MongoDBMessageHistory(session_id=session_id),
+        read_only_message_history=True,
+        mcp_servers=[mcp],
+    )
 
 
 @lru_cache()
@@ -61,6 +73,7 @@ def get_relevant_chunk(record: Record) -> RelevantChunk:
         category=payload["metadata"]["category"],
         legal_type=payload["metadata"]["legal_type"],
         url=payload["metadata"]["url"],
+        post_urls=payload["metadata"]["post_urls"],
         chunk_id=payload["metadata"]["chunk_id"],
     )
 
@@ -79,14 +92,10 @@ async def run(state: StateSchema) -> dict[str, Any]:
     user_context = state.user_context
     assert user_context is not None
 
-    mcp = get_mcp(mcp_dsn=runtime_context.mcp_dsn)
-    assistant = RetrievalAssistant(
-        message_history_length=4,
-        mongodb_message_history=MongoDBMessageHistory(
-            session_id=state.session_id
-        ),
-        read_only_message_history=True,
-        mcp_servers=[mcp],
+    assistant = get_retrieval_assistant(
+        provider=runtime_context.provider,
+        mcp_dsn=runtime_context.mcp_dsn,
+        session_id=state.session_id,
     )
 
     async with assistant.agent:
@@ -128,6 +137,7 @@ async def run(state: StateSchema) -> dict[str, Any]:
                 "assistant_response": runtime_context.no_answer_messages[
                     language
                 ],
+                "answer_status": "no_relevant_sources",
             }
 
         # NOTE: Preserve the previous chunks in case no new chunks are found.

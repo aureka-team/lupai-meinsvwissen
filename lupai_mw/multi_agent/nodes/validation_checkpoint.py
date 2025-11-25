@@ -25,6 +25,7 @@ async def run(state: StateSchema) -> dict[str, Any]:
                 supported_languages=supported_languages,
             ),
             "user_context_request": None,
+            "answer_status": "invalid_language",
         }
 
     assert detected_language is not None
@@ -35,6 +36,7 @@ async def run(state: StateSchema) -> dict[str, Any]:
                 detected_language
             ].format(valid_domains=valid_domains),
             "user_context_request": None,
+            "answer_status": "out_of_domain",
         }
 
     if state.domain == "Primary School Representation":
@@ -44,6 +46,7 @@ async def run(state: StateSchema) -> dict[str, Any]:
                 detected_language
             ],
             "user_context_request": None,
+            "answer_status": "out_of_domain",
         }
 
     return {}

@@ -46,7 +46,7 @@ You can define environment variables in a `.env` file placed at the root of the 
 MY_CUSTOM_VAR=some-value
 ```
 
-## Multi-Agent System (work in progress)
+## Multi-Agent System
 
 ### Diagrams
 
@@ -100,8 +100,24 @@ OPENAI_API_KEY=your_openai_api_key_here
 
 Replace **your_openai_api_key_here** with your actual OpenAI API key.
 
-### 4. Run the test script
+### 4. Azure env variables
+
+Define the followinng variables in the .env file:
+
+```env
+FOUNDRY_ENDPOINT=
+FOUNDRY_API_VERSION=
+FOUNDRY_API_KEY=
+```
+
+### 5. Run the assitant test script
 
 ```bash
 make make test-chat
+```
+
+### 6. Run the chat stats
+
+```bash
+make make chat-stats
 ```

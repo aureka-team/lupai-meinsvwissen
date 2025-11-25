@@ -30,6 +30,9 @@ async def get_pdf_text(pdf_url: str) -> str | None:
 
             try:
                 documents = await loader.load(source_path=tmp_file.name)
+                if not documents:
+                    return None
+
             except Exception:
                 logger.error(f"pdf_url: {pdf_url}")
                 return

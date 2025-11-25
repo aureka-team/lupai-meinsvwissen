@@ -94,7 +94,6 @@ class PostLoader(BaseLoader):
                 "url": f"https://meinsvwissen.de/?p={post_sections[0]['id']}",
                 "topics": post_sections[0]["topics"],
                 "date": post_sections[0]["date"],
-                # "related_posts": post_sections[0]["related_posts"],
             },
         }
 

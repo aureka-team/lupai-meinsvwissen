@@ -35,3 +35,11 @@ from .sensitive_topic_detector import (  # noqa
     SensitiveTopicDeps,
     SensitiveTopicOutput,
 )
+
+
+from .query_classifier import (  # noqa
+    QueryClassifier,
+    QueryClassifierDeps,
+    QueryClassifierOutput,
+    QueryCategory,
+)
