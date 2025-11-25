@@ -16,7 +16,7 @@ no-answer-messages:
 
 invalid-domain-messages:
     German: >-
-        Leider ist das Thema der Anfrage nicht in der Daten enthalten.
+        Leider ist das Thema der Anfrage nicht in den Daten enthalten.
         Diese Anwendung bietet Informationen zu folgenden Themen an:
 
         {valid_domains}

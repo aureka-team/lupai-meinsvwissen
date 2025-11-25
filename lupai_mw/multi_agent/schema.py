@@ -40,6 +40,7 @@ class RelevantChunk(BaseModel):
     category: StrictStr | None = None
     legal_type: StrictStr | None = None
     url: StrictStr | None = None
+    post_urls: list[StrictStr] = []
     chunk_id: StrictStr
 
 

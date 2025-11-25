@@ -73,6 +73,7 @@ def get_relevant_chunk(record: Record) -> RelevantChunk:
         category=payload["metadata"]["category"],
         legal_type=payload["metadata"]["legal_type"],
         url=payload["metadata"]["url"],
+        post_urls=payload["metadata"]["post_urls"],
         chunk_id=payload["metadata"]["chunk_id"],
     )
 

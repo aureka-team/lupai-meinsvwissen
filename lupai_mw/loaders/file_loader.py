@@ -85,6 +85,7 @@ class FileLoader(BaseLoader):
                 logger.error(f"file could not be loaded: {download_link}")
                 return []
 
+        posts_map = self.get_posts_map()
         return [
             Document(
                 text=doc.text,
@@ -93,6 +94,11 @@ class FileLoader(BaseLoader):
                     download_id=download_item["data_id"],
                     title=download_item["title"],
                     url=download_item["download_link"],
+                    post_urls=[
+                        f"https://meinsvwissen.de/?p={posts_map[p]['id']}"
+                        for p in (download_item["associated_posts"] or [])
+                        if p in posts_map
+                    ],
                     germany_region=REGION_MAP.get(
                         download_item["category_title"]
                     ),

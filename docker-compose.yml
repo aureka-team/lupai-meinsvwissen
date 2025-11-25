@@ -14,7 +14,7 @@ services:
             - lupai-mw
 
     lupai-mw-redis:
-        image: redis:8.2.1
+        image: redis:8.4.0
         container_name: lupai-mw-redis
         volumes:
             - $PWD/resources/cache/redis:/data
@@ -23,7 +23,7 @@ services:
             - lupai-mw
 
     lupai-mw-mongo:
-        image: mongo:8.0.14
+        image: mongo:8.2.2
         container_name: lupai-mw-mongo
         ports:
             - "27017:27017"
@@ -39,7 +39,7 @@ services:
             - lupai-mw
 
     lupai-mw-qdrant:
-        image: qdrant/qdrant:v1.15.4
+        image: qdrant/qdrant:v1.16.1
         container_name: lupai-mw-qdrant
         ports:
             - "6333:6333"
