@@ -1,5 +1,9 @@
 # LupAI Meinsvwissen
 
+This project provides an AI assistant designed to answer questions based on a knowledge base curated by experts. It builds upon the system originally developed in the [Lupai](https://lupai.de/) project and extends it to support data from diverse thematic domains.
+
+This repository contains the implementation tailored for the knowledge base curated by the team of _Schule ein Gesicht geben e.V._, focusing on guidelines, legal frameworks, and practical recommendations for establishing and strengthening school representations in Germany.
+
 ## Environment Setup
 
 ### Prerequisites
