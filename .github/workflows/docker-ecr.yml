@@ -1,0 +1,73 @@
+name: Build & Push to ECR
+
+on:
+  push:
+    branches: [add_github_workflow]
+    paths-ignore:
+      - '*.md'
+      - '.gitignore'
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  ECR_REGISTRY: 696036763958.dkr.ecr.eu-central-1.amazonaws.com
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Set image tag
+        id: tag
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "tag=v${SHORT_SHA}-${{ github.run_number }}" >> $GITHUB_OUTPUT
+
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::696036763958:role/github-ecr-push-role-5466eb0
+          aws-region: eu-central-1
+
+      - uses: aws-actions/amazon-ecr-login@v2
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Build & push core
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/core/Dockerfile
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/lupai-mw-core:${{ steps.tag.outputs.tag }}
+          cache-from: type=gha,scope=core
+          cache-to: type=gha,mode=max,scope=core
+
+      - name: Build & push api
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/api/Dockerfile
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/lupai-mw-api:${{ steps.tag.outputs.tag }}
+          build-contexts: |
+            lupai-mw-core=docker-image://${{ env.ECR_REGISTRY }}/lupai-mw-core:${{ steps.tag.outputs.tag }}
+          cache-from: type=gha,scope=api
+          cache-to: type=gha,mode=max,scope=api
+
+      - name: Build & push mcp
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/mcp/Dockerfile
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/lupai-mw-mcp:${{ steps.tag.outputs.tag }}
+          build-contexts: |
+            lupai-mw-core=docker-image://${{ env.ECR_REGISTRY }}/lupai-mw-core:${{ steps.tag.outputs.tag }}
+          cache-from: type=gha,scope=mcp
+          cache-to: type=gha,mode=max,scope=mcp
