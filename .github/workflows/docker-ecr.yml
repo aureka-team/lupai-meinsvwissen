@@ -2,7 +2,7 @@ name: Build & Push to ECR
 
 on:
   push:
-    branches: [add_github_workflow]
+    branches: [main]
     paths-ignore:
       - '*.md'
       - '.gitignore'
