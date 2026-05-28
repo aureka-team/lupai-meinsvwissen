@@ -32,6 +32,11 @@ mcp = FastMCP(
 )
 
 
+@mcp.custom_route("/health", methods=["GET"])
+async def health_check(request: Request) -> PlainTextResponse:
+    return PlainTextResponse("OK")
+
+
 # TODO: Add post_id and related_posts?
 class TextChunk(BaseModel):
     text: StrictStr = Field(
