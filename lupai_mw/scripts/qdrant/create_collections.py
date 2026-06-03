@@ -58,32 +58,32 @@ async def main() -> None:
         CollectionItem(
             loader=PostLoader(),
             splitter=MarkdownSplitter,
-            collection_name="general",
+            collection_name="mw_general",
         ),
         CollectionItem(
             loader=FileLoader(cache=cache),
             splitter=MarkdownSplitter,
-            collection_name="general",
+            collection_name="mw_general",
         ),
         CollectionItem(
             loader=LegalLoader(),
             splitter=MarkdownSplitter,
-            collection_name="legal",
+            collection_name="mw_legal",
         ),
         CollectionItem(
             loader=SvtippsLoader(),
             splitter=MarkdownSplitter,
-            collection_name="general",
+            collection_name="mw_general",
         ),
         CollectionItem(
             loader=GlossaryLoader(),
             splitter=MarkdownSplitter,
-            collection_name="glossary",
+            collection_name="mw_glossary",
         ),
         CollectionItem(
             loader=PublicationLoader(),
             splitter=MarkdownSplitter,
-            collection_name="general",
+            collection_name="mw_general",
         ),
     ]
 

@@ -1,5 +1,4 @@
 from typing import Annotated
-from functools import lru_cache
 
 from qdrant_client import models
 from qdrant_client.models import Record
@@ -15,6 +14,7 @@ from common.logger import get_logger
 from rage.retriever import Retriever
 from rage.utils.embeddings import get_openai_embeddings
 
+from lupai_mw.config import Config
 from .utils import ToolCallLimitMiddleware
 
 
@@ -25,6 +25,7 @@ SEARCH_TOP_K = 5
 SEARCH_SCORE_THRESHOLD = 0.3
 
 
+config = Config()
 retriever = Retriever(dense_embeddings=get_openai_embeddings())
 mcp = FastMCP(
     name="Meinsvwissen MCP server",
@@ -83,12 +84,6 @@ class TextChunk(BaseModel):
     )
 
 
-@lru_cache(maxsize=1)
-def get_collections() -> list[str]:
-    collections = retriever.qadrant_client.get_collections()
-    return [c.name for c in collections.collections]
-
-
 async def _search(
     query: str,
     collection_name: str,
@@ -135,8 +130,7 @@ def get_text_chunk_(chunk_id: str) -> Record | None:
     )
 
     # FIXME: This is temporal!
-    collections = get_collections()
-    for collection in collections:
+    for collection in config.search_collections:
         results = retriever.scroll(
             collection_name=collection,
             limit=1,
@@ -176,7 +170,7 @@ async def general_search(
 
     return await _search(
         query=query,
-        collection_name="general",
+        collection_name="mw_general",
         search_filter=models.Filter(
             should=[
                 models.FieldCondition(
@@ -213,7 +207,7 @@ async def legal_search(
 
     return await _search(
         query=query,
-        collection_name="legal",
+        collection_name="mw_legal",
         search_filter=models.Filter(
             must=[
                 models.FieldCondition(
@@ -241,7 +235,7 @@ async def glossary_search(
 
     return await _search(
         query=query,
-        collection_name="glossary",
+        collection_name="mw_glossary",
     )
 
 
