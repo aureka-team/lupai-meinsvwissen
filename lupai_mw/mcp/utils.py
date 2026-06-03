@@ -3,7 +3,7 @@ import math
 from typing import Any
 from common.logger import get_logger
 
-from cachetools import TTLCache
+from cachetools import TTLCache  # type: ignore
 from pydantic_ai.tools import RunContext
 from pydantic_ai.mcp import CallToolFunc, ToolResult
 
@@ -61,7 +61,7 @@ class ToolCallLimitMiddleware(Middleware):
         ctx = context.fastmcp_context
         assert ctx is not None
 
-        meta = ctx.request_context.meta
+        meta = ctx.request_context.meta  # type: ignore
         assert meta is not None
 
         session_id = ctx.session_id
