@@ -9,6 +9,8 @@ from pydantic import (
     StrictStr,
     Field,
 )
+from starlette.requests import Request
+from starlette.responses import PlainTextResponse
 
 from common.logger import get_logger
 from rage.retriever import Retriever
@@ -30,6 +32,11 @@ mcp = FastMCP(
     name="Meinsvwissen MCP server",
     host="0.0.0.0",
 )
+
+
+@mcp.custom_route("/health", methods=["GET"])
+async def health_check(request: Request) -> PlainTextResponse:
+    return PlainTextResponse("OK")
 
 
 # TODO: Add post_id and related_posts?
