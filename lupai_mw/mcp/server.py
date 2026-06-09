@@ -16,7 +16,7 @@ from common.logger import get_logger
 from rage.retriever import Retriever
 from rage.utils.embeddings import get_openai_embeddings
 
-from lupai_mw.config import Config
+from lupai_mw.config import config
 from .utils import ToolCallLimitMiddleware
 
 
@@ -27,7 +27,6 @@ SEARCH_TOP_K = 5
 SEARCH_SCORE_THRESHOLD = 0.3
 
 
-config = Config()
 retriever = Retriever(dense_embeddings=get_openai_embeddings())
 mcp = FastMCP(
     name="Meinsvwissen MCP server",
@@ -137,7 +136,10 @@ def get_text_chunk_(chunk_id: str) -> Record | None:
     )
 
     # FIXME: This is temporal!
-    for collection in config.search_collections:
+    search_collections = config.search_collections
+    logger.info(f"search_collections: {search_collections}")
+
+    for collection in search_collections:
         results = retriever.scroll(
             collection_name=collection,
             limit=1,
