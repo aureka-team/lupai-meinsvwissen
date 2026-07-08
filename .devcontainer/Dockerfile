@@ -13,6 +13,14 @@ RUN --mount=type=cache,target=/var/cache/apt \
     && apt-get clean \
     && rm -rf /var/tmp/* /var/lib/apt/lists/*
 
+RUN wget -q -O /tmp/google-chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends /tmp/google-chrome.deb \
+    && rm -f /tmp/google-chrome.deb \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/tmp/* /var/lib/apt/lists/*
+
 COPY .devcontainer/requirements.txt .
 RUN uv pip install -r requirements.txt
 

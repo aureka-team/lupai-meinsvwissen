@@ -1,4 +1,4 @@
-from pydantic import StrictStr
+from pydantic import SecretStr, StrictStr
 from pydantic_settings import BaseSettings
 
 from common.logger import get_logger
@@ -13,6 +13,7 @@ class Config(BaseSettings):
         "mw_glossary",
         "mw_legal",
     )
+    prod_mongodb_password: SecretStr | None = None
 
 
 config = Config()

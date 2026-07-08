@@ -85,6 +85,12 @@ evaluate-assistant: devcontainer-build
 chat-stats: devcontainer-build
 	docker compose -f .devcontainer/docker-compose.yml run --rm --entrypoint="python -m lupai_mw.scripts.stats.chat" lupai-mw-devcontainer
 
+usage-report: devcontainer-build
+	docker run --rm --network host --env-file .env -v "$$PWD:/workspace" -v "$$PWD/resources:/resources" -w /workspace lupai-mw-devcontainer python -m lupai_mw.scripts.stats.usage_report $(ARGS)
+
+session-report: devcontainer-build
+	docker run --rm --network host --env-file .env -v "$$PWD:/workspace" -v "$$PWD/resources:/resources" -w /workspace lupai-mw-devcontainer python -m lupai_mw.scripts.stats.session_report $(ARGS)
+
 
 ec2-connect:
 	ssh -A -i .secrets/aureka-lupai.pem ubuntu@18.192.182.184 -L 27017:localhost:27017 -L 6333:localhost:6333

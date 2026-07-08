@@ -10,6 +10,8 @@ services:
             - ../resources/:/resources
         env_file:
             - ../.env
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
         # This keeps the devcontainer running.
         entrypoint: ["tail", "-f", "/dev/null"]
         networks:
